@@ -422,7 +422,7 @@ inline void InsertHash(const STRPTR a, struct Hash *h)
 
     if(!h->Index)
     {
-        ifn((h->Index = calloc(HASH_SIZE, sizeof(struct HashEntry *))))
+        if (!((h->Index = calloc(HASH_SIZE, sizeof(struct HashEntry *)))))
             PrintPrgErr(pmWordListErr);
     }
 

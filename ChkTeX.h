@@ -156,11 +156,6 @@
 #define betw(a,b,c)             ((a < b) && (b < c))
 #define within(a,b,c)           ((a <= b) && (b <= c))
 
-#ifndef NOT
-#  define NOT(a)                   (!(a))
-#endif
-#define ifn(a)                  if(NOT(a))
-
 #ifndef min
 #  define min(a,b) ((a)<=(b)?(a):(b))
 #endif

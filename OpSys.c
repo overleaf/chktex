@@ -330,7 +330,7 @@ void tackon(STRPTR Dir, const STRPTR File)
     if(Dir && (SLen = strlen(Dir)))
     {
         EndC = Dir[SLen -1];
-        ifn(strchr(DIRCHARS, EndC))
+        if (!(strchr(DIRCHARS, EndC)))
         {
             Dir[SLen++] = SLASH;
             Dir[SLen  ] = 0L;
@@ -519,7 +519,7 @@ STRPTR MatchFileName(STRPTR String)
     {
 	if(V37)
 	{
-	    ifn(AnchorPath)
+	    if (!(AnchorPath))
 	    {
 		if(AnchorPath = malloc(sizeof(struct AnchorPath) + FMSIZE))
 		{
@@ -536,7 +536,7 @@ STRPTR MatchFileName(STRPTR String)
 		}
 		else
 		{
-		    ifn(MatchNext(AnchorPath))
+		    if (!(MatchNext(AnchorPath)))
 			Retval = AnchorPath->ap_Buf;
 		}
 	    }
@@ -568,7 +568,7 @@ static STRPTR InitAnchorPath(STRPTR String)
     AnchorPath->ap_FoundBreak = FALSE;
     AnchorPath->ap_Flags = 0L;
 
-    ifn(MatchFirst(String, AnchorPath))
+    if (!(MatchFirst(String, AnchorPath)))
 	Retval = AnchorPath->ap_Buf;
     else
 	PrintPrgErr(pmNoFileMatch, String);

@@ -141,7 +141,7 @@ BOOL ReadRC(const STRPTR Filename)
         do
         {
             Token = ReadWord(ReadBuffer, fh);
-            ifn(Expect & Token)
+            if (!(Expect & Token))
             {
                 switch(Token)
                 {
@@ -202,7 +202,7 @@ BOOL ReadRC(const STRPTR Filename)
                 switch(What)
                 {
                 case whEqual:
-                    ifn(*(CurWord->String) = strdup(ReadBuffer))
+                    if (!(*(CurWord->String) = strdup(ReadBuffer)))
                     {
                         PrintPrgErr(pmStrDupErr);
                         Token = FLG_Eof;
@@ -320,7 +320,7 @@ static enum Token ReadWord(STRPTR Buffer, FILE *fh)
                             Cont = FALSE;
                             break;
                         case ESCAPE:
-                            ifn(Chr = MapChars(&String))
+                            if (!(Chr = MapChars(&String)))
                                 break;
 
                             /* FALLTHRU */
@@ -381,7 +381,7 @@ static enum Token ReadWord(STRPTR Buffer, FILE *fh)
                                 Cont = FALSE;
                                 break;
                             case ESCAPE:
-                                ifn(Chr = MapChars(&String))
+                                if (!(Chr = MapChars(&String)))
                                     break;
 
                                 *Ptr++ = Chr;
@@ -396,7 +396,7 @@ static enum Token ReadWord(STRPTR Buffer, FILE *fh)
                         Retval = FLG_Item;
                     }
 
-                    ifn(Buffer[0])
+                    if (!(Buffer[0]))
                     {
                         PrintPrgErr(pmEmptyToken);
                         if(*String)

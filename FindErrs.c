@@ -67,14 +67,14 @@ static int my_##func(int c) \
 #define SKIP_BACK(ptr, c, check) \
     while((c = *ptr--)) \
     { \
-        ifn(check)  break; \
+        if (!(check))  break; \
     } \
     ptr++;
 
 #define SKIP_AHEAD(ptr, c, check) \
     while((c = *ptr++)) \
     { \
-        ifn(check) \
+        if (!(check)) \
             break; \
     } \
     ptr--;
@@ -291,7 +291,7 @@ static STRPTR SkipVerb(void)
 
     if(VerbMode && BufPtr)
     {
-        ifn(TmpPtr = strstr(BufPtr, VerbStr))
+        if (!(TmpPtr = strstr(BufPtr, VerbStr)))
             BufPtr = &BufPtr[strlen(BufPtr)];
         else
         {
@@ -335,7 +335,7 @@ static enum DotLevel CheckDots(STRPTR PrePtr, STRPTR PstPtr)
 
         CHECKDOTS(CenterDots, dtCDots);
 
-        ifn(Front && Back)
+        if (!(Front && Back))
         {
             CHECKDOTS(LowDots, dtLDots);
         }
@@ -528,9 +528,9 @@ static void PerformBigCmd(STRPTR CmdPtr)
 
             if(CmdBuffer[1] == 'b')
             {
-                ifn(PushErr(ArgBuffer, Line, CmdPtr - Buf,
+                if (!(PushErr(ArgBuffer, Line, CmdPtr - Buf,
                             CmdLen, MakeCpy(),
-                            &EnvStack))
+                            &EnvStack)))
                     PrintPrgErr(pmNoStackMem);
             }
             else
@@ -1125,7 +1125,7 @@ BOOL FindErr(const STRPTR _RealBuf, const ULONG _Line)
 
             LOOP(bracket,
             case '(':
-                ifn(!*PrePtr || LATEX_SPACE(*PrePtr) || isdigit(*PrePtr) || 
+                if (!(!*PrePtr || LATEX_SPACE(*PrePtr) || isdigit(*PrePtr)) || 
 		    strchr("([{`~", *PrePtr))
 		{
 		    if(PrePtr[-1] != '\\') /* Short cmds */
@@ -1440,7 +1440,7 @@ static enum ErrNum PerformCommand(const STRPTR Cmd, STRPTR Arg)
         else
             Argument = strip(Arg, STRP_BTH);
 
-        ifn(Argument && PushFileName(Argument, &InputStack))
+        if (!(Argument && PushFileName(Argument, &InputStack)))
             en = emNoCmdExec;
     }
     else if(HasWord(Cmd, &Primitives))
