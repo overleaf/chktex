@@ -45,6 +45,7 @@ LDFLAGS=@LDFLAGS@
 LN_S=@LN_S@
 LATEX=@LATEX@
 DVIPS=@DVIPS@
+PS2PDF=ps2pdf
 PERL5=@PERL5@
 LATEX2HTML=@LATEX2HTML@
 LYNX=@LYNX@
@@ -268,6 +269,9 @@ endif
 
 ChkTeX.ps: ChkTeX.dvi
 	$(DVIPS) -o ChkTeX.ps ChkTeX.dvi
+
+ChkTeX.pdf: ChkTeX.ps
+	$(PS2PDF) $< $@
 
 ChkTeX: ChkTeX.c
 	@echo
