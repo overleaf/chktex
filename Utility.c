@@ -32,7 +32,7 @@
 #include "OpSys.h"
 
 #ifdef ASM_HASHWORD
-extern unsigned short HashWord(STRPTR a);
+extern unsigned short HashWord(const char * a);
 typedef unsigned short HASH_TYPE;
 #else
 typedef unsigned long HASH_TYPE;
@@ -49,9 +49,9 @@ typedef unsigned long HASH_TYPE;
  */
 
 
-short substring(const STRPTR source, STRPTR dest, unsigned long pos, long len)
+short substring(const char *source, char *dest, unsigned long pos, long len)
 {
-    STRPTR      Start;
+    const char *Start;
     short        Retval = -1;
 
     if(len >= 0)
@@ -82,7 +82,7 @@ short substring(const STRPTR source, STRPTR dest, unsigned long pos, long len)
  */
 
 
-int fexists(const STRPTR Filename)
+int fexists(const char *Filename)
 {
     int        Retval;
 
@@ -130,7 +130,7 @@ void *sfmemset(void *to, int c, long n)
  * Replaces every occurrence of a character in a string with another one.
  */
 
-void strrep(STRPTR String,      /* String to replace within.    */
+void strrep(char * String,      /* String to replace within.    */
             const char From,   /* Character to search for.     */
             const char To)     /* Character to put instead.    */
 {
@@ -146,8 +146,8 @@ void strrep(STRPTR String,      /* String to replace within.    */
  * Replaces every char not in Prot with To in Buf
  */
 
-void strxrep(STRPTR Buf,
-	     const STRPTR Prot,
+void strxrep(char * Buf,
+	     const char * Prot,
 	     const char To)
 {
     int c;
@@ -169,14 +169,15 @@ void strxrep(STRPTR Buf,
  */
 
 
-STRPTR strip(STRPTR str,                /* String to strip */
+char * strip(char * str,                /* String to strip */
              const enum Strip flags)
     /* One of the following: */
     /* STRP_LFT - Strips leading  blanks */
     /* STRP_RGT - Strips trailing blanks */
     /* STRP_BTH - Strips on both sides   */
 {
-    STRPTR bufptr = str, nlptr;
+    char * bufptr = str;
+	char *nlptr;
     char c;
 
     if(bufptr && (c = *bufptr))
@@ -220,9 +221,9 @@ STRPTR strip(STRPTR str,                /* String to strip */
  */
 
 #ifndef HAVE_STRLWR
-STRPTR strlwr(STRPTR String)
+char * strlwr(char * String)
 {
-    STRPTR      Bufptr;
+    char *      Bufptr;
     char        TmpC;
 
     for(Bufptr = String;
@@ -239,9 +240,9 @@ STRPTR strlwr(STRPTR String)
  */
 
 #ifndef HAVE_STRDUP
-STRPTR strdup(const STRPTR String)
+char * strdup(const char * String)
 {
-    STRPTR      Retval = NULL;
+    char *      Retval = NULL;
     size_t      Len;
 
     if(String)
@@ -259,9 +260,9 @@ STRPTR strdup(const STRPTR String)
  * Does the same as strdup, but adds a zero-filled padding, length extra bytes.
  */
 
-STRPTR strdupx(const STRPTR String, int Extra)
+char * strdupx(const char * String, int Extra)
 {
-    STRPTR      Retval = NULL;
+    char *      Retval = NULL;
     size_t      Len;
 
     if(String)
@@ -321,7 +322,7 @@ void *saferealloc(void *b, size_t n)
  * Does nothing if passed empty/NULL string.
  */
 
-void strwrite (STRPTR To, const STRPTR From, unsigned long Len)
+void strwrite (char * To, const char * From, unsigned long Len)
 {
   unsigned long i, j;
   unsigned long FromLen = strlen(From);
@@ -355,7 +356,7 @@ void strwrite (STRPTR To, const STRPTR From, unsigned long Len)
  *
  */
 
-int strafter(const STRPTR Str, const STRPTR Cmp)
+int strafter(const char * Str, const char * Cmp)
 {
     return(strncmp(Str, Cmp, strlen(Cmp)));
 }
@@ -365,7 +366,7 @@ int strafter(const STRPTR Str, const STRPTR Cmp)
  *
  */
 
-int strinfront(STRPTR Str, STRPTR Cmp)
+int strinfront(char * Str, char * Cmp)
 {
     int CmpLen;
 
@@ -395,7 +396,7 @@ int strinfront(STRPTR Str, STRPTR Cmp)
  */
 
 #ifndef ASM_HASHWORD
-static unsigned long HashWord(STRPTR str)
+static unsigned long HashWord(const char * str)
 {
     register unsigned long h = 0, hbit, c;
 
@@ -416,7 +417,7 @@ static unsigned long HashWord(STRPTR str)
  * duplicate the string yourself.
  */
 
-void InsertHash(const STRPTR a, struct Hash *h)
+void InsertHash(const char * a, struct Hash *h)
 {
     struct HashEntry **he, *newhe;
 
@@ -443,7 +444,7 @@ void InsertHash(const STRPTR a, struct Hash *h)
  * hash index.
  */
 
-STRPTR HasHash(const STRPTR a, const struct Hash *h)
+const char * HasHash(const char * a, const struct Hash *h)
 {
      struct HashEntry *he;
      HASH_TYPE i; /* Special magic to optimize SAS/C */
@@ -500,9 +501,9 @@ static void ReHash(struct WordList *WL)
  * not need to make a duplicate of `Word' yourself.
  */
 
-int InsertWord(const STRPTR Word, struct WordList *WL)
+int InsertWord(const char * Word, struct WordList *WL)
 {
-    STRPTR      WrdCpy;
+    char *      WrdCpy;
     unsigned long       Len;
 
     if((WrdCpy = strdupx(Word, WALLBYTES)))
@@ -547,7 +548,7 @@ void ClearWord(struct WordList *WL)
  */
 
 
-STRPTR HasWord(const STRPTR Word, struct WordList *WL)
+const char * HasWord(const char * Word, struct WordList *WL)
 {
     return(HasHash(Word, &WL->Hash));
 }
@@ -664,7 +665,7 @@ void *StkTop(struct Stack *Stack)
 
 /****************************** INPUT STACK *****************************/
 
-int PushFileName(const STRPTR Name, struct Stack *stack)
+int PushFileName(const char * Name, struct Stack *stack)
 {
     FILE        *fh = NULL;
     static 
@@ -685,7 +686,7 @@ int PushFileName(const STRPTR Name, struct Stack *stack)
 }
 
 
-int PushFile(STRPTR Name, FILE *fh, struct Stack *stack)
+int PushFile(char * Name, FILE *fh, struct Stack *stack)
 {
     struct FileNode     *fn;
 
@@ -709,10 +710,10 @@ int PushFile(STRPTR Name, FILE *fh, struct Stack *stack)
     return(FALSE);
 }
 
-STRPTR FGetsStk(STRPTR Dest, unsigned long len, struct Stack *stack)
+char * FGetsStk(char * Dest, unsigned long len, struct Stack *stack)
 {
     struct FileNode     *fn;
-    STRPTR Retval = NULL;
+    char * Retval = NULL;
 
     if((fn = StkTop(stack)))
     {
@@ -734,11 +735,11 @@ STRPTR FGetsStk(STRPTR Dest, unsigned long len, struct Stack *stack)
     return(Retval);
 }
 
-STRPTR CurStkName(struct Stack *stack)
+char * CurStkName(struct Stack *stack)
 {
     struct FileNode     *fn;
     static
-        STRPTR  LastName = "";
+        char *  LastName = "";
 
     if(PseudoInName && (stack->Used <= 1))
       return(PseudoInName);
@@ -784,7 +785,7 @@ unsigned long CurStkLine(struct Stack *stack)
 
 struct ErrInfo *PushChar(const char c, const unsigned long Line,
               const unsigned long Column, struct Stack *Stk,
-              const STRPTR LineCpy)
+              const char * LineCpy)
 {
     char       Buf[2];
 
@@ -793,9 +794,9 @@ struct ErrInfo *PushChar(const char c, const unsigned long Line,
     return(PushErr( Buf, Line, Column, 1,  LineCpy, Stk));
 }
 
-struct ErrInfo *PushErr(const STRPTR Data, const unsigned long Line,
+struct ErrInfo *PushErr(const char * Data, const unsigned long Line,
              const unsigned long Column, const unsigned long ErrLen,
-             const STRPTR LineCpy, struct Stack *Stk)
+             const char * LineCpy, struct Stack *Stk)
 {
     struct ErrInfo      *ci;
 
@@ -826,7 +827,7 @@ struct ErrInfo *PushErr(const STRPTR Data, const unsigned long Line,
  * String.
  */
 
-struct ErrInfo *TopMatch(struct Stack *Stack, STRPTR String)
+struct ErrInfo *TopMatch(struct Stack *Stack, char * String)
 {
     int i;
     struct ErrInfo *retval = NULL;

@@ -84,7 +84,9 @@ static int my_##func(int c) \
 
 static unsigned long Line;
 
-static STRPTR RealBuf, LineCpy, BufPtr;
+static const char *RealBuf;
+static char *LineCpy;
+static char *BufPtr;
 
 static int ItFlag = efNone;
 
@@ -92,7 +94,7 @@ NEWBUF(Buf, BUFSIZ);
 NEWBUF(CmdBuffer, BUFSIZ);
 NEWBUF(ArgBuffer, BUFSIZ);
 
-static enum ErrNum PerformCommand(const STRPTR Cmd, STRPTR Arg);
+static enum ErrNum PerformCommand(const char * Cmd, char * Arg);
 
 #ifdef isdigit
 CTYPE(isdigit)
@@ -112,7 +114,7 @@ CTYPE(isalpha)
  */
 
 
-static STRPTR GetLTXToken(STRPTR Src, STRPTR Dest)
+static const char *GetLTXToken(const char *Src, char *Dest)
 {
     int Char;
 
@@ -165,13 +167,15 @@ static STRPTR GetLTXToken(STRPTR Src, STRPTR Dest)
 #define GET_TOKEN       256
 #define GET_STRIP_TOKEN 257
 
-static STRPTR GetLTXArg(STRPTR SrcBuf,
-                        const STRPTR OrigDest,
+static const char *GetLTXArg(const char *SrcBuf,
+                        char * OrigDest,
                         const int Until,
                         struct WordList *wl)
 
 {
-    STRPTR      Retval, TmpPtr, Dest = OrigDest;
+    const char *Retval;
+	const char *TmpPtr;
+	char *Dest = OrigDest;
     unsigned long       DeliCnt = 0;
 
     *Dest = 0;
@@ -225,7 +229,7 @@ static STRPTR GetLTXArg(STRPTR SrcBuf,
 }
 
 
-static STRPTR MakeCpy(void)
+static char * MakeCpy(void)
 {
     if(!LineCpy)
         LineCpy = strdup(RealBuf);
@@ -236,11 +240,11 @@ static STRPTR MakeCpy(void)
     return(LineCpy);
 }
 
-static STRPTR PreProcess(void)
+static char * PreProcess(void)
 {
     /* First, kill comments. */
 
-    STRPTR TmpPtr;
+    char * TmpPtr;
 
     strcpy(Buf, RealBuf);
 
@@ -263,7 +267,7 @@ static STRPTR PreProcess(void)
  * Interpret environments
  */
 
-static void PerformEnv(STRPTR Env, int Begin)
+static void PerformEnv(char * Env, int Begin)
 {
 static
     char   VBStr [BUFSIZ] = "";
@@ -284,9 +288,9 @@ static
     }
 }
 
-static STRPTR SkipVerb(void)
+static char * SkipVerb(void)
 {
-    STRPTR TmpPtr = BufPtr;
+    char * TmpPtr = BufPtr;
     int TmpC;
 
     if(VerbMode && BufPtr)
@@ -318,7 +322,7 @@ for(i = 0; (i < wordlist.Stack.Used) && !(Back && Front);  i++) \
  * Checks that the dots are correct
  */
 
-static enum DotLevel CheckDots(STRPTR PrePtr, STRPTR PstPtr)
+static enum DotLevel CheckDots(char * PrePtr, char * PstPtr)
 {
     unsigned long i;
     int TmpC;
@@ -346,9 +350,9 @@ static enum DotLevel CheckDots(STRPTR PrePtr, STRPTR PstPtr)
 
 }
 
-static STRPTR Dot2Str(enum DotLevel dl)
+static char * Dot2Str(enum DotLevel dl)
 {
-    STRPTR Retval = INTERNFAULT;
+    char * Retval = INTERNFAULT;
     switch(dl)
     {
     case dtUnknown:
@@ -371,10 +375,11 @@ static STRPTR Dot2Str(enum DotLevel dl)
  * Wipes a command, according to the definition in WIPEARG
  */
 
-static void WipeArgument(STRPTR Cmd, STRPTR CmdPtr)
+static void WipeArgument(const char *Cmd, char *CmdPtr)
 {
     unsigned long CmdLen = strlen(Cmd);
-    STRPTR Format, TmpPtr;
+    const char *Format;
+	const char *TmpPtr;
     int c, TmpC;
 
     if(Cmd && *Cmd)
@@ -420,10 +425,10 @@ static void WipeArgument(STRPTR Cmd, STRPTR CmdPtr)
  *
  */
 
-static void CheckItal(const STRPTR Cmd)
+static void CheckItal(const char * Cmd)
 {
     int TmpC;
-    STRPTR TmpPtr;
+    char * TmpPtr;
     if(HasWord(Cmd, &NonItalic))
         ItState = itOff;
     else if(HasWord(Cmd, &Italic))
@@ -445,10 +450,10 @@ static void CheckItal(const STRPTR Cmd)
  *
  */
 
-static void PerformBigCmd(STRPTR CmdPtr)
+static void PerformBigCmd(char * CmdPtr)
 {
-    STRPTR  TmpPtr,
-            ArgEndPtr;
+    const char *TmpPtr;
+	const char *ArgEndPtr;
     unsigned long   CmdLen = strlen(CmdBuffer);
     int     TmpC;
     enum ErrNum
@@ -506,7 +511,7 @@ static void PerformBigCmd(STRPTR CmdPtr)
 
     if((TmpPtr = HasWord(CmdBuffer, &NoCharNext)))
     {
-	STRPTR BPtr = BufPtr;
+	char * BPtr = BufPtr;
 
 	TmpPtr += strlen(TmpPtr) + 1;
 	SKIP_AHEAD(BPtr, TmpC, LATEX_SPACE(TmpC));
@@ -593,10 +598,11 @@ static void PerformBigCmd(STRPTR CmdPtr)
  * AbbrevCase into Abbrev.
  */
 
-static void CheckAbbrevs(const STRPTR Buffer)
+static void CheckAbbrevs(const char * Buffer)
 {
     long i;
-    STRPTR TmpPtr, AbbPtr;
+    char *TmpPtr;
+	const char *AbbPtr;
 
     if(INUSE(emInterWord))
     {
@@ -627,7 +633,7 @@ static void CheckRest(void)
 {
     unsigned long Count;
     long CmdLen;
-    STRPTR  UsrPtr;
+    char *  UsrPtr;
 
     /* Search for user-specified warnings */
 
@@ -668,13 +674,13 @@ static void CheckRest(void)
 
 static void CheckDash(void)
 {
-    STRPTR TmpPtr;
+    char * TmpPtr;
     int TmpC;
     long TmpCount, Len;
     struct WordList *wl = NULL;
     unsigned long  i;
     int Errored;
-    STRPTR PrePtr = &BufPtr[-2];
+    char * PrePtr = &BufPtr[-2];
 
     TmpPtr = BufPtr;
     SKIP_AHEAD(TmpPtr, TmpC, TmpC == '-');
@@ -723,7 +729,7 @@ static void HandleBracket(int Char)
     struct ErrInfo *ei;
     int    TmpC, Match;
     char   ABuf[2], BBuf[2];
-    STRPTR TmpPtr;
+    char * TmpPtr;
 
     AddBracket(Char);
 
@@ -802,14 +808,13 @@ static void HandleBracket(int Char)
  * is supplied for error printing.
  */
 
-int FindErr(const STRPTR _RealBuf, const unsigned long _Line)
+int FindErr(const char * _RealBuf, const unsigned long _Line)
 {
-  STRPTR
-    CmdPtr,   /* We'll have to copy each command out. */
-    PrePtr,   /* Ptr to char in front of command, NULL if
-               * the cmd appears as the first character  */
-    TmpPtr,   /* Temporary pointer */
-    ErrPtr;   /* Ptr to where an error started */
+  char *CmdPtr;   /* We'll have to copy each command out. */
+  char *PrePtr;   /* Ptr to char in front of command, NULL if
+                   * the cmd appears as the first character  */
+  char *TmpPtr;   /* Temporary pointer */
+  char *ErrPtr;   /* Ptr to where an error started */
 
   int
     TmpC,     /* Just a temp var used throughout the proc.*/
@@ -1012,7 +1017,7 @@ int FindErr(const STRPTR _RealBuf, const unsigned long _Line)
 		    /* We ignore all single words/abbreviations in quotes */
 
 		    {
-			STRPTR WordPtr = PrePtr;
+			char * WordPtr = PrePtr;
 			SKIP_BACK(WordPtr, TmpC, (isalnum(TmpC) ||
 						  strchr(LTX_GenPunc, TmpC)));
 			
@@ -1183,7 +1188,7 @@ int FindErr(const STRPTR _RealBuf, const unsigned long _Line)
  * suffix should be put, e.g. "warning%s". Watch your %'s!
  */
 
-static void Transit(FILE *fh, unsigned long Cnt, STRPTR Str)
+static void Transit(FILE *fh, unsigned long Cnt, char * Str)
 {
     switch(Cnt)
     {
@@ -1217,7 +1222,7 @@ void PrintStatus(unsigned long Lines)
   {
       PrintError(ei->File, ei->LineBuf, ei->Column,
                  ei->ErrLen, ei->Line, emNoMatchC,
-                 (STRPTR) ei->Data);
+                 (char *) ei->Data);
       FreeErrInfo(ei);
   }
 
@@ -1225,7 +1230,7 @@ void PrintStatus(unsigned long Lines)
   {
       PrintError(ei->File, ei->LineBuf, ei->Column,
                  ei->ErrLen, ei->Line, emNoMatchC,
-                 (STRPTR) ei->Data);
+                 (char *) ei->Data);
       FreeErrInfo(ei);
   }
 
@@ -1275,7 +1280,7 @@ void PrintStatus(unsigned long Lines)
  */
 
 
-void  PrintError(const  STRPTR  File,   const  STRPTR String,
+void  PrintError(const  char *File,   const char *String,
                  const long Position,   const long Len,
                  const long LineNo, const enum ErrNum Error, ...)
 {
@@ -1283,7 +1288,8 @@ void  PrintError(const  STRPTR  File,   const  STRPTR String,
         char   PrintBuffer[BUFSIZ];
     va_list     MsgArgs;
 
-    STRPTR      LastNorm = OutputFormat, of;
+    char *LastNorm = OutputFormat;
+	char *of;
     int         c;
 
     enum Context Context;
@@ -1417,9 +1423,9 @@ void  PrintError(const  STRPTR  File,   const  STRPTR String,
  * or not.
  */
 
-static enum ErrNum PerformCommand(const STRPTR Cmd, STRPTR Arg)
+static enum ErrNum PerformCommand(const char * Cmd, char * Arg)
 {
-    STRPTR Argument = "";
+    char * Argument = "";
     enum ErrNum
         en = emMinFault;
     int TmpC;

@@ -72,7 +72,7 @@ unsigned long Brackets  [NUMBRACKETS];
 NEWBUF(TmpBuffer,       BUFSIZ);
 NEWBUF(ReadBuffer,      BUFSIZ);
 
-static const STRPTR
+static const char *
         Banner  =
 "ChkTeX v1.6.1 - Copyright 1995-96 Jens T. Berger Thielemann.\n"
 #ifdef __OS2__
@@ -80,20 +80,26 @@ static const STRPTR
 #elif defined(__MSDOS__)
 "MS-DOS port by Bj\\o rn Ove Thue, <bjort@ifi.uio.no>"
 #endif
-"\n",
+"\n";
+
+static const char *
         BigBanner  =
 "ChkTeX comes with ABSOLUTELY NO WARRANTY; details on this and\n"
 "distribution conditions in the GNU General Public License file.\n"
 "Type \"ChkTeX -h\" for help, \"ChkTeX -i\" for distribution info.\n"
 "Author: Jens Berger, Spektrumvn. 4, N-0666 Oslo, Norway.\n"
 "E-mail: <jensthi@ifi.uio.no>\n"
-"Press " STDIN_BREAK " to abort stdin input.\n",
+"Press " STDIN_BREAK " to abort stdin input.\n";
+
+static const char *
         GiftBanner =
 "\n"
 "     If you like this program and use it frequently the author\n"
 "      would like you to send him any gift that you feel would\n"
 "      be an appropriate `payment' for `ChkTeX' --- thank you!\n"
-"\n",
+"\n";
+
+static const char *
 Distrib  =
 "\n"
 "This program is free software; you can redistribute it and/or modify\n"
@@ -108,14 +114,21 @@ Distrib  =
 "\n"
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
-,
+"Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n";
+
+static const char *
 OnText  =
-"On",
+"On";
+
+static const char *
 OffText  =
-"Off",
+"Off";
+
+static const char *
 HowHelp =
-"-h or --help gives usage information. See also ChkTeX.{ps,dvi}.\n",
+"-h or --help gives usage information. See also ChkTeX.{ps,dvi}.\n";
+
+static const char *
 HelpText  =
 "\n"
 "\n"
@@ -203,7 +216,7 @@ STATE_VARS
 
 FILE *OutputFile = NULL;
 
-STRPTR  PrgName;
+char *PrgName;
 
 int   StdInTTY, StdOutTTY;
 
@@ -214,7 +227,7 @@ int   StdInTTY, StdOutTTY;
 static int ParseArgs(int argc, char **argv);
 static void ShowIntStatus(void);
 static int OpenOut(void);
-static int ShiftArg(STRPTR *Argument);
+static int ShiftArg(char **Argument);
 
 
 /*
@@ -224,7 +237,7 @@ static int ShiftArg(STRPTR *Argument);
 static void AddStars(struct WordList *wl)
 {
     unsigned long Count, CmdLen;
-    STRPTR  Data;
+    char *Data;
 
     FORWL(Count, *wl)
     {
@@ -256,7 +269,7 @@ static void SetupLists(void)
     ListRep(&WipeArg, ':', 0);
     ListRep(&NoCharNext, ':', 0);
 
-#define ThisItem ((STRPTR) AbbrevCase.Stack.Data[i])
+#define ThisItem ((char *) AbbrevCase.Stack.Data[i])
 
     FORWL(i, AbbrevCase)
     {
@@ -276,14 +289,14 @@ static void SetupLists(void)
  * Checks that two lists don't have any common element.
  */
 
-static void NoCommon(struct WordList *a, const STRPTR aName,
-                     struct WordList *b, const STRPTR bName)
+static void NoCommon(struct WordList *a, const char *aName,
+                     struct WordList *b, const char *bName)
 {
     unsigned long i;
     
     FORWL(i, *a)
     {
-        if(HasWord((STRPTR) a->Stack.Data[i], b))
+        if(HasWord((char *) a->Stack.Data[i], b))
             PrintPrgErr(pmNoCommon, a->Stack.Data[i], aName, bName);
     }
 }
@@ -293,9 +306,10 @@ static void NoCommon(struct WordList *a, const STRPTR aName,
  * TSize.
  */
 
-static void ExpandTabs(STRPTR From, STRPTR To, long TSize)
+static void ExpandTabs(char *From, char *To, long TSize)
 {
-    STRPTR Next, Orig;
+    char *Next;
+	char *Orig;
     unsigned long Diff;
 
     Next = From;
@@ -326,7 +340,7 @@ int main(int argc, char **argv)
   int    retval = EXIT_FAILURE, CurArg;
   unsigned long  Count;
   int   StdInUse = FALSE;
-  STRPTR NameMatch = "";
+  char *NameMatch = "";
   long  Tab = 8;
 
 #ifdef __LOCALIZED
@@ -362,7 +376,7 @@ int main(int argc, char **argv)
 
   if(CmdLine.Stack.Used)
   {
-      ParseArgs(CmdLine.Stack.Used, (STRPTR *) CmdLine.Stack.Data);
+      ParseArgs(CmdLine.Stack.Used, (char **) CmdLine.Stack.Data);
       CmdLine.Stack.Used = 1L;
   }
   
@@ -370,7 +384,7 @@ int main(int argc, char **argv)
   {
       if(CmdLine.Stack.Used)
       {
-          ParseArgs(CmdLine.Stack.Used, (STRPTR *) CmdLine.Stack.Data);
+          ParseArgs(CmdLine.Stack.Used, (char **) CmdLine.Stack.Data);
           CmdLine.Stack.Used = 1L;
       }
       
@@ -537,7 +551,7 @@ static int OpenOut(void)
 }
 
 #ifndef STRIP_DEBUG
-static void ShowWL(const STRPTR Name, const struct WordList *wl)
+static void ShowWL(const char *Name, const struct WordList *wl)
 {
     unsigned long i, j, percent;
 
@@ -573,7 +587,7 @@ static void ShowWL(const STRPTR Name, const struct WordList *wl)
     if(DebugLevel & FLG_DbgListCont)
     {
 	FORWL(i, *wl)
-            fprintf(stderr, "\t%s\n", (STRPTR) wl->Stack.Data[i]);
+            fprintf(stderr, "\t%s\n", (char *) wl->Stack.Data[i]);
     }
 }
 #endif
@@ -592,7 +606,8 @@ static void ShowIntStatus(void)
 {
 #ifndef STRIP_DEBUG
     unsigned long       Cnt;
-    STRPTR      String, iuStr = "";
+    char *String;
+	char *iuStr = "";
 
     if(DebugLevel & FLG_DbgMsgs)
     {
@@ -705,7 +720,7 @@ OPTION_DEFAULTS
 
 static int ParseNumArg(long *Dest,             /* Where to put the value */
 		       long Default,           /* Value to put in if no in argue */
-		       STRPTR *Argument)       /* optarg or similar */
+		       char **Argument)       /* optarg or similar */
 {
     if(Argument && *Argument && isdigit(**Argument))
         *Dest = strtol(*Argument, Argument, 10);
@@ -721,7 +736,7 @@ static int ParseNumArg(long *Dest,             /* Where to put the value */
  */
 
 static int ParseBoolArg(int *Dest,            /* Boolean value */
-			STRPTR *Argument)      /* optarg or similar */
+			char **Argument)      /* optarg or similar */
 {
     long        D = *Dest? 1L : 0L;
     int         Retval;
@@ -740,10 +755,10 @@ static int ParseBoolArg(int *Dest,            /* Boolean value */
  * 0 if the string is empty.
  */
 
-static int ShiftArg(STRPTR *Argument)                  /* optarg or similar */
+static int ShiftArg(char **Argument)                  /* optarg or similar */
 {
     if(Argument && *Argument && **Argument)
-        return(*((STRPTR) (*Argument)++));
+        return(*((char *) (*Argument)++));
     else
         return 0;
 }
@@ -1022,7 +1037,7 @@ static const
 
 void PrintPrgErr(enum PrgErrNum Error, ...)
 {
-    STRPTR      Type;
+    char *Type;
     va_list     MsgArgs;
 
     if(betw(pmMinFault, Error, pmMaxFault)) {

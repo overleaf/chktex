@@ -199,15 +199,16 @@ struct WordList;
 		  * source tree. :-/ 
 		  */
 
-extern STRPTR ReverseOn, ReverseOff;
+extern char *ReverseOn;
+extern char *ReverseOff;
 extern char ConfigFile[BUFSIZ];
 
-STRPTR  MatchFileName(STRPTR String);
+char *  MatchFileName(char * String);
 int    SetupVars(void);
 void    SetupTerm(void);
-void    AddAppendix(STRPTR Name, const STRPTR App);
-void    tackon(STRPTR, const STRPTR);
-int    LocateFile(const STRPTR Filename, STRPTR Dest, const STRPTR App,
+void    AddAppendix(char * Name, const char * App);
+void    tackon(char *, const char *);
+int    LocateFile(const char * Filename, char * Dest, const char * App,
 		           struct WordList *wl);
 
 #endif /* OPSYS_H */

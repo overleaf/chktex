@@ -164,7 +164,7 @@ struct  ErrMsg {
     /* Requirements posed upon environment */
     enum Context Context;
 
-    STRPTR        Message;
+    char *        Message;
 };
 
 enum ItState {
@@ -184,10 +184,10 @@ enum DotLevel {
 extern struct ErrMsg
     LaTeXMsgs [emMaxFault + 1];
 
-extern STRPTR OutputFormat;
+extern char * OutputFormat;
 
-int    FindErr(STRPTR const, unsigned long const);
-void    PrintError(const  STRPTR, const STRPTR, const long, const long,
+int    FindErr(const char *, const unsigned long);
+void    PrintError(const  char *, const char *, const long, const long,
                    const long, const enum ErrNum, ...);
 void PrintStatus(unsigned long Lines);
 
