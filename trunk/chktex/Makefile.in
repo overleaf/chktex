@@ -164,7 +164,7 @@ dist: configure Test.out $(DOCFILES_GEN)
 
 OBJS= ChkTeX.o FindErrs.o OpSys.o Resource.o Utility.o
 
-MAKETEST= ./chktex -mall -r -g0 -lchktexrc Test.tex 
+MAKETEST= ./chktex -mall -r -g0 -lchktexrc -v5 Test.tex 
 
 Test.out: chktex Test.tex ChkTeX.tex
 	-rm -f Test.out
