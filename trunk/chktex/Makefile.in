@@ -63,7 +63,7 @@ VPATH=$(srcdir)
 #####################################################################
 
 EXTRA_DIST=configure.in Makefile.in stamp-h.in config.h.in Readme.header.in \
-	MakeHTML.in ChkTeX.tex.in aclocal.m4 \
+	MakeHTML.in ChkTeX.tex.in aclocal.m4 NEWS \
 	chktex.el chkweb deweb.in ChkTeX.tex COPYING chktex.1 chkweb.1 deweb.1 \
 	Test.tex input.tex Test.out configure install-sh lacheck chktexrc \
 	$(wildcard m4/*.m4)
