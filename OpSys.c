@@ -121,15 +121,15 @@ static char *InitAnchorPath(char *String);
  * This is the name of the global resource file.
  */
 
-#ifndef DATADIR
+#ifndef SYSCONFDIR
 #  ifdef AMIGA
-#    define DATADIR  "S:"
+#    define SYSCONFDIR  "S:"
 #  elif defined(__unix__)
-#    define DATADIR "/usr/local/lib/"
+#    define SYSCONFDIR "/usr/local/lib/"
 #  elif defined(__MSDOS__)
-#    define DATADIR "\\emtex\\data\\"
+#    define SYSCONFDIR "\\emtex\\data\\"
 #  else
-#    define DATADIR
+#    define SYSCONFDIR
 #  endif
 #endif
 #define RCBASENAME              "chktexrc"
@@ -257,11 +257,9 @@ int SetupVars(void)
             break;
         case liSysDir:         /* System dir for resource files */
 #if defined(__unix__) || defined(__MSDOS__)
-
-            strcpy(ConfigFile, DATADIR);
+            strcpy(ConfigFile, SYSCONFDIR);
             tackon(ConfigFile, RCBASENAME);
 #else
-
             *ConfigFile = 0;
 #endif
 
