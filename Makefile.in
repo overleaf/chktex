@@ -56,7 +56,7 @@ SHELL=/bin/sh
 
 SCRIPTS=@SCRIPTS@
 
-USRDEFS=-DSYSCONFDIR=\"$(sysconfdir)\"
+USRDEFS=-DSYSCONFDIR=\"$(sysconfdir)\" -D__unix__
 
 #####################################################################
 
