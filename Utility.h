@@ -1,5 +1,5 @@
 /*
- *  ChkTeX v1.5, utility functions -- header file.
+ *  ChkTeX, utility functions -- header file.
  *  Copyright (C) 1995-96 Jens T. Berger Thielemann
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -110,12 +110,9 @@ int     strinfront      __PROTO((STRPTR Str, STRPTR Cmp));
 STRPTR  strdupx         __PROTO((const STRPTR String, int Extra));
 void    strmove         __PROTO((char *a, const char *b));
 
-inline void
-        ClearHash       __PROTO((struct Hash *h));
-inline void
-        InsertHash      __PROTO((const STRPTR a, struct Hash *h));
-inline STRPTR
-        HasHash         __PROTO((const STRPTR a, const struct Hash *h));
+void    ClearHash       __PROTO((struct Hash *h));
+void    InsertHash      __PROTO((const STRPTR a, struct Hash *h));
+STRPTR  HasHash         __PROTO((const STRPTR a, const struct Hash *h));
 
 BOOL    InsertWord      __PROTO((const STRPTR Word, struct WordList *WL));
 STRPTR  HasWord         __PROTO((const STRPTR Word, struct WordList *WL));
@@ -125,10 +122,8 @@ void    ListRep         __PROTO((struct WordList *wl, const TEXT From,
 void    ClearWord       __PROTO((struct WordList *WL));
 
 BOOL    StkPush         __PROTO((const APTR Data, struct Stack *Stack));
-inline APTR
-        StkPop          __PROTO((struct Stack *Stack));
-inline APTR
-        StkTop          __PROTO((struct Stack *Stack));
+APTR    StkPop          __PROTO((struct Stack *Stack));
+APTR    StkTop          __PROTO((struct Stack *Stack));
 
 FILE *  CurStkFile      __PROTO((struct Stack *stack));
 STRPTR  CurStkName      __PROTO((struct Stack *stack));

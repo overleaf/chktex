@@ -1,5 +1,5 @@
 dnl
-dnl ChkTeX v1.5, configuration file.
+dnl ChkTeX, configuration file.
 dnl Copyright (C) 1995-96 Jens T. Berger Thielemann
 dnl
 dnl This program is free software; you can redistribute it and/or modify
@@ -122,8 +122,12 @@ case $enable_emacs_hack in
      ;;
 esac
 
-dnl Checks for programs.
+dnl Check compiler and flags
 AC_PROG_CC
+AC_PROG_CC_STRICT_PROTOTYPES
+VL_PROG_CC_WARNINGS(ansi)
+
+dnl Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PATH_PROGS(PERL5, perl5 perl, no, $PATH:/usr/bin:/usr/local/bin)
@@ -151,7 +155,11 @@ fi
 
 AC_CHECK_PROGS(GROFF, 'groff -man -P-bu -Tlatin1' 'nroff -man', 'nroff -man')
 
-AC_PATH_PROG(LATEX, latex)
+AC_PATH_PROG(LATEX, latex, no)
+dnl if test "$LATEX" = no; then
+dnl	AC_MSG_ERROR([No LaTeX on the system, cannot find latex program.])
+dnl fi
+
 AC_PATH_PROG(DVIPS, dvips)
 
 AC_PATH_PROG(LYNX, lynx)

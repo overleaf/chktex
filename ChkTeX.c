@@ -1,5 +1,5 @@
 /*
- *  ChkTeX v1.5, finds typographic errors in (La)TeX files.
+ *  ChkTeX, finds typographic errors in (La)TeX files.
  *  Copyright (C) 1995-96 Jens T. Berger Thielemann
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -74,7 +74,7 @@ NEWBUF(ReadBuffer,      BUFSIZ);
 
 static const STRPTR
         Banner  =
-"ChkTeX v1.5 - Copyright 1995-96 Jens T. Berger Thielemann.\n"
+"ChkTeX v1.6.1 - Copyright 1995-96 Jens T. Berger Thielemann.\n"
 #ifdef __OS2__
 "OS/2 port generated with emx compiler, by Wolfgang Fritsch, <fritsch@hmi.de>"
 #elif defined(__MSDOS__)
@@ -119,7 +119,7 @@ HowHelp =
 HelpText  =
 "\n"
 "\n"
-"                         Usage of ChkTeX v1.5\n"
+"                         Usage of ChkTeX v1.6.1\n"
 "                         ~~~~~~~~~~~~~~~~~~~~\n"
 "\n"
 "                               Template\n"
