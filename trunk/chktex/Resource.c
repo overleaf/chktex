@@ -92,10 +92,10 @@ TOKENBITS(Token)
 
 
 static enum Token Expect;
-static ULONG RsrcLine;
+static unsigned long RsrcLine;
 
 static enum Token ReadWord(STRPTR, FILE *);
-static TEXT MapChars(STRPTR *String);
+static char MapChars(STRPTR *String);
 
 
 
@@ -112,13 +112,13 @@ static TEXT MapChars(STRPTR *String);
  * Returns whether the attempt was a successful one.
  */
 
-BOOL ReadRC(const STRPTR Filename)
+int ReadRC(const STRPTR Filename)
 {
     STRPTR      String = NULL;
-    BOOL        Success = FALSE;
+    int        Success = FALSE;
     FILE        *fh;
     enum Token  Token;
-    ULONG       Counter;
+    unsigned long       Counter;
 
     struct KeyWord *CurWord = NULL;
 
@@ -279,13 +279,13 @@ static enum Token ReadWord(STRPTR Buffer, FILE *fh)
     static
         STRPTR  String = NULL;
     static
-        TEXT    StatBuf[BUFSIZ];
+        char    StatBuf[BUFSIZ];
     enum Token Retval = FLG_Eof;
 
-    UWORD       Chr;
+    unsigned short       Chr;
 
     STRPTR      Ptr;
-    BOOL        OnceMore = TRUE, Cont = TRUE;
+    int        OnceMore = TRUE, Cont = TRUE;
 
     if(Buffer)
     {
@@ -422,10 +422,10 @@ static enum Token ReadWord(STRPTR Buffer, FILE *fh)
 
 #define MAP(a,b)        case a: Tmp = b; break;
 
-static TEXT MapChars(STRPTR *String)
+static char MapChars(STRPTR *String)
 {
     int    Chr, Tmp = 0;
-    UWORD  Cnt;
+    unsigned short  Cnt;
 
     Chr = *((STRPTR) (*String)++);
 

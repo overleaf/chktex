@@ -174,7 +174,7 @@
 #define NUMBRACKETS          6
 
 #define NEWBUF(name,len) \
-static TEXT _ ## name [len  + (WALLBYTES<<1)] = {0};  \
+static char _ ## name [len  + (WALLBYTES<<1)] = {0};  \
 const STRPTR name = &_ ## name[WALLBYTES]
 
 #define INTFAULTMSG "INTERNAL FAULT OCCURED! PLEASE SUBMIT A BUG REPORT!\n"
@@ -284,7 +284,7 @@ extern struct ErrMsg  PrgMsgs [pmMaxFault + 1];
 
 struct ErrInfo {
     STRPTR Data, LineBuf, File;
-    ULONG  Line, Column, ErrLen;
+    unsigned long  Line, Column, ErrLen;
     enum
     {
         efNone        = 0x00,
@@ -299,40 +299,40 @@ extern const STRPTR
     TmpBuffer;
 
 extern const
-    TEXT BrOrder[NUMBRACKETS + 1];
+    char BrOrder[NUMBRACKETS + 1];
 
 extern
-    ULONG Brackets  [NUMBRACKETS];
+    unsigned long Brackets  [NUMBRACKETS];
 
 
 extern FILE *OutputFile, *InputFile;
 
 #define OPTION_DEFAULTS \
-  DEF(BOOL, GlobalRC,    TRUE) \
-  DEF(BOOL, WipeVerb,    TRUE) \
-  DEF(BOOL, BackupOut,   TRUE) \
-  DEF(BOOL, Quiet,       FALSE) \
-  DEF(BOOL, LicenseOnly, FALSE) \
-  DEF(BOOL, UsingStdIn,  FALSE) \
-  DEF(BOOL, InputFiles,  TRUE) \
-  DEF(BOOL, HeadErrOut,  TRUE) \
+  DEF(int, GlobalRC,    TRUE) \
+  DEF(int, WipeVerb,    TRUE) \
+  DEF(int, BackupOut,   TRUE) \
+  DEF(int, Quiet,       FALSE) \
+  DEF(int, LicenseOnly, FALSE) \
+  DEF(int, UsingStdIn,  FALSE) \
+  DEF(int, InputFiles,  TRUE) \
+  DEF(int, HeadErrOut,  TRUE) \
   DEF(STRPTR, OutputName, "") \
   DEF(STRPTR, PseudoInName, NULL) \
   DEF(STRPTR, OutputFormat, VerbNormal) \
   DEF(STRPTR, PipeOutputFormat, NULL) \
   DEF(STRPTR, Delimit, ":") \
-  DEF(LONG,  DebugLevel, 0)
+  DEF(long,  DebugLevel, 0)
 
 #define STATE_VARS \
   DEF(enum ItState, ItState, itOff) /* Are we doing italics? */ \
-  DEF(BOOL, AtLetter, FALSE) /* Whether `@' is a letter or not. */ \
-  DEF(BOOL, InHeader, TRUE)  /* Whether we're in the header */ \
-  DEF(BOOL, VerbMode, FALSE) /* Whether we're in complete ignore-mode */ \
-  DEF(LONG, MathMode, 0)     /* Whether we're in math mode or not */ \
+  DEF(int, AtLetter, FALSE) /* Whether `@' is a letter or not. */ \
+  DEF(int, InHeader, TRUE)  /* Whether we're in the header */ \
+  DEF(int, VerbMode, FALSE) /* Whether we're in complete ignore-mode */ \
+  DEF(long, MathMode, 0)     /* Whether we're in math mode or not */ \
   DEF(STRPTR, VerbStr, "")   /* String we'll terminate verbmode upon */ \
-  DEF(ULONG, ErrPrint, 0)    /* # errors printed */ \
-  DEF(ULONG, WarnPrint, 0)   /* # warnings printed */ \
-  DEF(ULONG, UserSupp, 0)    /* # user suppressed warnings */
+  DEF(unsigned long, ErrPrint, 0)    /* # errors printed */ \
+  DEF(unsigned long, WarnPrint, 0)   /* # warnings printed */ \
+  DEF(unsigned long, UserSupp, 0)    /* # user suppressed warnings */
 
 #define DEF(type, name, value) extern type name;
 OPTION_DEFAULTS
@@ -350,13 +350,13 @@ enum Quote {
 };
 
 extern enum Quote Quote;
-extern BOOL StdInTTY, StdOutTTY, UsingStdIn;
+extern int StdInTTY, StdOutTTY, UsingStdIn;
 
 int     main(int argc, char **argv);
 void    PrintPrgErr(enum PrgErrNum , ...);
 void    ErrPrintf(const char *fmt, ...);
 
-extern TEXT LTX_EosPunc[], LTX_GenPunc[], LTX_SmallPunc[];
+extern char LTX_EosPunc[], LTX_GenPunc[], LTX_SmallPunc[];
 extern STRPTR PrgName;
 
 #endif /* CHKTEX_H */

@@ -32,10 +32,10 @@
 #include "OpSys.h"
 
 #ifdef ASM_HASHWORD
-extern UWORD HashWord(STRPTR a);
-typedef UWORD HASH_TYPE;
+extern unsigned short HashWord(STRPTR a);
+typedef unsigned short HASH_TYPE;
 #else
-typedef ULONG HASH_TYPE;
+typedef unsigned long HASH_TYPE;
 #endif
 
 /***************************** SUPPORT FUNCTIONS ************************/
@@ -49,10 +49,10 @@ typedef ULONG HASH_TYPE;
  */
 
 
-WORD substring(const STRPTR source, STRPTR dest, ULONG pos, LONG len)
+short substring(const STRPTR source, STRPTR dest, unsigned long pos, long len)
 {
     STRPTR      Start;
-    WORD        Retval = -1;
+    short        Retval = -1;
 
     if(len >= 0)
     {
@@ -82,9 +82,9 @@ WORD substring(const STRPTR source, STRPTR dest, ULONG pos, LONG len)
  */
 
 
-BOOL fexists(const STRPTR Filename)
+int fexists(const STRPTR Filename)
 {
-    BOOL        Retval;
+    int        Retval;
 
 #if defined(F_OK) && defined(R_OK) && defined(HAVE_ACCESS)
     Retval = access(Filename, F_OK|R_OK) == 0;
@@ -113,7 +113,7 @@ BOOL fexists(const STRPTR Filename)
  * Returns `to' if some memset()'ing was done, NULL if not.
  */
 
-APTR sfmemset(APTR to, int c, LONG n)
+void *sfmemset(void *to, int c, long n)
 {
     if(to && (n > 0))
     {
@@ -131,8 +131,8 @@ APTR sfmemset(APTR to, int c, LONG n)
  */
 
 void strrep(STRPTR String,      /* String to replace within.    */
-            const TEXT From,   /* Character to search for.     */
-            const TEXT To)     /* Character to put instead.    */
+            const char From,   /* Character to search for.     */
+            const char To)     /* Character to put instead.    */
 {
     register int c;
     while((c = *String++))
@@ -148,7 +148,7 @@ void strrep(STRPTR String,      /* String to replace within.    */
 
 void strxrep(STRPTR Buf,
 	     const STRPTR Prot,
-	     const TEXT To)
+	     const char To)
 {
     int c;
 
@@ -177,7 +177,7 @@ STRPTR strip(STRPTR str,                /* String to strip */
     /* STRP_BTH - Strips on both sides   */
 {
     STRPTR bufptr = str, nlptr;
-    TEXT c;
+    char c;
 
     if(bufptr && (c = *bufptr))
     {
@@ -223,7 +223,7 @@ STRPTR strip(STRPTR str,                /* String to strip */
 STRPTR strlwr(STRPTR String)
 {
     STRPTR      Bufptr;
-    TEXT        TmpC;
+    char        TmpC;
 
     for(Bufptr = String;
         (TmpC = *Bufptr);
@@ -301,11 +301,11 @@ int strcasecmp(const char* a, const char *b)
 
 void *saferealloc(void *b, size_t n)
 {
-  APTR  Retval = NULL;
+  void *Retval = NULL;
 
-  if(b)
+  if (b)
   {
-       if(n)
+       if (n)
           Retval = realloc(b, n);
        else
           free(b);
@@ -321,10 +321,10 @@ void *saferealloc(void *b, size_t n)
  * Does nothing if passed empty/NULL string.
  */
 
-void strwrite (STRPTR To, const STRPTR From, ULONG Len)
+void strwrite (STRPTR To, const STRPTR From, unsigned long Len)
 {
-  ULONG i, j;
-  ULONG FromLen = strlen(From);
+  unsigned long i, j;
+  unsigned long FromLen = strlen(From);
 
   Len = min(Len, BUFSIZ);
 
@@ -388,16 +388,16 @@ int strinfront(STRPTR Str, STRPTR Cmp)
 
 /*
  * Hashes a string. The string ought be rather short. We use an asm
- * version the Amiga; note that this returns an UWORD instead.
+ * version the Amiga; note that this returns an unsigned short instead.
  *
  * The algorithm was designed by Peter Weinberger. This version was
  * adapted from Dr Dobb's Journal April 1996 page 26.
  */
 
 #ifndef ASM_HASHWORD
-inline static ULONG HashWord(STRPTR str)
+static unsigned long HashWord(STRPTR str)
 {
-    register ULONG h = 0, hbit, c;
+    register unsigned long h = 0, hbit, c;
 
     while((c = *str++))
     {
@@ -416,7 +416,7 @@ inline static ULONG HashWord(STRPTR str)
  * duplicate the string yourself.
  */
 
-inline void InsertHash(const STRPTR a, struct Hash *h)
+void InsertHash(const STRPTR a, struct Hash *h)
 {
     struct HashEntry **he, *newhe;
 
@@ -443,7 +443,7 @@ inline void InsertHash(const STRPTR a, struct Hash *h)
  * hash index.
  */
 
-inline STRPTR HasHash(const STRPTR a, const struct Hash *h)
+STRPTR HasHash(const STRPTR a, const struct Hash *h)
 {
      struct HashEntry *he;
      HASH_TYPE i; /* Special magic to optimize SAS/C */
@@ -486,7 +486,7 @@ void ClearHash(struct Hash *h)
 
 static void ReHash(struct WordList *WL)
 {
-    ULONG i = 0;
+    unsigned long i = 0;
 
     ClearHash(&WL->Hash);
     FORWL(i, *WL)
@@ -500,10 +500,10 @@ static void ReHash(struct WordList *WL)
  * not need to make a duplicate of `Word' yourself.
  */
 
-BOOL InsertWord(const STRPTR Word, struct WordList *WL)
+int InsertWord(const STRPTR Word, struct WordList *WL)
 {
     STRPTR      WrdCpy;
-    ULONG       Len;
+    unsigned long       Len;
 
     if((WrdCpy = strdupx(Word, WALLBYTES)))
     {
@@ -559,7 +559,7 @@ STRPTR HasWord(const STRPTR Word, struct WordList *WL)
 
 void MakeLower(struct WordList *wl)
 {
-    ULONG i;
+    unsigned long i;
     FORWL(i, *wl)
 	strlwr(wl->Stack.Data[i]);
     ReHash(wl);
@@ -569,9 +569,9 @@ void MakeLower(struct WordList *wl)
  * Calls strrep on each argument in a list.
  */
 
-void ListRep(struct WordList *wl, const TEXT From, const TEXT To)
+void ListRep(struct WordList *wl, const char From, const char To)
 {
-    ULONG i;
+    unsigned long i;
     FORWL(i, *wl)
 	strrep(wl->Stack.Data[i], From, To);
     ReHash(wl);
@@ -586,10 +586,10 @@ void ListRep(struct WordList *wl, const TEXT From, const TEXT To)
  * Note: You can not push a NULL Data element.
  */
 
-BOOL StkPush(const APTR Data, struct Stack *Stack)
+int StkPush(void *Data, struct Stack *Stack)
 {
-    ULONG       NewSize;
-    APTR        *NewBuf;
+    unsigned long  NewSize;
+    void **NewBuf;
 
     if(Data && Stack)
     {
@@ -598,7 +598,7 @@ BOOL StkPush(const APTR Data, struct Stack *Stack)
             NewSize = Stack->Size + MINPUDDLE;
 
             if((NewBuf = saferealloc(Stack->Data,
-                (size_t) NewSize * sizeof(APTR))))
+                (size_t) NewSize * sizeof(void *))))
             {
                 Stack->Size = NewSize;
                 Stack->Data = NewBuf;
@@ -619,9 +619,9 @@ BOOL StkPush(const APTR Data, struct Stack *Stack)
  *
  */
 
-inline APTR StkPop(struct Stack *Stack)
+void *StkPop(struct Stack *Stack)
 {
-    APTR    Retval = NULL;
+    void *Retval = NULL;
 
     if(Stack && (Stack->Used > 0))
     {
@@ -629,16 +629,16 @@ inline APTR StkPop(struct Stack *Stack)
 
 #ifdef NO_DIRTY_TRICKS
         {
-            APTR        *NewBuf;
+            void **NewBuf;
 
             if(Stack->Used < (Stack->Size/2))
             {
-                ULONG   NewSize;
+                unsigned long   NewSize;
                 NewSize = Stack->Size - MINPUDDLE;
                 NewSize = max(NewSize, MINPUDDLE);
 
                 if(NewBuf = saferealloc(Stack->Data,
-                   (size_t) NewSize * sizeof(APTR)))
+                   (size_t) NewSize * sizeof(void *)))
                 {
                     Stack->Size = NewSize;
                     Stack->Data = NewBuf;
@@ -654,7 +654,7 @@ inline APTR StkPop(struct Stack *Stack)
  * Returns the topmost element of the stack.
  */
 
-inline APTR StkTop(struct Stack *Stack)
+void *StkTop(struct Stack *Stack)
 {
     if(Stack && (Stack->Used > 0))
         return(Stack->Data[Stack->Used - 1]);
@@ -664,11 +664,11 @@ inline APTR StkTop(struct Stack *Stack)
 
 /****************************** INPUT STACK *****************************/
 
-BOOL PushFileName(const STRPTR Name, struct Stack *stack)
+int PushFileName(const STRPTR Name, struct Stack *stack)
 {
     FILE        *fh = NULL;
     static 
-        TEXT NameBuf [BUFSIZ];
+        char NameBuf [BUFSIZ];
 
     if(Name && stack)
     {
@@ -685,7 +685,7 @@ BOOL PushFileName(const STRPTR Name, struct Stack *stack)
 }
 
 
-BOOL PushFile(STRPTR Name, FILE *fh, struct Stack *stack)
+int PushFile(STRPTR Name, FILE *fh, struct Stack *stack)
 {
     struct FileNode     *fn;
 
@@ -709,7 +709,7 @@ BOOL PushFile(STRPTR Name, FILE *fh, struct Stack *stack)
     return(FALSE);
 }
 
-STRPTR FGetsStk(STRPTR Dest, ULONG len, struct Stack *stack)
+STRPTR FGetsStk(STRPTR Dest, unsigned long len, struct Stack *stack)
 {
     struct FileNode     *fn;
     STRPTR Retval = NULL;
@@ -762,11 +762,11 @@ FILE *CurStkFile(struct Stack *stack)
         return(NULL);
 }
 
-ULONG CurStkLine(struct Stack *stack)
+unsigned long CurStkLine(struct Stack *stack)
 {
     struct FileNode     *fn;
     static
-        ULONG LastLine = 0L;
+        unsigned long LastLine = 0L;
 
     if((fn = StkTop(stack)))
         return(LastLine = fn->Line);
@@ -782,19 +782,19 @@ ULONG CurStkLine(struct Stack *stack)
  * Pushes the character on the stack.
  */
 
-struct ErrInfo *PushChar(const TEXT c, const ULONG Line,
-              const ULONG Column, struct Stack *Stk,
+struct ErrInfo *PushChar(const char c, const unsigned long Line,
+              const unsigned long Column, struct Stack *Stk,
               const STRPTR LineCpy)
 {
-    TEXT       Buf[2];
+    char       Buf[2];
 
     Buf[0] = c; Buf[1] = 0;
 
     return(PushErr( Buf, Line, Column, 1,  LineCpy, Stk));
 }
 
-struct ErrInfo *PushErr(const STRPTR Data, const ULONG Line,
-             const ULONG Column, const ULONG ErrLen,
+struct ErrInfo *PushErr(const STRPTR Data, const unsigned long Line,
+             const unsigned long Column, const unsigned long ErrLen,
              const STRPTR LineCpy, struct Stack *Stk)
 {
     struct ErrInfo      *ci;
@@ -890,7 +890,7 @@ void FreeErrInfo(struct ErrInfo* ei)
  * BrOrder array. Returns ~0 if the character was not a bracket.
  */
 
-LONG BrackIndex(const TEXT c)
+long BrackIndex(const char c)
 {
     switch(c)
     {
@@ -916,9 +916,9 @@ LONG BrackIndex(const TEXT c)
  * corresponding counter.
  */
 
-void AddBracket(const TEXT c)
+void AddBracket(const char c)
 {
-    LONG        Index;
+    long        Index;
 
     if((Index = BrackIndex(c)) != -1)
         Brackets[Index]++;
@@ -930,10 +930,10 @@ void AddBracket(const TEXT c)
  * wasn't a bracket character.
  */
 
-TEXT MatchBracket(const TEXT c)
+char MatchBracket(const char c)
 {
-    ULONG       Index;
-    TEXT        Char = 0;
+    unsigned long       Index;
+    char        Char = 0;
 
 
     if((Index = BrackIndex(c)) != ~0UL)

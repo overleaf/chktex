@@ -82,7 +82,7 @@ static int my_##func(int c) \
 
 /*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */
 
-static ULONG Line;
+static unsigned long Line;
 
 static STRPTR RealBuf, LineCpy, BufPtr;
 
@@ -172,7 +172,7 @@ static STRPTR GetLTXArg(STRPTR SrcBuf,
 
 {
     STRPTR      Retval, TmpPtr, Dest = OrigDest;
-    ULONG       DeliCnt = 0;
+    unsigned long       DeliCnt = 0;
 
     *Dest = 0;
     TmpPtr = SrcBuf;
@@ -263,10 +263,10 @@ static STRPTR PreProcess(void)
  * Interpret environments
  */
 
-static void PerformEnv(STRPTR Env, BOOL Begin)
+static void PerformEnv(STRPTR Env, int Begin)
 {
 static
-    TEXT   VBStr [BUFSIZ] = "";
+    char   VBStr [BUFSIZ] = "";
 
     if(HasWord(Env, &MathEnvir))
     {
@@ -320,7 +320,7 @@ for(i = 0; (i < wordlist.Stack.Used) && !(Back && Front);  i++) \
 
 static enum DotLevel CheckDots(STRPTR PrePtr, STRPTR PstPtr)
 {
-    ULONG i;
+    unsigned long i;
     int TmpC;
     enum DotLevel Front = dtUnknown, Back = dtUnknown;
 
@@ -373,7 +373,7 @@ static STRPTR Dot2Str(enum DotLevel dl)
 
 static void WipeArgument(STRPTR Cmd, STRPTR CmdPtr)
 {
-    ULONG CmdLen = strlen(Cmd);
+    unsigned long CmdLen = strlen(Cmd);
     STRPTR Format, TmpPtr;
     int c, TmpC;
 
@@ -449,7 +449,7 @@ static void PerformBigCmd(STRPTR CmdPtr)
 {
     STRPTR  TmpPtr,
             ArgEndPtr;
-    ULONG   CmdLen = strlen(CmdBuffer);
+    unsigned long   CmdLen = strlen(CmdBuffer);
     int     TmpC;
     enum ErrNum
             ErrNum;
@@ -492,7 +492,7 @@ static void PerformBigCmd(STRPTR CmdPtr)
             if((*TmpPtr == 'i') || (*TmpPtr == 'j'))
                 PrintError(CurStkName(&InputStack),  RealBuf,
                            CmdPtr - Buf,
-                           (LONG) strlen(CmdBuffer), Line,
+                           (long) strlen(CmdBuffer), Line,
                            emAccent, CmdBuffer,
                            *TmpPtr, MathMode? "math" : "");
         }
@@ -540,7 +540,7 @@ static void PerformBigCmd(STRPTR CmdPtr)
                     if(strcmp(ei->Data, ArgBuffer))
                         PrintError(CurStkName(&InputStack), RealBuf,
                                    CmdPtr - Buf,
-                                   (LONG) strlen(CmdBuffer),
+                                   (long) strlen(CmdBuffer),
                                    Line, emExpectC, ei->Data, ArgBuffer);
 
                     FreeErrInfo(ei);
@@ -548,11 +548,11 @@ static void PerformBigCmd(STRPTR CmdPtr)
                 else
                     PrintError(CurStkName(&InputStack), RealBuf,
                                CmdPtr - Buf,
-                               (LONG) strlen(CmdBuffer),
+                               (long) strlen(CmdBuffer),
                                Line, emSoloC, ArgBuffer);
             }
 
-            PerformEnv(ArgBuffer, (BOOL) CmdBuffer[1] == 'b');
+            PerformEnv(ArgBuffer, (int) CmdBuffer[1] == 'b');
         } else
             PSERR(CmdPtr - Buf, CmdLen, emNoArgFound);
     }
@@ -595,7 +595,7 @@ static void PerformBigCmd(STRPTR CmdPtr)
 
 static void CheckAbbrevs(const STRPTR Buffer)
 {
-    LONG i;
+    long i;
     STRPTR TmpPtr, AbbPtr;
 
     if(INUSE(emInterWord))
@@ -625,8 +625,8 @@ static void CheckAbbrevs(const STRPTR Buffer)
 
 static void CheckRest(void)
 {
-    ULONG Count;
-    LONG CmdLen;
+    unsigned long Count;
+    long CmdLen;
     STRPTR  UsrPtr;
 
     /* Search for user-specified warnings */
@@ -670,10 +670,10 @@ static void CheckDash(void)
 {
     STRPTR TmpPtr;
     int TmpC;
-    LONG TmpCount, Len;
+    long TmpCount, Len;
     struct WordList *wl = NULL;
-    ULONG  i;
-    BOOL Errored;
+    unsigned long  i;
+    int Errored;
     STRPTR PrePtr = &BufPtr[-2];
 
     TmpPtr = BufPtr;
@@ -719,10 +719,10 @@ static void CheckDash(void)
 
 static void HandleBracket(int Char)
 {
-    ULONG BrOffset;  /* Offset into BrOrder array */
+    unsigned long BrOffset;  /* Offset into BrOrder array */
     struct ErrInfo *ei;
     int    TmpC, Match;
-    TEXT   ABuf[2], BBuf[2];
+    char   ABuf[2], BBuf[2];
     STRPTR TmpPtr;
 
     AddBracket(Char);
@@ -802,7 +802,7 @@ static void HandleBracket(int Char)
  * is supplied for error printing.
  */
 
-BOOL FindErr(const STRPTR _RealBuf, const ULONG _Line)
+int FindErr(const STRPTR _RealBuf, const unsigned long _Line)
 {
   STRPTR
     CmdPtr,   /* We'll have to copy each command out. */
@@ -815,8 +815,8 @@ BOOL FindErr(const STRPTR _RealBuf, const ULONG _Line)
     TmpC,     /* Just a temp var used throughout the proc.*/
     MatchC,
     Char;     /* Char. currently processed */
-  ULONG CmdLen;   /* Length of misc. things */
-  BOOL MixingQuotes;
+  unsigned long CmdLen;   /* Length of misc. things */
+  int MixingQuotes;
 
   int (*pstcb)(int c);
 
@@ -1183,7 +1183,7 @@ BOOL FindErr(const STRPTR _RealBuf, const ULONG _Line)
  * suffix should be put, e.g. "warning%s". Watch your %'s!
  */
 
-static void Transit(FILE *fh, ULONG Cnt, STRPTR Str)
+static void Transit(FILE *fh, unsigned long Cnt, STRPTR Str)
 {
     switch(Cnt)
     {
@@ -1207,9 +1207,9 @@ static void Transit(FILE *fh, ULONG Cnt, STRPTR Str)
  * bracket stack status, math mode, etc.
  */
 
-void PrintStatus(ULONG Lines)
+void PrintStatus(unsigned long Lines)
 {
-  ULONG Cnt;
+  unsigned long Cnt;
   struct ErrInfo *ei;
 
 
@@ -1276,11 +1276,11 @@ void PrintStatus(ULONG Lines)
 
 
 void  PrintError(const  STRPTR  File,   const  STRPTR String,
-                 const LONG Position,   const LONG Len,
-                 const LONG LineNo, const enum ErrNum Error, ...)
+                 const long Position,   const long Len,
+                 const long LineNo, const enum ErrNum Error, ...)
 {
     static      /* Just to reduce stack usage... */
-        TEXT   PrintBuffer[BUFSIZ];
+        char   PrintBuffer[BUFSIZ];
     va_list     MsgArgs;
 
     STRPTR      LastNorm = OutputFormat, of;
@@ -1375,7 +1375,7 @@ void  PrintError(const  STRPTR  File,   const  STRPTR String,
                         fprintf(OutputFile, "%d", Error);
                         break;
                     case 'u':
-                        sfmemset(PrintBuffer, ' ', (LONG) Position);
+                        sfmemset(PrintBuffer, ' ', (long) Position);
 
                         sfmemset(&PrintBuffer[Position], '^', Len);
                         PrintBuffer[Position + Len] = 0;

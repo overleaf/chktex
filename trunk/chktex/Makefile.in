@@ -62,13 +62,13 @@ INSTALLFILES= configure.in Makefile.in config.h.in chktexrc MakeHTML.in
 
 WEBFILES= chkweb deweb.in
 
-DOCFILES= ChkTeX.tex COPYING WB2Argv.readme \
+DOCFILES= ChkTeX.tex COPYING \
 	chktex.1 chkweb.1 deweb.1
 
 DOCFILES_GEN = chktex.doc chkweb.doc deweb.doc ChkTeX.readme ChkTeX.html
 
 SOURCEFILES= ChkTeX.c ChkTeX.h FindErrs.c FindErrs.h OpSys.c OpSys.h \
-Resource.c Resource.h Utility.c Utility.h WB2Argv.c WB2Argv.h \
+Resource.c Resource.h Utility.c Utility.h \
 HashWord.a chktex.el
 
 PORTFILES= config.msd ChkTeX.dsk ChkTeX.prj SCOPTIONS SMakefile config.AMIGA
@@ -276,7 +276,7 @@ ChkTeX.pdf: ChkTeX.ps
 ChkTeX: ChkTeX.c
 	@echo
 
-ChkTeX.o: ChkTeX.c WB2Argv.h ChkTeX.h types.h \
+ChkTeX.o: ChkTeX.c ChkTeX.h types.h \
 Utility.h OpSys.h FindErrs.h Resource.h config.h
 
 FindErrs.o: FindErrs.c ChkTeX.h types.h FindErrs.h \
@@ -291,8 +291,6 @@ Utility.o: Utility.c ChkTeX.h types.h Utility.h OpSys.h Resource.h \
 config.h
 
 RegExps.o: RegExps.c RegExps.h config.h
-
-WB2Argv.o: WB2Argv.c WB2Argv.h
 
 cover:
 	chktex -h

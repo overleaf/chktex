@@ -43,7 +43,7 @@
 #define MINPUDDLE       256
 
 /*
- * How many bytes we want in front/end of each TEXT buffer. > 2
+ * How many bytes we want in front/end of each char buffer. > 2
  */
 #define WALLBYTES       4
 
@@ -70,13 +70,13 @@ struct Hash {
 };
 
 struct Stack {
-  APTR  *Data;
-  ULONG Size, Used;
+  void **Data;
+  unsigned long Size, Used;
 };
 
 struct WordList {
-    ULONG         MaxLen;
-    BOOL          NonEmpty;
+    unsigned long         MaxLen;
+    int          NonEmpty;
     struct Stack  Stack;
     struct Hash   Hash;
 };
@@ -85,7 +85,7 @@ struct WordList {
 struct FileNode {
   STRPTR        Name;
   FILE  *fh;
-  ULONG Line;
+  unsigned long Line;
 };
 
 /* Rotates x n bits left (should be an int, long, etc.) */
@@ -94,16 +94,16 @@ struct FileNode {
 /* Rotates x n bits right (should be an int, long, etc.) */
 #define ROTATER(x,n) ((x>>n) | (x<<((CHAR_BIT*sizeof(x)) - n)))
 
-BOOL    fexists(const STRPTR Filename);
+int    fexists(const STRPTR Filename);
 
-APTR    sfmemset(APTR to, int c, LONG n);
+void *  sfmemset(void *to, int c, long n);
 void *  saferealloc(void *old, size_t newsize);
 
 int     strafter(const STRPTR Str, const STRPTR Cmp);
-void    strrep(STRPTR String, const TEXT From, const TEXT To);
-void    strxrep(STRPTR Buf, const STRPTR Prot, const TEXT To);
+void    strrep(STRPTR String, const char From, const char To);
+void    strxrep(STRPTR Buf, const STRPTR Prot, const char To);
 STRPTR  strip(STRPTR String, const enum Strip What);
-void    strwrite(STRPTR To, const STRPTR From, ULONG Len);
+void    strwrite(STRPTR To, const STRPTR From, unsigned long Len);
 int     strinfront(STRPTR Str, STRPTR Cmp);
 STRPTR  strdupx(const STRPTR String, int Extra);
 void    strmove(char *a, const char *b);
@@ -112,42 +112,42 @@ void    ClearHash(struct Hash *h);
 void    InsertHash(const STRPTR a, struct Hash *h);
 STRPTR  HasHash(const STRPTR a, const struct Hash *h);
 
-BOOL    InsertWord(const STRPTR Word, struct WordList *WL);
+int    InsertWord(const STRPTR Word, struct WordList *WL);
 STRPTR  HasWord(const STRPTR Word, struct WordList *WL);
 void    MakeLower(struct WordList *wl);
-void    ListRep(struct WordList *wl, const TEXT From, const TEXT To);
+void    ListRep(struct WordList *wl, const char From, const char To);
 void    ClearWord(struct WordList *WL);
 
-BOOL    StkPush(const APTR Data, struct Stack *Stack);
-APTR    StkPop(struct Stack *Stack);
-APTR    StkTop(struct Stack *Stack);
+int    StkPush(void *Data, struct Stack *Stack);
+void   *StkPop(struct Stack *Stack);
+void   *StkTop(struct Stack *Stack);
 
 FILE *  CurStkFile(struct Stack *stack);
 STRPTR  CurStkName(struct Stack *stack);
-ULONG   CurStkLine(struct Stack *stack);
-STRPTR  FGetsStk(STRPTR Dest, ULONG len, struct Stack *stack);
-BOOL    PushFileName(const STRPTR Name, struct Stack *stack);
-BOOL    PushFile(STRPTR, FILE *, struct Stack *);
+unsigned long   CurStkLine(struct Stack *stack);
+STRPTR  FGetsStk(STRPTR Dest, unsigned long len, struct Stack *stack);
+int    PushFileName(const STRPTR Name, struct Stack *stack);
+int    PushFile(STRPTR, FILE *, struct Stack *);
 
 
 void    FreeErrInfo(struct ErrInfo* ei);
-struct ErrInfo *PushChar(const TEXT c, const ULONG Line,
-				 const ULONG Column, struct Stack *Stk,
+struct ErrInfo *PushChar(const char c, const unsigned long Line,
+				 const unsigned long Column, struct Stack *Stk,
 				 const STRPTR LineCpy);
-struct ErrInfo *PushErr(const STRPTR Data, const ULONG Line, const ULONG Column,
-		const ULONG ErrLen, const STRPTR LineCpy, struct Stack *Stk);
+struct ErrInfo *PushErr(const STRPTR Data, const unsigned long Line, const unsigned long Column,
+		const unsigned long ErrLen, const STRPTR LineCpy, struct Stack *Stk);
 struct ErrInfo *TopChar(struct Stack *Stack);
 struct ErrInfo *TopErr(struct Stack *Stack);
 struct ErrInfo *PopErr(struct Stack *Stack);
 struct ErrInfo *TopMatch(struct Stack *Stack, STRPTR String);
 
-LONG    BrackIndex(TEXT const c);
-void    AddBracket(TEXT const c);
-TEXT   MatchBracket(TEXT const);
+long    BrackIndex(char const c);
+void    AddBracket(char const c);
+char   MatchBracket(char const);
 
 
 
-WORD    substring(const STRPTR source, STRPTR dest, ULONG pos, LONG len);
+short    substring(const STRPTR source, STRPTR dest, unsigned long pos, long len);
 
 #ifndef  HAVE_STRLWR
 #  define  strlwr  mystrlwr
