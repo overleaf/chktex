@@ -199,9 +199,9 @@ enum Quote Quote;
 char VerbNormal[] = "%k %n in %f line %l: %m\n" "%r%s%t\n" "%u\n";
 
 #define DEF(type, name, value)  type name = value;
-OPTION_DEFAULTS STATE_VARS
+OPTION_DEFAULTS STATE_VARS;
 #undef DEF
-  FILE * OutputFile = NULL;
+FILE *OutputFile = NULL;
 
 char *PrgName;
 
