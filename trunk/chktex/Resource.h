@@ -28,9 +28,8 @@
 
 #ifndef RESOURCE_H
 #define RESOURCE_H
-#ifndef CHKTEX_H
-# include "ChkTeX.h"
-#endif /* CHKTEX_H */
+
+#include "ChkTeX.h"
 
 #define QUOTE   '\"'            /* Char used to quote text containing blanks    */
 #define ESCAPE  '!'             /* Char used to access special characters       */
