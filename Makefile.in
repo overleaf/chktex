@@ -39,7 +39,7 @@ ELISPDIR=@ELISPDIR@
 
 CC=@CC@
 CFLAGS=@CFLAGS@
-CPPFLAGS=@CPPFLAGS@
+CPPFLAGS=@CPPFLAGS@ -I$(srcdir) -I. $(DEFS) $(USRDEFS)
 DEFS=@DEFS@
 LIBS=@LIBS@
 LDFLAGS=@LDFLAGS@
@@ -68,8 +68,11 @@ DOCFILES= ChkTeX.tex COPYING \
 
 DOCFILES_GEN = chktex.doc chkweb.doc deweb.doc ChkTeX.readme ChkTeX.html
 
-SOURCEFILES= ChkTeX.c ChkTeX.h FindErrs.c FindErrs.h OpSys.c OpSys.h \
-	Resource.c Resource.h Utility.c Utility.h
+CSOURCES=ChkTeX.c FindErrs.c OpSys.c Resource.c Utility.c
+
+# The sources are the C sources and possibly the files with the same base name
+# but ending with .h
+SOURCEFILES=$(CSOURCES) $(wildcard $(CSOURCES:.c=.h))
 
 PORTFILES= config.msd ChkTeX.dsk ChkTeX.prj SCOPTIONS SMakefile config.AMIGA
 
@@ -156,9 +159,18 @@ dist: configure Test.out $(DOCFILES_GEN)
 
 ########################################################################
 
-
 .c.o:
-	$(CC) $(CFLAGS) -I$(srcdir) -I. $(DEFS) $(USRDEFS) -c $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+CLEAN+=$(CSOURCES:.c=.o)
+
+.%.d: %.c
+	$(CC) -M $(CPPFLAGS) $< > $@.tmp
+	sed 's,\($*\)\.o *:,\1.o $@ : Makefile,g' $@.tmp > $@
+	-rm -f $@.tmp 2>/dev/null
+
+DEPFILES=$(patsubst %.c,.%.d,$(CSOURCES))
+include $(DEPFILES)
+CLEAN+=$(DEPFILES)
 
 ###################### MAIN DEPENDENCIES ################################
 
@@ -222,7 +234,7 @@ indent:
 mostlyclean: clean
 
 clean:
-	-rm -r *.o *.aux *.log  MakeHTML chktex deweb HTML rme 2> /dev/null
+	-rm -r $(CLEAN) *.aux *.log  MakeHTML chktex deweb HTML rme 2> /dev/null
 
 distclean: clean
 	-rm -r *.cache *.status *.log *.tar.gz *.lha 2> /dev/null
@@ -278,22 +290,6 @@ ChkTeX.pdf: ChkTeX.ps
 
 ChkTeX: ChkTeX.c
 	@echo
-
-ChkTeX.o: ChkTeX.c ChkTeX.h types.h \
-Utility.h OpSys.h FindErrs.h Resource.h config.h
-
-FindErrs.o: FindErrs.c ChkTeX.h types.h FindErrs.h \
-Utility.h OpSys.h Resource.h config.h
-
-OpSys.o: OpSys.c ChkTeX.h types.h Utility.h OpSys.h config.h
-
-Resource.o: Resource.c ChkTeX.h types.h Utility.h OpSys.h Resource.h \
-config.h
-
-Utility.o: Utility.c ChkTeX.h types.h Utility.h OpSys.h Resource.h \
-config.h
-
-RegExps.o: RegExps.c RegExps.h config.h
 
 cover:
 	chktex -h
