@@ -92,12 +92,6 @@ static const char *BigBanner =
     "E-mail: <jensthi@ifi.uio.no>\n"
     "Press " STDIN_BREAK " to abort stdin input.\n";
 
-static const char *GiftBanner =
-    "\n"
-    "     If you like this program and use it frequently the author\n"
-    "      would like you to send him any gift that you feel would\n"
-    "      be an appropriate `payment' for `ChkTeX' --- thank you!\n" "\n";
-
 static const char *Distrib =
     "\n"
     "This program is free software; you can redistribute it and/or modify\n"
@@ -398,8 +392,6 @@ int main(int argc, char **argv)
         if ((UsingStdIn && StdInTTY && !Quiet) || LicenseOnly)
         {
             fprintf(stderr, BigBanner);
-            if (!LicenseOnly)
-                fprintf(stderr, GiftBanner);
         }
 
         if (!StdOutTTY && PipeOutputFormat)
@@ -408,7 +400,6 @@ int main(int argc, char **argv)
         if (LicenseOnly)
         {
             fprintf(stderr, Distrib);
-            fprintf(stderr, GiftBanner);
         }
         else
         {
