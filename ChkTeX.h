@@ -41,27 +41,35 @@
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>
+
 #ifdef HAVE_STDARG_H
 #  include <stdarg.h>
 #else
 #error Sorry, ChkTeX needs an _ANSI_ compiler w/stdarg.h installed to compile.
 #endif
+
 #ifndef HAVE_VPRINTF
 #error Sorry, ChkTeX needs an _ANSI_ compiler w/vprintf() to compile.
 #endif
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+
 #ifdef HAVE_UNISTD_H
 #  include <unistd.h>
 #endif
+
 #ifdef HAVE_LIMITS_H
 #  include <limits.h>
 #endif
+
 #ifdef HAVE_STRINGS_H
 #  include <strings.h>
 #endif
+
 #include "exec/types.h"
+
 #ifndef __NOPROTO
 #  ifndef __PROTO
 #    define __PROTO(a) a
@@ -71,16 +79,22 @@
 #    define __PROTO(a) ()
 #  endif
 #endif
+
 #ifndef LONG_MAX
 #  define LONG_MAX (0x7fffffff)
 #endif
+
 #ifndef CHAR_BIT
 #  define CHAR_BIT (8)
 #endif
+
 #ifndef FINDERRS_H
 # include "FindErrs.h"
 #endif /* FINDERRS_H */
 
+#if defined(HAVE_FILENO) && defined(HAVE_ISATTY)
+#  include <stdio.h>
+#endif
 
 /*
  * Define aliases for preprocessor statements
