@@ -180,7 +180,7 @@ maintainer-clean: clean
 
 dvi: ChkTeX.dvi
 
-html: ChkTeX.tex
+html: ChkTeX.tex MakeHTML
 	-rm -r HTML
 	mkdir HTML
 	chmod u+x MakeHTML
@@ -188,7 +188,7 @@ html: ChkTeX.tex
 	cd HTML; $(LATEX2HTML) ChkTeX.tex
 	$(PERL5) -i -pe 's%</code> %</code>%gi;s%\s+([.,?!])%$$1%g;' HTML/ChkTeX/*.html
 
-ChkTeX.readme: ChkTeX.tex
+ChkTeX.readme: ChkTeX.tex MakeHTML
 	-rm -r rme
 	mkdir rme
 	chmod u+x MakeHTML
@@ -215,7 +215,7 @@ config.h: stamp-h
 stamp-h: config.h.in config.status
 	./config.status
 
-Makefile: Makefile.in config.status
+MakeHTML Makefile: Makefile.in config.status
 	./config.status
 
 config.status: configure
