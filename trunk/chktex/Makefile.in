@@ -181,7 +181,7 @@ check: chktex
 	echo "Problems when checking compilation. This may or may not"; \
 	echo "be a problem; anyway, I'm giving you a diff from what the"; \
 	echo "results were *supposed* to be..."; \
-	diff -c chktest Test.out; \
+	diff -u chktest Test.out; \
 	fi
 
 
