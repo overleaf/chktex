@@ -155,7 +155,6 @@
 
 #define betw(a,b,c)             ((a < b) && (b < c))
 #define within(a,b,c)           ((a <= b) && (b <= c))
-#define elif                    else if
 
 #ifndef NOT
 #  define NOT(a)                   (!(a))
