@@ -101,7 +101,7 @@ static char term_buffer[2048];
 
 #ifdef AMIGA
 const char
-    VersString[] = "$VER: ChkTeX 1.6.1 " __AMIGADATE__
+    VersString[] = "$VER: ChkTeX v" PACKAGE_VERSION " " __AMIGADATE__
     " Copyright (c) 1995-96 Jens T. Berger Thielemann "
     "<jensthi@ifi.uio.no>",
     __stdiowin[] = "CON:0/10/640/180/ChkTeX", __stdiov37[] =
