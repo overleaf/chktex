@@ -173,6 +173,7 @@ dnl Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_DIRENT
 AC_CONFIG_HEADER(config.h)
+AC_CONFIG_FILES([stamp-h], [echo timestamp > stamp-h])
 AC_CHECK_HEADERS(limits.h stat.h strings.h stdarg.h dnl
 sys/stat.h termcap.h termlib.h unistd.h)
 
