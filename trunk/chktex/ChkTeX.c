@@ -76,7 +76,7 @@ NEWBUF(TmpBuffer, BUFSIZ);
 NEWBUF(ReadBuffer, BUFSIZ);
 
 static const char *Banner =
-    "ChkTeX v1.6.1 - Copyright 1995-96 Jens T. Berger Thielemann.\n"
+    "ChkTeX v" PACKAGE_VERSION " - Copyright 1995-96 Jens T. Berger Thielemann.\n"
 #ifdef __OS2__
     "OS/2 port generated with emx compiler, by Wolfgang Fritsch, <fritsch@hmi.de>"
 #elif defined(__MSDOS__)
@@ -118,7 +118,7 @@ static const char *HowHelp =
 static const char *HelpText =
     "\n"
     "\n"
-    "                         Usage of ChkTeX v1.6.1\n"
+    "                         Usage of ChkTeX v" PACKAGE_VERSION "\n"
     "                         ~~~~~~~~~~~~~~~~~~~~\n"
     "\n"
     "                               Template\n"
