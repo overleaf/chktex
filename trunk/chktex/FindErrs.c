@@ -1154,27 +1154,38 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
 
                 break;
 
-            LOOP(bracket, case '(':
-if (!(!*PrePtr || LATEX_SPACE(*PrePtr) || isdigit(*PrePtr)) ||
-strchr("([{`~", *PrePtr))
-{
-if (PrePtr[-1] != '\\')         /* Short cmds */
-{
-TmpPtr = PrePtr; SKIP_BACK(TmpPtr, TmpC, istex(TmpC)); if (*TmpPtr != '\\')     /* Long cmds */
-PSERRA(BufPtr - Buf - 1, 1, emSpaceParen, "in front of");}
-}
-            if (isspace(*BufPtr)) PSERRA(BufPtr - Buf, 1, emNoSpaceParen, "after"); LAST(bracket); case ')':
-if (isspace(*PrePtr))
-PSERRA(BufPtr - Buf - 1, 1, emNoSpaceParen,
-      "in front of");
-if (isalpha(*BufPtr))
-PSERRA(BufPtr - Buf, 1, emSpaceParen, "after"); LAST(bracket);)
+            case '(':
+                if (!(!*PrePtr || LATEX_SPACE(*PrePtr) || isdigit(*PrePtr)) ||
+                    strchr("([{`~", *PrePtr))
+                {
+                    if (PrePtr[-1] != '\\')     /* Short cmds */
+                    {
+                        TmpPtr = PrePtr;
+                        SKIP_BACK(TmpPtr, TmpC, istex(TmpC));
+                        if (*TmpPtr != '\\')    /* Long cmds */
+                            PSERRA(BufPtr - Buf - 1, 1, emSpaceParen,
+                                   "in front of");
+                    }
+                }
+                if (isspace(*BufPtr))
+                    PSERRA(BufPtr - Buf, 1, emNoSpaceParen, "after");
+				HandleBracket(Char);
+				break;
+
+            case ')':
+                if (isspace(*PrePtr))
+                    PSERRA(BufPtr - Buf - 1, 1, emNoSpaceParen,
+                           "in front of");
+                if (isalpha(*BufPtr))
+                    PSERRA(BufPtr - Buf, 1, emSpaceParen, "after");
+				HandleBracket(Char);
+				break;
 
             case '}':
             case '{':
             case '[':
             case ']':
-                    HandleBracket(Char);
+                HandleBracket(Char);
                 break;
             case '$':
                 if (*PrePtr != '\\')
