@@ -187,7 +187,6 @@ check: chktex
 
 
 chktex: $(OBJS)
-	-rm -r chktex
 	$(CC) $(LDFLAGS) -o chktex $(OBJS) $(LIBS)
 
 install: chktex ChkTeX.dvi
