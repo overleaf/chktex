@@ -265,6 +265,9 @@ OutFormat
 # -v4; verbose lacheck mode
 "!"%f!", line %l: %m!n%r%s%t!n%u!n"
 
+# -v5; no line number, ease auto-test
+"%k %n in %f: %m!n%r%s%t!n%u!n"
+
 }
 
 
