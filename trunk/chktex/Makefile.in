@@ -104,7 +104,11 @@ CLEAN+=$(CSOURCES:.c=.o)
 	-rm -f $@.tmp 2>/dev/null
 
 DEPFILES=$(patsubst %.c,.%.d,$(CSOURCES))
+CLEAN+=$(DEPFILES)
+
+ifeq ($(findstring clean,$(MAKECMDGOALS)),)
 include $(DEPFILES)
+endif
 
 ###################### MAIN DEPENDENCIES ################################
 
