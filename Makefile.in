@@ -227,7 +227,7 @@ distclean: clean
 maintainer-clean: clean
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
-	-rm -r *.rme *.ps $(DOCFILES_GEN) Test.out 2> /dev/null
+	-rm -r config.h *.rme *.ps $(DOCFILES_GEN) Test.out 2> /dev/null
 
 dvi: ChkTeX.dvi
 
