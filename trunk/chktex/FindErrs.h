@@ -186,10 +186,9 @@ extern struct ErrMsg
 
 extern STRPTR OutputFormat;
 
-BOOL    FindErr         __PROTO((STRPTR const, ULONG const));
-void    PrintError      __PROTO((const  STRPTR,
-                                const STRPTR, const LONG, const LONG,
-                                const LONG, const enum ErrNum, ...));
-void PrintStatus        __PROTO((ULONG Lines));
+BOOL    FindErr(STRPTR const, ULONG const);
+void    PrintError(const  STRPTR, const STRPTR, const LONG, const LONG,
+                   const LONG, const enum ErrNum, ...);
+void PrintStatus(ULONG Lines);
 
 #endif /* FINDERRS */

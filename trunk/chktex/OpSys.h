@@ -202,15 +202,13 @@ struct WordList;
 extern STRPTR ReverseOn, ReverseOff;
 extern TEXT ConfigFile[BUFSIZ];
 
-STRPTR  MatchFileName   __PROTO((STRPTR String));
-BOOL    SetupVars       __PROTO((void));
-void    SetupTerm       __PROTO((void));
-void    AddAppendix     __PROTO((STRPTR Name, const STRPTR App));
-void    tackon          __PROTO((STRPTR, const STRPTR));
-BOOL    LocateFile      __PROTO((const STRPTR Filename, STRPTR Dest,
-                                 const STRPTR App, struct WordList *wl));
-
-
+STRPTR  MatchFileName(STRPTR String);
+BOOL    SetupVars(void);
+void    SetupTerm(void);
+void    AddAppendix(STRPTR Name, const STRPTR App);
+void    tackon(STRPTR, const STRPTR);
+BOOL    LocateFile(const STRPTR Filename, STRPTR Dest, const STRPTR App,
+		           struct WordList *wl);
 
 #endif /* OPSYS_H */
 
