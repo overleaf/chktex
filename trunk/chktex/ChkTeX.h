@@ -78,9 +78,7 @@
 #  define CHAR_BIT (8)
 #endif
 
-#ifndef FINDERRS_H
-# include "FindErrs.h"
-#endif /* FINDERRS_H */
+#include "FindErrs.h"
 
 #if defined(HAVE_FILENO) && defined(HAVE_ISATTY)
 #  include <stdio.h>

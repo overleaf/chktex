@@ -29,13 +29,8 @@
 #ifndef UTILITY_H
 #define UTILITY_H 1
 
-#ifndef CHKTEX_H
-# include "ChkTeX.h"
-#endif /* CHKTEX_H */
-#ifndef OPSYS_H
-# include "OpSys.h"
-#endif /* OPSYS_H */
-
+#include "ChkTeX.h"
+#include "OpSys.h"
 
 /*
  * How many indexes we'll allocate first time
@@ -64,7 +59,7 @@ enum Strip
 struct HashEntry
 {
     struct HashEntry *Next;
-    const char *Str;
+    char *Str;
 };
 
 struct Hash
@@ -115,11 +110,11 @@ char *strdupx(const char *String, int Extra);
 void strmove(char *a, const char *b);
 
 void ClearHash(struct Hash *h);
-void InsertHash(const char *a, struct Hash *h);
-const char *HasHash(const char *a, const struct Hash *h);
+void InsertHash(char *a, struct Hash *h);
+char *HasHash(const char *a, const struct Hash *h);
 
 int InsertWord(const char *Word, struct WordList *WL);
-const char *HasWord(const char *Word, struct WordList *WL);
+char *HasWord(const char *Word, struct WordList *WL);
 void MakeLower(struct WordList *wl);
 void ListRep(struct WordList *wl, const char From, const char To);
 void ClearWord(struct WordList *WL);
