@@ -227,7 +227,7 @@ distclean: clean
 maintainer-clean: clean
 	-rm -r config.h *.rme *.ps $(DOCFILES_GEN) Test.out install-sh config.guess \
 	       config.sub Makefile aclocal.m4 autom4te.cache configure missing \
-	       mkinstalldirs tags 2> /dev/null
+	       mkinstalldirs tags config.status 2> /dev/null
 
 dvi: ChkTeX.dvi
 
