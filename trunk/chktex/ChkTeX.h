@@ -91,9 +91,6 @@
 #if defined(__unix__) || defined(__unix) || defined(unix)
 #undef __unix__
 #define __unix__ 1
-#elif defined(AMIGA) || defined(__AMIGA) || defined(__amigados__)
-#undef AMIGA
-#define AMIGA 1
 #elif defined(MSDOS) || defined(__MSDOS__) || defined(__msdos__)
 #undef __MSDOS__
 #define __MSDOS__ 1
