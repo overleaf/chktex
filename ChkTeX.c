@@ -410,7 +410,7 @@ int main(int argc, char **argv)
           {
       	      if(!strcasecmp(QuoteStyle, "LOGICAL"))
 	          Quote = quLogic;
-	      elif(!strcasecmp(QuoteStyle, "TRADITIONAL"))
+	      else if(!strcasecmp(QuoteStyle, "TRADITIONAL"))
 	          Quote = quTrad;
 	      else
 	      {

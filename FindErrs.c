@@ -426,9 +426,9 @@ static void CheckItal(const STRPTR Cmd)
     STRPTR TmpPtr;
     if(HasWord(Cmd, &NonItalic))
         ItState = itOff;
-    elif(HasWord(Cmd, &Italic))
+    else if(HasWord(Cmd, &Italic))
         ItState = itOn;
-    elif(HasWord(Cmd, &ItalCmd))
+    else if(HasWord(Cmd, &ItalCmd))
     {
         TmpPtr = BufPtr;
         SKIP_AHEAD(TmpPtr, TmpC, LATEX_SPACE(TmpC));
@@ -747,7 +747,7 @@ static void HandleBracket(int Char)
 
                     ItState = FALSE;
                 }
-                elif(ei->Flags & efItal)
+                else if(ei->Flags & efItal)
                     ItState = TRUE;
                 FreeErrInfo(ei);
             }
@@ -846,7 +846,7 @@ BOOL FindErr(const STRPTR _RealBuf, const ULONG _Line)
                 TmpPtr = NULL;
                 if(isspace(*PrePtr))
                     TmpPtr = PrePtr;
-                elif(isspace(*BufPtr))
+                else if(isspace(*BufPtr))
                     TmpPtr = BufPtr;
 
                 if(TmpPtr)
@@ -1081,7 +1081,7 @@ BOOL FindErr(const STRPTR _RealBuf, const ULONG _Line)
 
                     if(isalpha(*TmpPtr))
                         pstcb = &my_isalpha;
-                    elif(isdigit(*TmpPtr))
+                    else if(isdigit(*TmpPtr))
                         pstcb = &my_isdigit;
                     else
                         break;
@@ -1114,7 +1114,7 @@ BOOL FindErr(const STRPTR _RealBuf, const ULONG _Line)
                 {
                     PSERR(BufPtr - Buf, 1, emSpaceTerm);
                 }
-                elif((*BufPtr == '\\') && (!isalpha(BufPtr[1])) &&
+                else if((*BufPtr == '\\') && (!isalpha(BufPtr[1])) &&
                      (!LATEX_SPACE(BufPtr[1])))
                     PSERR(BufPtr - Buf, 2, emNotIntended);
 
@@ -1426,9 +1426,9 @@ static enum ErrNum PerformCommand(const STRPTR Cmd, STRPTR Arg)
 
     if(!strcmp(Cmd, "\\makeatletter"))
         AtLetter = TRUE;
-    elif(!strcmp(Cmd, "\\makeatother"))
+    else if(!strcmp(Cmd, "\\makeatother"))
         AtLetter = FALSE;
-    elif(InputFiles &&
+    else if(InputFiles &&
         !(strcmp(Cmd, "\\input") && strcmp(Cmd, "\\include")))
     {
         SKIP_AHEAD(Arg, TmpC, LATEX_SPACE(TmpC));
@@ -1443,9 +1443,9 @@ static enum ErrNum PerformCommand(const STRPTR Cmd, STRPTR Arg)
         ifn(Argument && PushFileName(Argument, &InputStack))
             en = emNoCmdExec;
     }
-    elif(HasWord(Cmd, &Primitives))
+    else if(HasWord(Cmd, &Primitives))
         en = emTeXPrim;
-    elif(*Cmd == '\\')
+    else if(*Cmd == '\\')
     {
         /* Quicker check of single lettered commands. */
         switch(Cmd[1])
