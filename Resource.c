@@ -331,7 +331,8 @@ static enum Token ReadWord(char *Buffer, FILE * fh)
                          TOKEN('=', DONEKEY, FLG_Equal);
                          TOKEN(']', DONELIST, FLG_BrClose);
                          TOKEN('}', DONELIST, FLG_Close);
-                        )if (Retval != FLG_Eof)
+                        );
+                    if (Retval != FLG_Eof)
                     {
                         OnceMore = FALSE;
                         String++;
