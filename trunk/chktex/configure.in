@@ -106,7 +106,7 @@ AC_MSG_CHECKING(whether runtime debug info should be used)
 if test "$enable_debug_info" = "yes"; then
   AC_MSG_RESULT(yes)
 else
-  AC_DEFINE(STRIP_DEBUG, 1)
+  AC_DEFINE(STRIP_DEBUG, 1, "Strip debug info")
   AC_MSG_RESULT(no)
 fi
 
