@@ -1,5 +1,5 @@
 %%
-%%  ChkTeX v1.6, LaTeX documentation for ChkTeX program.
+%%  ChkTeX v1.6.1, LaTeX documentation for ChkTeX program.
 %%  Copyright (C) 1995-96 Jens T. Berger Thielemann
 %%
 %%  This program is free software; you can redistribute it and/or modify
@@ -77,14 +77,13 @@
 {\end{center}}
 \columnseprule 0.1pt
 
-%!\newcommand{\LaTeXe}{\LaTeX 2e}
 %!\newcommand{\BS}{\verb@\@}
 %!\newcommand{\chktex}{ChkTeX}
 %!\newcommand{\slash}{/}
 %endlatex
 
 
-\title{\chktex\ v1.6}
+\title{\chktex\ v1.6.1}
 \author{Jens~T. Berger~Thielemann}
 \date{\today}
 
@@ -127,6 +126,13 @@ As you will see, \chktex\ offers the ability to adapt to many environments
 and configurations.
 
 \subsection{New features}
+
+Modifications and additions since v1.6:
+\begin{itemize}
+  \item Improved the build system
+  \item Better fixes for memory access errors
+\end{itemize}
+
 Modifications and additions since v1.5:
 \begin{itemize}
   \item Fixed a crash when running from emacs
@@ -293,7 +299,7 @@ Various other stuff I've done to the product:
   header of a file; thus killing much unwanted garbage.
 \item Scripts included for checking CWEB files written in \LaTeX.
   (Requires perl v5).
-\item Supports both \LaTeX\ 2.09 and \LaTeXe.
+\item Supports both \LaTeX\ 2.09 and \LaTeXe{}.
 \item Flexible output handling. Has some predefined formats and lets
   the user specify his own format.  Uses a \Cmd{printf()} similar
   syntax. \Cmd{lacheck} compatible mode included for interfacing with
@@ -389,7 +395,7 @@ Send your contribution to the following address:
 \begin{html}
 \section{Availability}
 
-This program will be uploaded to AmiNet and CTAN\@; thus it can be
+This program will be uploaded to CTAN\@; thus it can be
 found at any mirrors of those.
 \end{html}
 
@@ -1859,6 +1865,7 @@ If you wish to contact me for any reason or would like to participate in
 the development of \chktex, please write to:
 %latex
 \begin{samepage}
+%endlatex
   \begin{quote}
     Jens Berger           \\
     Spektrumvn. 4         \\
@@ -1870,6 +1877,18 @@ the development of \chktex, please write to:
 \end{samepage}
 %endlatex
 Any signs of intelligent life are welcomed; that should exclude piracy.
+
+Since the original author is unreachable, the maintainer these days is:
+%latex
+\begin{samepage}
+%endlatex
+  \begin{quote}
+    Baruch Even     \\
+	E-mail: {\tt <chktex@ev-en.org>}
+  \end{quote}
+%latex
+\end{samepage}
+%endlatex
 
 \medskip\noindent
 Have fun.

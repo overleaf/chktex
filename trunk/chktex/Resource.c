@@ -1,5 +1,5 @@
 /*
- *  ChkTeX v1.5, resource file reader.
+ *  ChkTeX, resource file reader.
  *  Copyright (C) 1995-96 Jens T. Berger Thielemann
  *
  *  This program is free software; you can redistribute it and/or modify

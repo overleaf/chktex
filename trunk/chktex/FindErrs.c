@@ -1,5 +1,5 @@
 /*
- *  ChkTeX v1.5, error searching & report routines.
+ *  ChkTeX, error searching & report routines.
  *  Copyright (C) 1995-96 Jens T. Berger Thielemann
  *
  *  This program is free software; you can redistribute it and/or modify

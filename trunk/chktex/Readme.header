@@ -1,0 +1,19 @@
+Short:    v1.6.1. Finds typographic errors in LaTeX
+Author:   <chktex@ev-en.org> (Baruch Even)
+Uploader: <chktex@ev-en.org> (Baruch Even)
+Type:     text/tex
+Replaces: text/tex/ChkTeX.lha
+Version:  1.6.1
+URL:      http://www.freesoftware.fsf.org/chktex
+
+
+             #####  ###       ###    ########     ###     ##
+           ###   ##  ##        ##       ##          ##   #
+          @@         @@ @@@    @@  @@   @@  #######  @@ @
+          @@         @@@  @@   @@ @@    @@   ##   #   @@
+          &&         &&   &&   &&&&     &&   @@      & &&
+           &&&   &&  &&   &&   && &&    &&   @@@@   &   &&
+             %%%%%  %%%   %%% %%%  %%%  %%   &&   %%%    %%% v1.6.1
+                                             &&   &
+                                            %%%%%%%
+

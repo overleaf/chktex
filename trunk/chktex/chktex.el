@@ -3,7 +3,7 @@
 ;;
 ;;  Keywords: LaTeX, AUC-TeX, ChkTeX
 ;;
-;;  ChkTeX v1.5, quick hack to add ChkTeX in LaTeX menu.
+;;  ChkTeX, quick hack to add ChkTeX in LaTeX menu.
 ;;  Copyright (C) 1995-96 Jens T. Berger Thielemann
 ;;
 ;;  This program is free software; you can redistribute it and/or modify

@@ -28,7 +28,7 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 bindir=@bindir@
-datadir=@datadir@
+datadir=@datadir@/chktex
 srcdir=@srcdir@
 mandir=@mandir@
 INSTALL=@INSTALL@
@@ -61,8 +61,10 @@ INSTALLFILES= configure.in Makefile.in config.h.in chktexrc MakeHTML.in
 
 WEBFILES= chkweb deweb.in
 
-DOCFILES= ChkTeX.tex ChkTeX.dvi \
-ChkTeX.readme COPYING WB2Argv.readme deweb.1 deweb.doc
+DOCFILES= ChkTeX.tex COPYING WB2Argv.readme \
+	chktex.1 chkweb.1 deweb.1
+
+DOCFILES_GEN = chktex.doc chkweb.doc deweb.doc ChkTeX.readme ChkTeX.html
 
 SOURCEFILES= ChkTeX.c ChkTeX.h FindErrs.c FindErrs.h OpSys.c OpSys.h \
 Resource.c Resource.h Utility.c Utility.h WB2Argv.c WB2Argv.h \
@@ -107,9 +109,8 @@ ARCHIVES= chktex.lha chktex.tar.gz
 
 all: chktex 
 
-dist: configure  ChkTeX.dvi Test.out ChkTeX.readme deweb.doc
-	touch chktex $(ARCHIVES)
-	rm -r chktex $(ARCHIVES)
+dist: configure Test.out $(DOCFILES_GEN)
+	-rm -r chktex $(ARCHIVES)
 	mkdir chktex chktex/generic chktex/generic/exec
 	for file in $(COMMONFILES); do \
 		cp $$file chktex/generic; \
@@ -166,14 +167,12 @@ OBJS= ChkTeX.o FindErrs.o getopt.o getopt1.o OpSys.o Resource.o Utility.o
 MAKETEST= ./chktex -mall -r -g0 -lchktexrc Test.tex 
 
 Test.out: chktex Test.tex ChkTeX.tex
-	touch Test.out
-	rm -f Test.out
+	-rm -f Test.out
 	$(MAKETEST) 1> Test.out 
 
 check: chktex
 	@echo ">>> Testing that checking algorithms work correctly..."
-	@touch chktest
-	@rm -f chktest
+	@-rm -f chktest
 	@$(MAKETEST) 1> chktest  
 	@if cmp -s chktest Test.out; then \
 	echo ">>> OK!"; \
@@ -188,8 +187,7 @@ check: chktex
 
 
 chktex: $(OBJS)
-	touch chktex
-	rm -r chktex
+	-rm -r chktex
 	$(CC) $(LDFLAGS) -o chktex $(OBJS) $(LIBS)
 
 install: chktex ChkTeX.dvi
@@ -230,13 +228,12 @@ distclean: clean
 maintainer-clean: clean
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
-	-rm -r *.rme *.dvi *.ps *.doc Test.out 2> /dev/null
+	-rm -r *.rme *.ps $(DOCFILES_GEN) Test.out 2> /dev/null
 
 dvi: ChkTeX.dvi
 
-html:
-	touch HTML
-	rm -r HTML
+html: ChkTeX.tex
+	-rm -r HTML
 	mkdir HTML
 	chmod u+x MakeHTML
 	./MakeHTML ChkTeX.tex > HTML/ChkTeX.tex
@@ -244,12 +241,12 @@ html:
 	$(PERL5) -i -pe 's%</code> %</code>%gi;s%\s+([.,?!])%$$1%g;' HTML/ChkTeX/*.html
 
 ChkTeX.readme: ChkTeX.tex
-	touch rme
-	rm -r rme
+	-rm -r rme
 	mkdir rme
 	chmod u+x MakeHTML
 	./MakeHTML ChkTeX.tex > rme/ChkTeX.tex
 	cd rme; $(LATEX2HTML) -split 0 ChkTeX.tex
+	$(PERL5) -i -pe 's%L<SUP><SMALL>A</SMALL></SUP>%La%g;s%T<SMALL>E</SMALL>X%TeX%g;s%<SUB>(.*)</SUB>%$$1%g' rme/ChkTeX/*.html
 	$(PERL5) -i -pe 's%</code> %</code>%gi;s%\s+([.,?!])%$$1%g;' rme/ChkTeX/*.html
 	$(LYNX) -dump rme/ChkTeX/ChkTeX.html > ChkTeX.rme
 	cp Readme.header ChkTeX.readme
@@ -257,16 +254,19 @@ ChkTeX.readme: ChkTeX.tex
 
 ###################### INDIVIDUAL DEPENDENCIES ##########################
 
-deweb.doc: deweb.1
-	touch deweb.doc
-	rm -rf deweb.doc
-	$(GROFF) deweb.1 > deweb.doc
+%.doc: %.1
+	$(GROFF) $< > $@
 
 configure: configure.in
 	autoconf
 
 ChkTeX.dvi: ChkTeX.tex
+ifdef LATEX
 	$(LATEX) ChkTeX.tex
+else
+	echo "No latex program found by configure"
+	false
+endif
 
 ChkTeX.ps: ChkTeX.dvi
 	$(DVIPS) -o ChkTeX.ps ChkTeX.dvi

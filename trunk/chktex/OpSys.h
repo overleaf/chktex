@@ -1,5 +1,5 @@
 /*
- *  ChkTeX v1.5, operating system specific code for ChkTeX.
+ *  ChkTeX, operating system specific code for ChkTeX.
  *  Copyright (C) 1995-96 Jens T. Berger Thielemann
  *
  *  This program is free software; you can redistribute it and/or modify

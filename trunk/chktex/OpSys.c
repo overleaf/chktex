@@ -1,5 +1,5 @@
 /*
- *  ChkTeX v1.5, operating system specific code for ChkTeX.
+ *  ChkTeX, operating system specific code for ChkTeX.
  *  Copyright (C) 1995-96 Jens T. Berger Thielemann
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -101,7 +101,7 @@ static char term_buffer[2048];
 
 #ifdef AMIGA
 const char
-	VersString [] = "$VER: ChkTeX 1.5 " __AMIGADATE__
+	VersString [] = "$VER: ChkTeX 1.6.1 " __AMIGADATE__
 	" Copyright (c) 1995-96 Jens T. Berger Thielemann "
         "<jensthi@ifi.uio.no>",
 	__stdiowin [] = "CON:0/10/640/180/ChkTeX",
@@ -296,7 +296,7 @@ void SetupTerm(void)
 	if(success == 0)
 	    PrintPrgErr(pmNoTermDefd);
 
-	buffer = (char *) malloc(strlen(term_buffer));
+	buffer = (char *)malloc(sizeof(term_buffer));
 	ReverseOn = tgetstr("so", &buffer);
 	ReverseOff = tgetstr("se", &buffer);
 
@@ -396,7 +396,10 @@ BOOL LocateFile(const STRPTR Filename,    /* File to search for */
                                            * ending in // will be recursed
                                            */
 {
-    ULONG i, Len;
+    ULONG i;
+#if USE_RECURSE
+	ULONG Len;
+#endif
 
     FORWL(i, *wl)
     {
