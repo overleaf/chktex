@@ -136,29 +136,29 @@ chktex: $(OBJS)
 	$(CC) $(LDFLAGS) -o chktex $(OBJS) $(LIBS)
 
 install: chktex ChkTeX.dvi
-	$(INSTALL) -d $(bindir)
+	$(INSTALL) -d $(DESTDIR)$(bindir)
 	for program in chktex $(SCRIPTS); do \
-		$(INSTALL_PROGRAM) $$program  $(bindir); \
+		$(INSTALL_PROGRAM) $$program  $(DESTDIR)$(bindir); \
 	done
-	$(INSTALL) -d $(sysconfdir)
-	$(INSTALL_DATA) $(srcdir)/chktexrc $(sysconfdir)
+	$(INSTALL) -d $(DESTDIR)$(sysconfdir)
+	$(INSTALL_DATA) $(srcdir)/chktexrc $(DESTDIR)$(sysconfdir)
 	if (eval echo "$(SCRIPTS)") | egrep deweb >/dev/null 2>&1; then \
-		$(INSTALL) -d $(mandir); \
-		$(INSTALL) -d $(mandir)/man1; \
-                cp $(srcdir)/deweb.1 $(mandir)/man1; \
+		$(INSTALL) -d $(DESTDIR)$(mandir); \
+		$(INSTALL) -d $(DESTDIR)$(mandir)/man1; \
+                cp $(srcdir)/deweb.1 $(DESTDIR)$(mandir)/man1; \
 	fi
 	if (eval echo "$(ELISPDIR)") | egrep "/" >/dev/null 2>&1; then \
-		$(INSTALL_DATA) $(srcdir)/chktex.el $(ELISPDIR); \
+		$(INSTALL_DATA) $(srcdir)/chktex.el $(DESTDIR)$(ELISPDIR); \
 	fi
 
 
 
 uninstall:
-	-rm -f $(bindir)/chktex
+	-rm -f $(DESTDIR)$(bindir)/chktex
 	for script in $(SCRIPTS); do \
-		rm -f $(bindir)/$$script; \
+		rm -f $(DESTDIR)$(bindir)/$$script; \
 	done
-	-rm -f $(sysconfdir)/chktexrc
+	-rm -f $(DESTDIR)$(sysconfdir)/chktexrc
 	# TODO: remove manpages and chktex.el too
 
 test:
