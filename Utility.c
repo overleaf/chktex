@@ -32,7 +32,7 @@
 #include "OpSys.h"
 
 #ifdef ASM_HASHWORD
-extern unsigned short HashWord(const char * a);
+extern unsigned short HashWord(const char *a);
 typedef unsigned short HASH_TYPE;
 #else
 typedef unsigned long HASH_TYPE;
@@ -52,18 +52,18 @@ typedef unsigned long HASH_TYPE;
 short substring(const char *source, char *dest, unsigned long pos, long len)
 {
     const char *Start;
-    short        Retval = -1;
+    short Retval = -1;
 
-    if(len >= 0)
+    if (len >= 0)
     {
-        if(strlen(source) > pos)
+        if (strlen(source) > pos)
         {
             Start = &source[pos];
 
-            while((len-- > 0) && (*dest++ = *Start++))
+            while ((len-- > 0) && (*dest++ = *Start++))
                 ;
 
-            if(len == -1)
+            if (len == -1)
                 Retval = 0;
         }
     }
@@ -72,7 +72,7 @@ short substring(const char *source, char *dest, unsigned long pos, long len)
 
     *dest = 0;
 
-    return(Retval);
+    return (Retval);
 }
 
 
@@ -84,14 +84,16 @@ short substring(const char *source, char *dest, unsigned long pos, long len)
 
 int fexists(const char *Filename)
 {
-    int        Retval;
+    int Retval;
 
 #if defined(F_OK) && defined(R_OK) && defined(HAVE_ACCESS)
-    Retval = access(Filename, F_OK|R_OK) == 0;
-#else
-    FILE        *fh;
 
-    if(fh = fopen(Filename, "r"))
+    Retval = access(Filename, F_OK | R_OK) == 0;
+#else
+
+    FILE *fh;
+
+    if (fh = fopen(Filename, "r"))
     {
         Retval = TRUE;
         fclose(fh);
@@ -99,7 +101,8 @@ int fexists(const char *Filename)
     else
         Retval = FALSE;
 #endif
-    return(Retval);
+
+    return (Retval);
 }
 
 
@@ -115,13 +118,13 @@ int fexists(const char *Filename)
 
 void *sfmemset(void *to, int c, long n)
 {
-    if(to && (n > 0))
+    if (to && (n > 0))
     {
         n = min(n, BUFSIZ);
 
-        return(memset(to, c, (size_t) n));
+        return (memset(to, c, (size_t) n));
     }
-    return(NULL);
+    return (NULL);
 }
 
 
@@ -130,14 +133,14 @@ void *sfmemset(void *to, int c, long n)
  * Replaces every occurrence of a character in a string with another one.
  */
 
-void strrep(char * String,      /* String to replace within.    */
-            const char From,   /* Character to search for.     */
-            const char To)     /* Character to put instead.    */
+void strrep(char *String,       /* String to replace within.    */
+            const char From,    /* Character to search for.     */
+            const char To)      /* Character to put instead.    */
 {
     register int c;
-    while((c = *String++))
+    while ((c = *String++))
     {
-        if(c == From)
+        if (c == From)
             String[-1] = To;
     }
 }
@@ -146,17 +149,15 @@ void strrep(char * String,      /* String to replace within.    */
  * Replaces every char not in Prot with To in Buf
  */
 
-void strxrep(char * Buf,
-	     const char * Prot,
-	     const char To)
+void strxrep(char *Buf, const char *Prot, const char To)
 {
     int c;
 
-    while((c = *Buf))
+    while ((c = *Buf))
     {
-	if(!strchr(Prot, c))
-	    *Buf = To;
-	Buf++;
+        if (!strchr(Prot, c))
+            *Buf = To;
+        Buf++;
     }
 }
 
@@ -169,50 +170,53 @@ void strxrep(char * Buf,
  */
 
 
-char * strip(char * str,                /* String to strip */
-             const enum Strip flags)
-    /* One of the following: */
-    /* STRP_LFT - Strips leading  blanks */
-    /* STRP_RGT - Strips trailing blanks */
-    /* STRP_BTH - Strips on both sides   */
+char *strip(char *str,          /* String to strip */
+            const enum Strip flags)
+/* One of the following: */
+/* STRP_LFT - Strips leading  blanks */
+/* STRP_RGT - Strips trailing blanks */
+/* STRP_BTH - Strips on both sides   */
 {
-    char * bufptr = str;
-	char *nlptr;
+    char *bufptr = str;
+    char *nlptr;
     char c;
 
-    if(bufptr && (c = *bufptr))
+    if (bufptr && (c = *bufptr))
     {
-        if(flags & STRP_LFT)
+        if (flags & STRP_LFT)
         {
-            if(LATEX_SPACE(c) && c)
+            if (LATEX_SPACE(c) && c)
             {
                 do
                 {
                     c = *++bufptr;
-                } while(LATEX_SPACE(c) && c);
+                }
+                while (LATEX_SPACE(c) && c);
             }
         }
 
-        if(flags & STRP_RGT)
+        if (flags & STRP_RGT)
         {
-            if(c && *bufptr)
+            if (c && *bufptr)
             {
                 nlptr = bufptr;
 
-                while(*++nlptr);
+                while (*++nlptr)
+                    ;
 
                 do
                 {
                     *nlptr = 0;
                     c = *--nlptr;
-                } while(LATEX_SPACE(c) && c && (nlptr > bufptr));
+                }
+                while (LATEX_SPACE(c) && c && (nlptr > bufptr));
 
             }
             else
                 *bufptr = 0;
         }
     }
-    return(bufptr);
+    return (bufptr);
 }
 
 
@@ -221,17 +225,15 @@ char * strip(char * str,                /* String to strip */
  */
 
 #ifndef HAVE_STRLWR
-char * strlwr(char * String)
+char *strlwr(char *String)
 {
-    char *      Bufptr;
-    char        TmpC;
+    char *Bufptr;
+    char TmpC;
 
-    for(Bufptr = String;
-        (TmpC = *Bufptr);
-        Bufptr++)
+    for (Bufptr = String; (TmpC = *Bufptr); Bufptr++)
         *Bufptr = tolower(TmpC);
 
-    return(String);
+    return (String);
 }
 #endif
 
@@ -240,19 +242,19 @@ char * strlwr(char * String)
  */
 
 #ifndef HAVE_STRDUP
-char * strdup(const char * String)
+char *strdup(const char *String)
 {
-    char *      Retval = NULL;
-    size_t      Len;
+    char *Retval = NULL;
+    size_t Len;
 
-    if(String)
+    if (String)
     {
         Len = strlen(String) + 1;
-        if((Retval = malloc(Len)))
+        if ((Retval = malloc(Len)))
             memcpy(Retval, String, Len);
     }
 
-    return(Retval);
+    return (Retval);
 }
 #endif
 
@@ -260,19 +262,19 @@ char * strdup(const char * String)
  * Does the same as strdup, but adds a zero-filled padding, length extra bytes.
  */
 
-char * strdupx(const char * String, int Extra)
+char *strdupx(const char *String, int Extra)
 {
-    char *      Retval = NULL;
-    size_t      Len;
+    char *Retval = NULL;
+    size_t Len;
 
-    if(String)
+    if (String)
     {
         Len = strlen(String) + 1 + Extra;
-        if((Retval = malloc(Len)))
+        if ((Retval = malloc(Len)))
             strncpy(Retval, String, Len);
     }
 
-    return(Retval);
+    return (Retval);
 }
 
 /*
@@ -280,18 +282,19 @@ char * strdupx(const char * String, int Extra)
  */
 
 #ifndef HAVE_STRCASECMP
-int strcasecmp(const char* a, const char *b)
+int strcasecmp(const char *a, const char *b)
 {
-  int aa, bb;
+    int aa, bb;
 
-  do
-  {
-      aa = *a++;
-      bb = *b++;
-  } while(aa && (tolower(aa) == tolower(bb)));
-  /* bb != 0 is implicit */
+    do
+    {
+        aa = *a++;
+        bb = *b++;
+    }
+    while (aa && (tolower(aa) == tolower(bb)));
+    /* bb != 0 is implicit */
 
-  return(tolower(aa) - tolower(bb));
+    return (tolower(aa) - tolower(bb));
 }
 #endif
 
@@ -302,19 +305,19 @@ int strcasecmp(const char* a, const char *b)
 
 void *saferealloc(void *b, size_t n)
 {
-  void *Retval = NULL;
+    void *Retval = NULL;
 
-  if (b)
-  {
-       if (n)
-          Retval = realloc(b, n);
-       else
-          free(b);
-  }
-  else
-      Retval = malloc(n);
+    if (b)
+    {
+        if (n)
+            Retval = realloc(b, n);
+        else
+            free(b);
+    }
+    else
+        Retval = malloc(n);
 
-  return(Retval);
+    return (Retval);
 }
 
 /*
@@ -322,33 +325,31 @@ void *saferealloc(void *b, size_t n)
  * Does nothing if passed empty/NULL string.
  */
 
-void strwrite (char * To, const char * From, unsigned long Len)
+void strwrite(char *To, const char *From, unsigned long Len)
 {
-  unsigned long i, j;
-  unsigned long FromLen = strlen(From);
+    unsigned long i, j;
+    unsigned long FromLen = strlen(From);
 
-  Len = min(Len, BUFSIZ);
+    Len = min(Len, BUFSIZ);
 
-  if(To && From)
-  {
-      switch(FromLen)
-      {
-      case 0:
-          break;
-      case 1:
-          memset(To, *From, Len);
-          break;
-      default:
-          for(i = j = 0;
-              i < Len;
-              i++, j++)
-          {
-              if(j >= FromLen)
-                  j = 0;
-              To[i] = From[j];
-          }
-      }
-  }
+    if (To && From)
+    {
+        switch (FromLen)
+        {
+        case 0:
+            break;
+        case 1:
+            memset(To, *From, Len);
+            break;
+        default:
+            for (i = j = 0; i < Len; i++, j++)
+            {
+                if (j >= FromLen)
+                    j = 0;
+                To[i] = From[j];
+            }
+        }
+    }
 }
 
 /*
@@ -356,9 +357,9 @@ void strwrite (char * To, const char * From, unsigned long Len)
  *
  */
 
-int strafter(const char * Str, const char * Cmp)
+int strafter(const char *Str, const char *Cmp)
 {
-    return(strncmp(Str, Cmp, strlen(Cmp)));
+    return (strncmp(Str, Cmp, strlen(Cmp)));
 }
 
 /*
@@ -366,22 +367,22 @@ int strafter(const char * Str, const char * Cmp)
  *
  */
 
-int strinfront(char * Str, char * Cmp)
+int strinfront(char *Str, char *Cmp)
 {
     int CmpLen;
 
-    if((CmpLen = strlen(Cmp)))
+    if ((CmpLen = strlen(Cmp)))
     {
         Cmp += CmpLen;
         Str++;
 
-        while((*--Cmp == *--Str) && (--CmpLen > 0))
+        while ((*--Cmp == *--Str) && (--CmpLen > 0))
             ;
 
-        return(CmpLen);
+        return (CmpLen);
     }
     else
-        return(1);
+        return (1);
 }
 
 
@@ -396,19 +397,19 @@ int strinfront(char * Str, char * Cmp)
  */
 
 #ifndef ASM_HASHWORD
-static unsigned long HashWord(const char * str)
+static unsigned long HashWord(const char *str)
 {
     register unsigned long h = 0, hbit, c;
 
-    while((c = *str++))
+    while ((c = *str++))
     {
-        h = (h<<4) ^ c;
-        if((hbit = h & 0xf0000000))
-            h ^= hbit>>24;
-	h &= ~hbit;
+        h = (h << 4) ^ c;
+        if ((hbit = h & 0xf0000000))
+            h ^= hbit >> 24;
+        h &= ~hbit;
     }
 
-    return(h);
+    return (h);
 }
 #endif
 
@@ -417,11 +418,11 @@ static unsigned long HashWord(const char * str)
  * duplicate the string yourself.
  */
 
-void InsertHash(const char * a, struct Hash *h)
+void InsertHash(const char *a, struct Hash *h)
 {
     struct HashEntry **he, *newhe;
 
-    if(!h->Index)
+    if (!h->Index)
     {
         if (!((h->Index = calloc(HASH_SIZE, sizeof(struct HashEntry *)))))
             PrintPrgErr(pmWordListErr);
@@ -429,7 +430,7 @@ void InsertHash(const char * a, struct Hash *h)
 
     he = &h->Index[HashWord(a) % HASH_SIZE];
 
-    if((newhe = malloc(sizeof(struct HashEntry))))
+    if ((newhe = malloc(sizeof(struct HashEntry))))
     {
         newhe->Next = *he;
         newhe->Str = a;
@@ -444,29 +445,29 @@ void InsertHash(const char * a, struct Hash *h)
  * hash index.
  */
 
-const char * HasHash(const char * a, const struct Hash *h)
+const char *HasHash(const char *a, const struct Hash *h)
 {
-     struct HashEntry *he;
-     HASH_TYPE i; /* Special magic to optimize SAS/C */
+    struct HashEntry *he;
+    HASH_TYPE i;                /* Special magic to optimize SAS/C */
 
-     /* Do we have a hash? */
-     if (!h->Index)
-	 return NULL;
+    /* Do we have a hash? */
+    if (!h->Index)
+        return NULL;
 
-     /* Find entry in hash */
-     i = HashWord(a);
-     i %= HASH_SIZE;
-     he = h->Index[i];
+    /* Find entry in hash */
+    i = HashWord(a);
+    i %= HASH_SIZE;
+    he = h->Index[i];
 
-     /* Search in the entry for the item */
-     while(he)
-     {
-        if(!strcmp(he->Str, a))
-            return(he->Str);
+    /* Search in the entry for the item */
+    while (he)
+    {
+        if (!strcmp(he->Str, a))
+            return (he->Str);
         else
             he = he->Next;
-     }
-     return(NULL);
+    }
+    return (NULL);
 }
 
 /*
@@ -475,7 +476,7 @@ const char * HasHash(const char * a, const struct Hash *h)
 
 void ClearHash(struct Hash *h)
 {
-    if(h && h->Index)
+    if (h && h->Index)
         memset(h->Index, '\0', HASH_SIZE * sizeof(struct HashEntry *));
 }
 
@@ -490,8 +491,7 @@ static void ReHash(struct WordList *WL)
     unsigned long i = 0;
 
     ClearHash(&WL->Hash);
-    FORWL(i, *WL)
-        InsertHash(WL->Stack.Data[i], &WL->Hash);
+    FORWL(i, *WL) InsertHash(WL->Stack.Data[i], &WL->Hash);
 }
 
 /*************************** WORDLIST HANDLING **************************/
@@ -501,27 +501,27 @@ static void ReHash(struct WordList *WL)
  * not need to make a duplicate of `Word' yourself.
  */
 
-int InsertWord(const char * Word, struct WordList *WL)
+int InsertWord(const char *Word, struct WordList *WL)
 {
-    char *      WrdCpy;
-    unsigned long       Len;
+    char *WrdCpy;
+    unsigned long Len;
 
-    if((WrdCpy = strdupx(Word, WALLBYTES)))
+    if ((WrdCpy = strdupx(Word, WALLBYTES)))
     {
-        if(StkPush(WrdCpy, &WL->Stack))
+        if (StkPush(WrdCpy, &WL->Stack))
         {
             Len = strlen(Word);
-            if(WL->MaxLen < Len)
+            if (WL->MaxLen < Len)
                 WL->MaxLen = Len;
 
             InsertHash(WrdCpy, &WL->Hash);
-            return(TRUE);
+            return (TRUE);
         }
 
         free(WrdCpy);
     }
 
-    return(FALSE);
+    return (FALSE);
 }
 
 /*
@@ -530,13 +530,13 @@ int InsertWord(const char * Word, struct WordList *WL)
 
 void ClearWord(struct WordList *WL)
 {
-    if(WL)
+    if (WL)
     {
         WL->Stack.Used = 0;
         WL->MaxLen = 0;
         ClearHash(&WL->Hash);
-        if(WL->NonEmpty)
-             InsertWord("", WL);
+        if (WL->NonEmpty)
+            InsertWord("", WL);
     }
 }
 
@@ -548,9 +548,9 @@ void ClearWord(struct WordList *WL)
  */
 
 
-const char * HasWord(const char * Word, struct WordList *WL)
+const char *HasWord(const char *Word, struct WordList *WL)
 {
-    return(HasHash(Word, &WL->Hash));
+    return (HasHash(Word, &WL->Hash));
 }
 
 /*
@@ -561,8 +561,7 @@ const char * HasWord(const char * Word, struct WordList *WL)
 void MakeLower(struct WordList *wl)
 {
     unsigned long i;
-    FORWL(i, *wl)
-	strlwr(wl->Stack.Data[i]);
+    FORWL(i, *wl) strlwr(wl->Stack.Data[i]);
     ReHash(wl);
 }
 
@@ -573,8 +572,7 @@ void MakeLower(struct WordList *wl)
 void ListRep(struct WordList *wl, const char From, const char To)
 {
     unsigned long i;
-    FORWL(i, *wl)
-	strrep(wl->Stack.Data[i], From, To);
+    FORWL(i, *wl) strrep(wl->Stack.Data[i], From, To);
     ReHash(wl);
 }
 
@@ -589,30 +587,30 @@ void ListRep(struct WordList *wl, const char From, const char To)
 
 int StkPush(void *Data, struct Stack *Stack)
 {
-    unsigned long  NewSize;
+    unsigned long NewSize;
     void **NewBuf;
 
-    if(Data && Stack)
+    if (Data && Stack)
     {
-        if(Stack->Used >= Stack->Size)
+        if (Stack->Used >= Stack->Size)
         {
             NewSize = Stack->Size + MINPUDDLE;
 
-            if((NewBuf = saferealloc(Stack->Data,
-                (size_t) NewSize * sizeof(void *))))
+            if ((NewBuf = saferealloc(Stack->Data,
+                                      (size_t) NewSize * sizeof(void *))))
             {
                 Stack->Size = NewSize;
                 Stack->Data = NewBuf;
             }
             else
-                return(FALSE);
+                return (FALSE);
         }
 
         Stack->Data[Stack->Used++] = Data;
-        return(TRUE);
+        return (TRUE);
     }
 
-    return(FALSE);
+    return (FALSE);
 }
 
 /*
@@ -624,22 +622,23 @@ void *StkPop(struct Stack *Stack)
 {
     void *Retval = NULL;
 
-    if(Stack && (Stack->Used > 0))
+    if (Stack && (Stack->Used > 0))
     {
         Retval = Stack->Data[--Stack->Used];
 
 #ifdef NO_DIRTY_TRICKS
+
         {
             void **NewBuf;
 
-            if(Stack->Used < (Stack->Size/2))
+            if (Stack->Used < (Stack->Size / 2))
             {
-                unsigned long   NewSize;
+                unsigned long NewSize;
                 NewSize = Stack->Size - MINPUDDLE;
                 NewSize = max(NewSize, MINPUDDLE);
 
-                if(NewBuf = saferealloc(Stack->Data,
-                   (size_t) NewSize * sizeof(void *)))
+                if (NewBuf = saferealloc(Stack->Data,
+                                         (size_t) NewSize * sizeof(void *)))
                 {
                     Stack->Size = NewSize;
                     Stack->Data = NewBuf;
@@ -647,8 +646,9 @@ void *StkPop(struct Stack *Stack)
             }
         }
 #endif
+
     }
-    return(Retval);
+    return (Retval);
 }
 
 /*
@@ -657,49 +657,48 @@ void *StkPop(struct Stack *Stack)
 
 void *StkTop(struct Stack *Stack)
 {
-    if(Stack && (Stack->Used > 0))
-        return(Stack->Data[Stack->Used - 1]);
+    if (Stack && (Stack->Used > 0))
+        return (Stack->Data[Stack->Used - 1]);
     else
-        return(NULL);
+        return (NULL);
 }
 
 /****************************** INPUT STACK *****************************/
 
-int PushFileName(const char * Name, struct Stack *stack)
+int PushFileName(const char *Name, struct Stack *stack)
 {
-    FILE        *fh = NULL;
-    static 
-        char NameBuf [BUFSIZ];
+    FILE *fh = NULL;
+    static char NameBuf[BUFSIZ];
 
-    if(Name && stack)
+    if (Name && stack)
     {
-        if(LocateFile(Name, NameBuf, ".tex", &TeXInputs))
+        if (LocateFile(Name, NameBuf, ".tex", &TeXInputs))
         {
-            if((fh = fopen(NameBuf, "r")))
+            if ((fh = fopen(NameBuf, "r")))
             {
-                return(PushFile(NameBuf, fh, stack));
+                return (PushFile(NameBuf, fh, stack));
             }
         }
         PrintPrgErr(pmNoTeXOpen, Name);
     }
-    return(FALSE);
+    return (FALSE);
 }
 
 
-int PushFile(char * Name, FILE *fh, struct Stack *stack)
+int PushFile(char *Name, FILE * fh, struct Stack *stack)
 {
-    struct FileNode     *fn;
+    struct FileNode *fn;
 
-    if(Name && fh && stack)
+    if (Name && fh && stack)
     {
-        if((fn = malloc(sizeof(struct FileNode))))
+        if ((fn = malloc(sizeof(struct FileNode))))
         {
-            if((fn->Name = strdup(Name)))
+            if ((fn->Name = strdup(Name)))
             {
                 fn->fh = fh;
                 fn->Line = 0L;
-                if(StkPush(fn, stack))
-                    return(TRUE);
+                if (StkPush(fn, stack))
+                    return (TRUE);
                 free(fn->Name);
             }
             free(fn);
@@ -707,19 +706,19 @@ int PushFile(char * Name, FILE *fh, struct Stack *stack)
         PrintPrgErr(pmNoStackMem);
     }
 
-    return(FALSE);
+    return (FALSE);
 }
 
-char * FGetsStk(char * Dest, unsigned long len, struct Stack *stack)
+char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack)
 {
-    struct FileNode     *fn;
-    char * Retval = NULL;
+    struct FileNode *fn;
+    char *Retval = NULL;
 
-    if((fn = StkTop(stack)))
+    if ((fn = StkTop(stack)))
     {
         do
         {
-            if((Retval = fgets(Dest, (int) len, fn->fh))) 
+            if ((Retval = fgets(Dest, (int) len, fn->fh)))
             {
                 fn->Line++;
                 break;
@@ -729,50 +728,49 @@ char * FGetsStk(char * Dest, unsigned long len, struct Stack *stack)
             fclose(fn->fh);
             free(fn);
 
-        } while(!Retval && (fn = StkTop(stack)));
+        }
+        while (!Retval && (fn = StkTop(stack)));
     }
 
-    return(Retval);
+    return (Retval);
 }
 
-char * CurStkName(struct Stack *stack)
+char *CurStkName(struct Stack *stack)
 {
-    struct FileNode     *fn;
-    static
-        char *  LastName = "";
+    struct FileNode *fn;
+    static char *LastName = "";
 
-    if(PseudoInName && (stack->Used <= 1))
-      return(PseudoInName);
+    if (PseudoInName && (stack->Used <= 1))
+        return (PseudoInName);
     else
     {
-        if((fn = StkTop(stack)))
-            return(LastName = fn->Name);
+        if ((fn = StkTop(stack)))
+            return (LastName = fn->Name);
         else
-            return(LastName);
+            return (LastName);
     }
 }
 
 
-FILE *CurStkFile(struct Stack *stack)
+FILE *CurStkFile(struct Stack * stack)
 {
-    struct FileNode     *fn;
+    struct FileNode *fn;
 
-    if((fn = StkTop(stack)))
-        return(fn->fh);
+    if ((fn = StkTop(stack)))
+        return (fn->fh);
     else
-        return(NULL);
+        return (NULL);
 }
 
 unsigned long CurStkLine(struct Stack *stack)
 {
-    struct FileNode     *fn;
-    static
-        unsigned long LastLine = 0L;
+    struct FileNode *fn;
+    static unsigned long LastLine = 0L;
 
-    if((fn = StkTop(stack)))
-        return(LastLine = fn->Line);
+    if ((fn = StkTop(stack)))
+        return (LastLine = fn->Line);
     else
-        return(LastLine);
+        return (LastLine);
 }
 
 
@@ -784,25 +782,27 @@ unsigned long CurStkLine(struct Stack *stack)
  */
 
 struct ErrInfo *PushChar(const char c, const unsigned long Line,
-              const unsigned long Column, struct Stack *Stk,
-              const char * LineCpy)
+                         const unsigned long Column, struct Stack *Stk,
+                         const char *LineCpy)
 {
-    char       Buf[2];
+    char Buf[2];
 
-    Buf[0] = c; Buf[1] = 0;
+    Buf[0] = c;
+    Buf[1] = 0;
 
-    return(PushErr( Buf, Line, Column, 1,  LineCpy, Stk));
+    return (PushErr(Buf, Line, Column, 1, LineCpy, Stk));
 }
 
-struct ErrInfo *PushErr(const char * Data, const unsigned long Line,
-             const unsigned long Column, const unsigned long ErrLen,
-             const char * LineCpy, struct Stack *Stk)
+struct ErrInfo *PushErr(const char *Data, const unsigned long Line,
+                        const unsigned long Column,
+                        const unsigned long ErrLen, const char *LineCpy,
+                        struct Stack *Stk)
 {
-    struct ErrInfo      *ci;
+    struct ErrInfo *ci;
 
-    if((ci = malloc(sizeof(struct ErrInfo))))
+    if ((ci = malloc(sizeof(struct ErrInfo))))
     {
-        if((ci->Data = strdup(Data)))
+        if ((ci->Data = strdup(Data)))
         {
             ci->File = CurStkName(&InputStack);
             ci->Line = Line;
@@ -811,15 +811,15 @@ struct ErrInfo *PushErr(const char * Data, const unsigned long Line,
             ci->LineBuf = LineCpy;
             ci->Flags = efNone;
 
-            if(StkPush(ci, Stk))
-                return(ci);
+            if (StkPush(ci, Stk))
+                return (ci);
         }
         else
             PrintPrgErr(pmStrDupErr);
         free(ci);
     }
 
-    return(NULL);
+    return (NULL);
 }
 
 /*
@@ -827,25 +827,23 @@ struct ErrInfo *PushErr(const char * Data, const unsigned long Line,
  * String.
  */
 
-struct ErrInfo *TopMatch(struct Stack *Stack, char * String)
+struct ErrInfo *TopMatch(struct Stack *Stack, char *String)
 {
     int i;
     struct ErrInfo *retval = NULL;
 
-    if(Stack && String)
+    if (Stack && String)
     {
-        for(i = Stack->Used - 1;
-            i >= 0;
-            i--)
-        {    
-            if(!strcmp(String, ((struct ErrInfo *) Stack->Data[i])->Data))
+        for (i = Stack->Used - 1; i >= 0; i--)
+        {
+            if (!strcmp(String, ((struct ErrInfo *) Stack->Data[i])->Data))
             {
                 retval = (struct ErrInfo *) Stack->Data[i];
                 break;
             }
         }
     }
-    return(retval);
+    return (retval);
 }
 
 /*
@@ -856,7 +854,7 @@ struct ErrInfo *TopMatch(struct Stack *Stack, char * String)
 
 struct ErrInfo *PopErr(struct Stack *Stack)
 {
-    return((struct ErrInfo *) StkPop(Stack));
+    return ((struct ErrInfo *) StkPop(Stack));
 }
 
 /*
@@ -866,17 +864,18 @@ struct ErrInfo *PopErr(struct Stack *Stack)
 
 struct ErrInfo *TopErr(struct Stack *Stack)
 {
-    return((struct ErrInfo *) StkTop(Stack));
+    return ((struct ErrInfo *) StkTop(Stack));
 }
 
 /*
  * Free all resources associated with a struct FreeInfo.
  */
 
-void FreeErrInfo(struct ErrInfo* ei)
+void FreeErrInfo(struct ErrInfo *ei)
 {
-    if(ei) {
-        if(ei->Data)
+    if (ei)
+    {
+        if (ei->Data)
             free(ei->Data);
 
         free(ei);
@@ -893,22 +892,22 @@ void FreeErrInfo(struct ErrInfo* ei)
 
 long BrackIndex(const char c)
 {
-    switch(c)
+    switch (c)
     {
     case '(':
-        return(0);
+        return (0);
     case ')':
-        return(1);
+        return (1);
     case '[':
-        return(2);
+        return (2);
     case ']':
-        return(3);
+        return (3);
     case '{':
-        return(4);
+        return (4);
     case '}':
-        return(5);
+        return (5);
     default:
-        return(~0L);
+        return (~0L);
     }
 }
 
@@ -919,9 +918,9 @@ long BrackIndex(const char c)
 
 void AddBracket(const char c)
 {
-    long        Index;
+    long Index;
 
-    if((Index = BrackIndex(c)) != -1)
+    if ((Index = BrackIndex(c)) != -1)
         Brackets[Index]++;
 
 }
@@ -933,12 +932,12 @@ void AddBracket(const char c)
 
 char MatchBracket(const char c)
 {
-    unsigned long       Index;
-    char        Char = 0;
+    unsigned long Index;
+    char Char = 0;
 
 
-    if((Index = BrackIndex(c)) != ~0UL)
+    if ((Index = BrackIndex(c)) != ~0UL)
         Char = BrOrder[Index ^ 1];
 
-    return(Char);
+    return (Char);
 }

@@ -38,10 +38,8 @@
 #undef MSG
 #define MSG(num, type, inuse, ctxt, text) {num, type, inuse, ctxt, text},
 
-struct ErrMsg LaTeXMsgs [emMaxFault + 1] =
-{
-    ERRMSGS
-    {emMaxFault, etErr, iuOK, 0, INTERNFAULT}
+struct ErrMsg LaTeXMsgs[emMaxFault + 1] = {
+    ERRMSGS {emMaxFault, etErr, iuOK, 0, INTERNFAULT}
 };
 
 #define istex(c)        (isalpha(c) || (AtLetter && (c == '@')))
@@ -94,7 +92,7 @@ NEWBUF(Buf, BUFSIZ);
 NEWBUF(CmdBuffer, BUFSIZ);
 NEWBUF(ArgBuffer, BUFSIZ);
 
-static enum ErrNum PerformCommand(const char * Cmd, char * Arg);
+static enum ErrNum PerformCommand(const char *Cmd, char *Arg);
 
 #ifdef isdigit
 CTYPE(isdigit)
@@ -118,16 +116,16 @@ static const char *GetLTXToken(const char *Src, char *Dest)
 {
     int Char;
 
-    if(Src && *Src)
+    if (Src && *Src)
     {
-        if(*Src == '\\')
+        if (*Src == '\\')
         {
             *Dest++ = *Src++;
             Char = *Dest++ = *Src++;
 
-            if(istex(Char))
+            if (istex(Char))
             {
-                while(istex(Char))
+                while (istex(Char))
                     Char = *Dest++ = *Src++;
 
                 Src--;
@@ -142,7 +140,7 @@ static const char *GetLTXToken(const char *Src, char *Dest)
     else
         Src = NULL;
 
-    return(Src);
+    return (Src);
 }
 
 
@@ -168,26 +166,24 @@ static const char *GetLTXToken(const char *Src, char *Dest)
 #define GET_STRIP_TOKEN 257
 
 static const char *GetLTXArg(const char *SrcBuf,
-                        char * OrigDest,
-                        const int Until,
-                        struct WordList *wl)
-
+                             char *OrigDest, const int Until,
+                             struct WordList *wl)
 {
     const char *Retval;
-	const char *TmpPtr;
-	char *Dest = OrigDest;
-    unsigned long       DeliCnt = 0;
+    const char *TmpPtr;
+    char *Dest = OrigDest;
+    unsigned long DeliCnt = 0;
 
     *Dest = 0;
     TmpPtr = SrcBuf;
 
-    switch(Until)
+    switch (Until)
     {
     case GET_STRIP_TOKEN:
     case GET_TOKEN:
-        while((Retval = GetLTXToken(TmpPtr, Dest)))
+        while ((Retval = GetLTXToken(TmpPtr, Dest)))
         {
-            switch(*Dest)
+            switch (*Dest)
             {
             case '{':
                 DeliCnt++;
@@ -198,11 +194,11 @@ static const char *GetLTXArg(const char *SrcBuf,
             Dest += Retval - TmpPtr;
             TmpPtr = Retval;
 
-            if(!DeliCnt || ((DeliCnt == 1) && wl && HasWord(Dest, wl)))
+            if (!DeliCnt || ((DeliCnt == 1) && wl && HasWord(Dest, wl)))
                 break;
         }
 
-        if(Retval && (*OrigDest == '{') && (Until == GET_STRIP_TOKEN))
+        if (Retval && (*OrigDest == '{') && (Until == GET_STRIP_TOKEN))
         {
             strcpy(OrigDest, OrigDest + 1);
             OrigDest[strlen(OrigDest) - 1] = 0;
@@ -210,49 +206,49 @@ static const char *GetLTXArg(const char *SrcBuf,
         break;
     default:
         DeliCnt = TRUE;
-        while((Retval = GetLTXArg(TmpPtr, Dest, GET_TOKEN, NULL)))
+        while ((Retval = GetLTXArg(TmpPtr, Dest, GET_TOKEN, NULL)))
         {
-            if(*Dest == Until)
+            if (*Dest == Until)
                 DeliCnt = FALSE;
 
             Dest += Retval - TmpPtr;
             TmpPtr = Retval;
 
-            if(!DeliCnt)
+            if (!DeliCnt)
                 break;
         }
         break;
     }
     *Dest = 0;
 
-    return(Retval);
+    return (Retval);
 }
 
 
-static char * MakeCpy(void)
+static char *MakeCpy(void)
 {
-    if(!LineCpy)
+    if (!LineCpy)
         LineCpy = strdup(RealBuf);
 
-    if(!LineCpy)
+    if (!LineCpy)
         PrintPrgErr(pmStrDupErr);
 
-    return(LineCpy);
+    return (LineCpy);
 }
 
-static char * PreProcess(void)
+static char *PreProcess(void)
 {
     /* First, kill comments. */
 
-    char * TmpPtr;
+    char *TmpPtr;
 
     strcpy(Buf, RealBuf);
 
     TmpPtr = Buf;
 
-    while((TmpPtr = strchr(TmpPtr, '%')))
+    while ((TmpPtr = strchr(TmpPtr, '%')))
     {
-        if(TmpPtr[-1] != '\\')
+        if (TmpPtr[-1] != '\\')
         {
             PSERR(TmpPtr - Buf, 1, emComment);
             *TmpPtr = 0;
@@ -260,25 +256,24 @@ static char * PreProcess(void)
         }
         TmpPtr++;
     }
-    return(Buf);
+    return (Buf);
 }
 
 /*
  * Interpret environments
  */
 
-static void PerformEnv(char * Env, int Begin)
+static void PerformEnv(char *Env, int Begin)
 {
-static
-    char   VBStr [BUFSIZ] = "";
+    static char VBStr[BUFSIZ] = "";
 
-    if(HasWord(Env, &MathEnvir))
+    if (HasWord(Env, &MathEnvir))
     {
         MathMode += Begin ? 1 : -1;
         MathMode = max(MathMode, 0);
     }
 
-    if(Begin && HasWord(Env, &VerbEnvir))
+    if (Begin && HasWord(Env, &VerbEnvir))
     {
         VerbMode = TRUE;
         strcpy(VBStr, "\\end{");
@@ -288,12 +283,12 @@ static
     }
 }
 
-static char * SkipVerb(void)
+static char *SkipVerb(void)
 {
-    char * TmpPtr = BufPtr;
+    char *TmpPtr = BufPtr;
     int TmpC;
 
-    if(VerbMode && BufPtr)
+    if (VerbMode && BufPtr)
     {
         if (!(TmpPtr = strstr(BufPtr, VerbStr)))
             BufPtr = &BufPtr[strlen(BufPtr)];
@@ -302,11 +297,11 @@ static char * SkipVerb(void)
             VerbMode = FALSE;
             BufPtr = &TmpPtr[strlen(VerbStr)];
             SKIP_AHEAD(BufPtr, TmpC, LATEX_SPACE(TmpC));
-            if(*BufPtr)
+            if (*BufPtr)
                 PSERR(BufPtr - Buf, strlen(BufPtr) - 2, emIgnoreText);
         }
     }
-    return(TmpPtr);
+    return (TmpPtr);
 }
 
 #define CHECKDOTS(wordlist, dtval) \
@@ -322,13 +317,13 @@ for(i = 0; (i < wordlist.Stack.Used) && !(Back && Front);  i++) \
  * Checks that the dots are correct
  */
 
-static enum DotLevel CheckDots(char * PrePtr, char * PstPtr)
+static enum DotLevel CheckDots(char *PrePtr, char *PstPtr)
 {
     unsigned long i;
     int TmpC;
     enum DotLevel Front = dtUnknown, Back = dtUnknown;
 
-    if(MathMode)
+    if (MathMode)
     {
         PrePtr--;
 #define SKIP_EMPTIES(macro, ptr) macro(ptr, TmpC, \
@@ -343,17 +338,17 @@ static enum DotLevel CheckDots(char * PrePtr, char * PstPtr)
         {
             CHECKDOTS(LowDots, dtLDots);
         }
-        return(Front & Back);
+        return (Front & Back);
     }
     else
-        return(dtLDots);
+        return (dtLDots);
 
 }
 
-static char * Dot2Str(enum DotLevel dl)
+static char *Dot2Str(enum DotLevel dl)
 {
-    char * Retval = INTERNFAULT;
-    switch(dl)
+    char *Retval = INTERNFAULT;
+    switch (dl)
     {
     case dtUnknown:
         Retval = "\\cdots or \\ldots";
@@ -379,26 +374,26 @@ static void WipeArgument(const char *Cmd, char *CmdPtr)
 {
     unsigned long CmdLen = strlen(Cmd);
     const char *Format;
-	const char *TmpPtr;
+    const char *TmpPtr;
     int c, TmpC;
 
-    if(Cmd && *Cmd)
+    if (Cmd && *Cmd)
     {
         TmpPtr = &CmdPtr[CmdLen];
         Format = &Cmd[CmdLen + 1];
 
-        while(TmpPtr && *TmpPtr && *Format)
+        while (TmpPtr && *TmpPtr && *Format)
         {
-            switch(c = *Format++)
+            switch (c = *Format++)
             {
             case '*':
                 SKIP_AHEAD(TmpPtr, TmpC, LATEX_SPACE(TmpC));
-                if(*TmpPtr == '*')
+                if (*TmpPtr == '*')
                     TmpPtr++;
                 break;
             case '[':
                 SKIP_AHEAD(TmpPtr, TmpC, LATEX_SPACE(TmpC));
-                if(*TmpPtr == '[')
+                if (*TmpPtr == '[')
                     TmpPtr = GetLTXArg(TmpPtr, ArgBuffer, ']', NULL);
                 break;
             case '{':
@@ -413,7 +408,7 @@ static void WipeArgument(const char *Cmd, char *CmdPtr)
             }
         }
 
-        if(TmpPtr)
+        if (TmpPtr)
             strwrite(CmdPtr, VerbClear, TmpPtr - CmdPtr);
         else
             strxrep(CmdPtr, "()[]{}", *VerbClear);
@@ -425,21 +420,21 @@ static void WipeArgument(const char *Cmd, char *CmdPtr)
  *
  */
 
-static void CheckItal(const char * Cmd)
+static void CheckItal(const char *Cmd)
 {
     int TmpC;
-    char * TmpPtr;
-    if(HasWord(Cmd, &NonItalic))
+    char *TmpPtr;
+    if (HasWord(Cmd, &NonItalic))
         ItState = itOff;
-    else if(HasWord(Cmd, &Italic))
+    else if (HasWord(Cmd, &Italic))
         ItState = itOn;
-    else if(HasWord(Cmd, &ItalCmd))
+    else if (HasWord(Cmd, &ItalCmd))
     {
         TmpPtr = BufPtr;
         SKIP_AHEAD(TmpPtr, TmpC, LATEX_SPACE(TmpC));
-        if(*TmpPtr == '{')
+        if (*TmpPtr == '{')
         {
-            ItFlag = ItState? efItal : efNoItal;
+            ItFlag = ItState ? efItal : efNoItal;
             ItState = itOn;
         }
     }
@@ -450,14 +445,13 @@ static void CheckItal(const char * Cmd)
  *
  */
 
-static void PerformBigCmd(char * CmdPtr)
+static void PerformBigCmd(char *CmdPtr)
 {
     const char *TmpPtr;
-	const char *ArgEndPtr;
-    unsigned long   CmdLen = strlen(CmdBuffer);
-    int     TmpC;
-    enum ErrNum
-            ErrNum;
+    const char *ArgEndPtr;
+    unsigned long CmdLen = strlen(CmdBuffer);
+    int TmpC;
+    enum ErrNum ErrNum;
     struct ErrInfo *ei;
 
     enum DotLevel dotlev, realdl = dtUnknown;
@@ -469,17 +463,17 @@ static void PerformBigCmd(char * CmdPtr)
 
     /* Kill `\verb' commands */
 
-    if(WipeVerb)
+    if (WipeVerb)
     {
-        if(!strcmp(CmdBuffer, "\\verb"))
+        if (!strcmp(CmdBuffer, "\\verb"))
         {
-            if(*BufPtr && (*BufPtr!='*' || BufPtr[1]))
+            if (*BufPtr && (*BufPtr != '*' || BufPtr[1]))
             {
-				if (*BufPtr=='*')
-					TmpPtr = strchr(&BufPtr[2], BufPtr[1]);
-				else
-					TmpPtr = strchr(&BufPtr[1], *BufPtr);
-                if(TmpPtr)
+                if (*BufPtr == '*')
+                    TmpPtr = strchr(&BufPtr[2], BufPtr[1]);
+                else
+                    TmpPtr = strchr(&BufPtr[1], *BufPtr);
+                if (TmpPtr)
                     strwrite(CmdPtr, VerbClear, (TmpPtr - CmdPtr) + 1);
                 else
                     PSERR(CmdPtr - Buf, 5, emNoArgFound);
@@ -487,62 +481,58 @@ static void PerformBigCmd(char * CmdPtr)
         }
     }
 
-    if(HasWord(CmdBuffer, &IJAccent))
+    if (HasWord(CmdBuffer, &IJAccent))
     {
-        if(ArgEndPtr)
+        if (ArgEndPtr)
         {
             TmpPtr = ArgBuffer;
-            SKIP_AHEAD(TmpPtr, TmpC, TmpC == '{'); /* } */
+            SKIP_AHEAD(TmpPtr, TmpC, TmpC == '{');      /* } */
 
-            if((*TmpPtr == 'i') || (*TmpPtr == 'j'))
-                PrintError(CurStkName(&InputStack),  RealBuf,
+            if ((*TmpPtr == 'i') || (*TmpPtr == 'j'))
+                PrintError(CurStkName(&InputStack), RealBuf,
                            CmdPtr - Buf,
                            (long) strlen(CmdBuffer), Line,
-                           emAccent, CmdBuffer,
-                           *TmpPtr, MathMode? "math" : "");
+                           emAccent, CmdBuffer, *TmpPtr,
+                           MathMode ? "math" : "");
         }
         else
             PSERR(CmdPtr - Buf, CmdLen, emNoArgFound);
     }
 
-    if(HasWord(CmdBuffer, &NotPreSpaced) &&
-       isspace(CmdPtr[-1]))
+    if (HasWord(CmdBuffer, &NotPreSpaced) && isspace(CmdPtr[-1]))
         PSERRA(CmdPtr - Buf - 1, 1, emRemPSSpace, CmdBuffer);
 
-    if((TmpPtr = HasWord(CmdBuffer, &NoCharNext)))
+    if ((TmpPtr = HasWord(CmdBuffer, &NoCharNext)))
     {
-	char * BPtr = BufPtr;
+        char *BPtr = BufPtr;
 
-	TmpPtr += strlen(TmpPtr) + 1;
-	SKIP_AHEAD(BPtr, TmpC, LATEX_SPACE(TmpC));
+        TmpPtr += strlen(TmpPtr) + 1;
+        SKIP_AHEAD(BPtr, TmpC, LATEX_SPACE(TmpC));
 
-	if(strchr(TmpPtr, *BPtr))
-	{
-	    PSERR2(CmdPtr - Buf, CmdLen, emNoCharMean, 
-		  CmdBuffer, *BPtr);
-	}
+        if (strchr(TmpPtr, *BPtr))
+        {
+            PSERR2(CmdPtr - Buf, CmdLen, emNoCharMean, CmdBuffer, *BPtr);
+        }
     }
 
-    if(!strcmp(CmdBuffer, "\\begin") ||
-       !strcmp(CmdBuffer, "\\end"))
+    if (!strcmp(CmdBuffer, "\\begin") || !strcmp(CmdBuffer, "\\end"))
     {
-        if(ArgEndPtr)
+        if (ArgEndPtr)
         {
-            if(!strcmp(ArgBuffer, "document"))
+            if (!strcmp(ArgBuffer, "document"))
                 InHeader = FALSE;
 
-            if(CmdBuffer[1] == 'b')
+            if (CmdBuffer[1] == 'b')
             {
                 if (!(PushErr(ArgBuffer, Line, CmdPtr - Buf,
-                            CmdLen, MakeCpy(),
-                            &EnvStack)))
+                              CmdLen, MakeCpy(), &EnvStack)))
                     PrintPrgErr(pmNoStackMem);
             }
             else
             {
-                if((ei = PopErr(&EnvStack)))
+                if ((ei = PopErr(&EnvStack)))
                 {
-                    if(strcmp(ei->Data, ArgBuffer))
+                    if (strcmp(ei->Data, ArgBuffer))
                         PrintError(CurStkName(&InputStack), RealBuf,
                                    CmdPtr - Buf,
                                    (long) strlen(CmdBuffer),
@@ -558,35 +548,36 @@ static void PerformBigCmd(char * CmdPtr)
             }
 
             PerformEnv(ArgBuffer, (int) CmdBuffer[1] == 'b');
-        } else
+        }
+        else
             PSERR(CmdPtr - Buf, CmdLen, emNoArgFound);
     }
 
     CheckItal(CmdBuffer);
 
-    if((ErrNum = PerformCommand(CmdBuffer, BufPtr)))
+    if ((ErrNum = PerformCommand(CmdBuffer, BufPtr)))
         PSERR(CmdPtr - Buf, CmdLen, ErrNum);
 
-    if(!strcmp(CmdBuffer, "\\cdots"))
+    if (!strcmp(CmdBuffer, "\\cdots"))
         realdl = dtCDots;
 
-    if(!strcmp(CmdBuffer, "\\ldots"))
+    if (!strcmp(CmdBuffer, "\\ldots"))
         realdl = dtLDots;
 
-    if(!strcmp(CmdBuffer, "\\dots"))
+    if (!strcmp(CmdBuffer, "\\dots"))
         realdl = dtLDots;
 
-    if(realdl != dtUnknown)
+    if (realdl != dtUnknown)
     {
         dotlev = CheckDots(CmdPtr, BufPtr);
-        if(dotlev && (dotlev != realdl))
+        if (dotlev && (dotlev != realdl))
         {
             TmpPtr = Dot2Str(dotlev);
             PSERRA(CmdPtr - Buf, CmdLen, emEllipsis, TmpPtr);
         }
     }
 
-    if((TmpPtr = HasWord(CmdBuffer, &WipeArg)))
+    if ((TmpPtr = HasWord(CmdBuffer, &WipeArg)))
         WipeArgument(TmpPtr, CmdPtr);
 }
 
@@ -598,26 +589,24 @@ static void PerformBigCmd(char * CmdPtr)
  * AbbrevCase into Abbrev.
  */
 
-static void CheckAbbrevs(const char * Buffer)
+static void CheckAbbrevs(const char *Buffer)
 {
     long i;
     char *TmpPtr;
-	const char *AbbPtr;
+    const char *AbbPtr;
 
-    if(INUSE(emInterWord))
+    if (INUSE(emInterWord))
     {
         TmpPtr = TmpBuffer + Abbrev.MaxLen + 2;
         *TmpPtr = 0;
         AbbPtr = Buffer;
 
-        for(i = Abbrev.MaxLen;
-            i >= 0;
-            i--)
+        for (i = Abbrev.MaxLen; i >= 0; i--)
         {
             *--TmpPtr = *AbbPtr--;
-            if(!isalpha(*AbbPtr) && HasWord(TmpPtr, &Abbrev))
+            if (!isalpha(*AbbPtr) && HasWord(TmpPtr, &Abbrev))
                 PSERR(Buffer - Buf + 1, 1, emInterWord);
-            if(!*AbbPtr)
+            if (!*AbbPtr)
                 break;
         }
     }
@@ -633,18 +622,18 @@ static void CheckRest(void)
 {
     unsigned long Count;
     long CmdLen;
-    char *  UsrPtr;
+    char *UsrPtr;
 
     /* Search for user-specified warnings */
 
-    if(INUSE(emUserWarn))
+    if (INUSE(emUserWarn))
     {
         strcpy(TmpBuffer, Buf);
-	FORWL(Count, UserWarn)
+        FORWL(Count, UserWarn)
         {
-            for(UsrPtr = TmpBuffer;
-                (UsrPtr = strstr(UsrPtr, UserWarn.Stack.Data[Count]));
-                UsrPtr++)
+            for (UsrPtr = TmpBuffer;
+                 (UsrPtr = strstr(UsrPtr, UserWarn.Stack.Data[Count]));
+                 UsrPtr++)
             {
                 CmdLen = strlen(UserWarn.Stack.Data[Count]);
                 PSERR(UsrPtr - TmpBuffer, CmdLen, emUserWarn);
@@ -654,11 +643,11 @@ static void CheckRest(void)
 
         strlwr(TmpBuffer);
 
-	FORWL(Count, UserWarnCase)
+        FORWL(Count, UserWarnCase)
         {
-            for(UsrPtr = TmpBuffer;
-                (UsrPtr = strstr(UsrPtr, UserWarnCase.Stack.Data[Count]));
-                UsrPtr++)
+            for (UsrPtr = TmpBuffer;
+                 (UsrPtr = strstr(UsrPtr, UserWarnCase.Stack.Data[Count]));
+                 UsrPtr++)
             {
                 CmdLen = strlen(UserWarnCase.Stack.Data[Count]);
                 PSERR(UsrPtr - TmpBuffer, CmdLen, emUserWarn);
@@ -674,45 +663,45 @@ static void CheckRest(void)
 
 static void CheckDash(void)
 {
-    char * TmpPtr;
+    char *TmpPtr;
     int TmpC;
     long TmpCount, Len;
     struct WordList *wl = NULL;
-    unsigned long  i;
+    unsigned long i;
     int Errored;
-    char * PrePtr = &BufPtr[-2];
+    char *PrePtr = &BufPtr[-2];
 
     TmpPtr = BufPtr;
     SKIP_AHEAD(TmpPtr, TmpC, TmpC == '-');
     TmpCount = TmpPtr - BufPtr + 1;
 
-    if(MathMode)
+    if (MathMode)
     {
-        if(TmpCount > 1)
+        if (TmpCount > 1)
             HERE(TmpCount, emWrongDash);
     }
     else
     {
-        if(LATEX_SPACE(*PrePtr) && LATEX_SPACE(*TmpPtr))
+        if (LATEX_SPACE(*PrePtr) && LATEX_SPACE(*TmpPtr))
             wl = &WordDash;
-        if(isdigit(*PrePtr) && isdigit(*TmpPtr))
+        if (isdigit(*PrePtr) && isdigit(*TmpPtr))
             wl = &NumDash;
-        if(isalpha(*PrePtr) && isalpha(*TmpPtr))
+        if (isalpha(*PrePtr) && isalpha(*TmpPtr))
             wl = &HyphDash;
 
-        if(wl)
+        if (wl)
         {
             Errored = TRUE;
-	    FORWL(i, *wl)
+            FORWL(i, *wl)
             {
                 Len = strtol(wl->Stack.Data[i], NULL, 0);
-                if(TmpCount == Len)
+                if (TmpCount == Len)
                 {
                     Errored = FALSE;
                     break;
                 }
             }
-            if(Errored)
+            if (Errored)
                 HERE(TmpCount, emWrongDash);
         }
     }
@@ -725,72 +714,70 @@ static void CheckDash(void)
 
 static void HandleBracket(int Char)
 {
-    unsigned long BrOffset;  /* Offset into BrOrder array */
+    unsigned long BrOffset;     /* Offset into BrOrder array */
     struct ErrInfo *ei;
-    int    TmpC, Match;
-    char   ABuf[2], BBuf[2];
-    char * TmpPtr;
+    int TmpC, Match;
+    char ABuf[2], BBuf[2];
+    char *TmpPtr;
 
     AddBracket(Char);
 
-    if((BrOffset = BrackIndex(Char)) != ~0UL)
+    if ((BrOffset = BrackIndex(Char)) != ~0UL)
     {
-        if(BrOffset & 1)      /* Closing bracket of some sort */
+        if (BrOffset & 1)       /* Closing bracket of some sort */
         {
-            if((ei = PopErr(&CharStack)))
+            if ((ei = PopErr(&CharStack)))
             {
                 Match = MatchBracket(*(ei->Data));
-                if(ei->Flags & efNoItal)
+                if (ei->Flags & efNoItal)
                 {
-                    if(ItState == itOn)
+                    if (ItState == itOn)
                     {
                         TmpPtr = BufPtr;
                         SKIP_AHEAD(TmpPtr, TmpC, TmpC == '}');
 
-                        if(!strchr(LTX_SmallPunc, *TmpPtr))
+                        if (!strchr(LTX_SmallPunc, *TmpPtr))
                             HERE(1, emNoItFound);
                     }
 
                     ItState = FALSE;
                 }
-                else if(ei->Flags & efItal)
+                else if (ei->Flags & efItal)
                     ItState = TRUE;
                 FreeErrInfo(ei);
             }
             else
                 Match = 0;
 
-            if(Match != Char)
+            if (Match != Char)
             {
                 ABuf[0] = Match;
                 BBuf[0] = Char;
                 ABuf[1] = BBuf[1] = 0;
-                if(Match)
+                if (Match)
                     PrintError(CurStkName(&InputStack), RealBuf,
-                               BufPtr - Buf - 1, 1, Line,
-                               emExpectC,
+                               BufPtr - Buf - 1, 1, Line, emExpectC,
                                ABuf, BBuf);
                 else
                     HEREA(1, emSoloC, BBuf);
             }
 
         }
-        else         /* Opening bracket of some sort  */
+        else                    /* Opening bracket of some sort  */
         {
-            if((ei = PushChar(Char, Line, BufPtr - Buf - 1,
-                         &CharStack, MakeCpy())))
+            if ((ei = PushChar(Char, Line, BufPtr - Buf - 1,
+                               &CharStack, MakeCpy())))
             {
-                if(Char == '{')
+                if (Char == '{')
                 {
-                    switch(ItFlag)
+                    switch (ItFlag)
                     {
                     default:
                         ei->Flags = ItFlag;
                         ItFlag = efNone;
                         break;
                     case efNone:
-                        ei->Flags |= ItState?
-                                     efItal : efNoItal;
+                        ei->Flags |= ItState ? efItal : efNoItal;
                     }
                 }
             }
@@ -808,28 +795,26 @@ static void HandleBracket(int Char)
  * is supplied for error printing.
  */
 
-int FindErr(const char * _RealBuf, const unsigned long _Line)
+int FindErr(const char *_RealBuf, const unsigned long _Line)
 {
-  char *CmdPtr;   /* We'll have to copy each command out. */
-  char *PrePtr;   /* Ptr to char in front of command, NULL if
-                   * the cmd appears as the first character  */
-  char *TmpPtr;   /* Temporary pointer */
-  char *ErrPtr;   /* Ptr to where an error started */
+    char *CmdPtr;               /* We'll have to copy each command out. */
+    char *PrePtr;               /* Ptr to char in front of command, NULL if
+                                 * the cmd appears as the first character  */
+    char *TmpPtr;               /* Temporary pointer */
+    char *ErrPtr;               /* Ptr to where an error started */
 
-  int
-    TmpC,     /* Just a temp var used throughout the proc.*/
-    MatchC,
-    Char;     /* Char. currently processed */
-  unsigned long CmdLen;   /* Length of misc. things */
-  int MixingQuotes;
+    int TmpC,                   /* Just a temp var used throughout the proc. */
+      MatchC, Char;             /* Char. currently processed */
+    unsigned long CmdLen;       /* Length of misc. things */
+    int MixingQuotes;
 
-  int (*pstcb)(int c);
+    int (*pstcb) (int c);
 
-  enum DotLevel dotlev;
+    enum DotLevel dotlev;
 
     LineCpy = NULL;
 
-    if(_RealBuf)
+    if (_RealBuf)
     {
         RealBuf = _RealBuf;
         Line = _Line;
@@ -838,23 +823,23 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
 
         BufPtr = SkipVerb();
 
-        while(BufPtr && *BufPtr)
+        while (BufPtr && *BufPtr)
         {
             PrePtr = BufPtr - 1;
-	    Char = *BufPtr++;
-	    if(isspace(Char))
-		Char = ' ';
+            Char = *BufPtr++;
+            if (isspace(Char))
+                Char = ' ';
 
-            switch(Char)
+            switch (Char)
             {
             case '~':
                 TmpPtr = NULL;
-                if(isspace(*PrePtr))
+                if (isspace(*PrePtr))
                     TmpPtr = PrePtr;
-                else if(isspace(*BufPtr))
+                else if (isspace(*BufPtr))
                     TmpPtr = BufPtr;
 
-                if(TmpPtr)
+                if (TmpPtr)
                     PSERR(TmpPtr - Buf, 1, emDblSpace);
                 break;
 
@@ -863,36 +848,72 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
                 TmpPtr = PrePtr;
 
                 SKIP_BACK(TmpPtr, TmpC,
-                    (LATEX_SPACE(TmpC) || strchr("{}$", TmpC)));
+                          (LATEX_SPACE(TmpC) || strchr("{}$", TmpC)));
 
-                if(isdigit(*TmpPtr))
+                if (isdigit(*TmpPtr))
                 {
                     TmpPtr = BufPtr;
 
                     SKIP_AHEAD(TmpPtr, TmpC,
-                        (LATEX_SPACE(TmpC) || strchr("{}$", TmpC)));
+                               (LATEX_SPACE(TmpC) || strchr("{}$", TmpC)));
 
-                    if(isdigit(*TmpPtr))
+                    if (isdigit(*TmpPtr))
                         HERE(1, emUseTimes);
                 }
                 /* FALLTHRU */
                 /* CTYPE: isalpha() */
-            case 'a':  case 'b':  case 'c':  case 'd':
-            case 'e':  case 'f':  case 'g':  case 'h':
-            case 'i':  case 'j':  case 'k':  case 'l':
-            case 'm':  case 'n':  case 'o':  case 'p':
-            case 'q':  case 'r':  case 's':  case 't':
-            case 'u':  case 'v':  case 'w':  /* case 'x': */
-            case 'y':  case 'z':
+            case 'a':
+            case 'b':
+            case 'c':
+            case 'd':
+            case 'e':
+            case 'f':
+            case 'g':
+            case 'h':
+            case 'i':
+            case 'j':
+            case 'k':
+            case 'l':
+            case 'm':
+            case 'n':
+            case 'o':
+            case 'p':
+            case 'q':
+            case 'r':
+            case 's':
+            case 't':
+            case 'u':
+            case 'v':
+            case 'w':          /* case 'x': */
+            case 'y':
+            case 'z':
 
-            case 'A':  case 'B':  case 'C':  case 'D':
-            case 'E':  case 'F':  case 'G':  case 'H':
-            case 'I':  case 'J':  case 'K':  case 'L':
-            case 'M':  case 'N':  case 'O':  case 'P':
-            case 'Q':  case 'R':  case 'S':  case 'T':
-            case 'U':  case 'V':  case 'W':  /* case 'X': */
-            case 'Y':  case 'Z':
-                if(!isalpha(*PrePtr) && (*PrePtr != '\\') && MathMode)
+            case 'A':
+            case 'B':
+            case 'C':
+            case 'D':
+            case 'E':
+            case 'F':
+            case 'G':
+            case 'H':
+            case 'I':
+            case 'J':
+            case 'K':
+            case 'L':
+            case 'M':
+            case 'N':
+            case 'O':
+            case 'P':
+            case 'Q':
+            case 'R':
+            case 'S':
+            case 'T':
+            case 'U':
+            case 'V':
+            case 'W':          /* case 'X': */
+            case 'Y':
+            case 'Z':
+                if (!isalpha(*PrePtr) && (*PrePtr != '\\') && MathMode)
                 {
                     TmpPtr = BufPtr;
                     CmdPtr = CmdBuffer;
@@ -900,22 +921,23 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
                     {
                         *CmdPtr++ = Char;
                         Char = *TmpPtr++;
-                    } while(isalpha(Char));
+                    }
+                    while (isalpha(Char));
 
                     *CmdPtr = 0;
 
-                    if(HasWord(CmdBuffer, &MathRoman))
+                    if (HasWord(CmdBuffer, &MathRoman))
                         HEREA(strlen(CmdBuffer), emWordCommand, CmdBuffer);
                 }
 
                 break;
-	    case ' ':
+            case ' ':
                 TmpPtr = BufPtr;
                 SKIP_AHEAD(TmpPtr, TmpC, LATEX_SPACE(TmpC));
 
-                if(*TmpPtr && *PrePtr)
+                if (*TmpPtr && *PrePtr)
                 {
-                    if((TmpPtr - BufPtr) > 0)
+                    if ((TmpPtr - BufPtr) > 0)
                     {
                         HERE(TmpPtr - BufPtr + 1, emMultiSpace);
                         strwrite(BufPtr, VerbClear, TmpPtr - BufPtr - 1);
@@ -924,7 +946,7 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
                 break;
 
             case '.':
-                if((Char == *BufPtr) && (Char == BufPtr[1]))
+                if ((Char == *BufPtr) && (Char == BufPtr[1]))
                 {
                     dotlev = CheckDots(&PrePtr[1], &BufPtr[2]);
                     TmpPtr = Dot2Str(dotlev);
@@ -935,13 +957,13 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
 
                 TmpPtr = BufPtr;
                 SKIP_AHEAD(TmpPtr, TmpC, strchr(LTX_GenPunc, TmpC));
-                if(LATEX_SPACE(*TmpPtr))
+                if (LATEX_SPACE(*TmpPtr))
                 {
-                    if(!isupper(*PrePtr) && (*PrePtr != '@') &&
-                       (*PrePtr != '.'))
+                    if (!isupper(*PrePtr) && (*PrePtr != '@') &&
+                        (*PrePtr != '.'))
                     {
                         SKIP_AHEAD(TmpPtr, TmpC, LATEX_SPACE(TmpC));
-                        if(islower(*TmpPtr))
+                        if (islower(*TmpPtr))
                             PSERR(BufPtr - Buf, 1, emInterWord);
                         else
                             CheckAbbrevs(&BufPtr[-1]);
@@ -949,43 +971,45 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
                 }
 
                 /* FALLTHRU */
-            case ':': case '?': case '!': case ';':
+            case ':':
+            case '?':
+            case '!':
+            case ';':
                 /* Regexp: "[A-Z][A-Z][.!?:;]\s+" */
 
-                if(isspace(*BufPtr) && isupper(*PrePtr) &&
-                   (isupper(PrePtr[-1]) || (Char != '.')))
+                if (isspace(*BufPtr) && isupper(*PrePtr) &&
+                    (isupper(PrePtr[-1]) || (Char != '.')))
                     HERE(1, emInterSent);
 
                 /* FALLTHRU */
             case ',':
-                if(isspace(*PrePtr) && 
-		   !(isdigit(*BufPtr) && 
-		     ((BufPtr[-1] == '.') || (BufPtr[-1] == ','))))
+                if (isspace(*PrePtr) &&
+                    !(isdigit(*BufPtr) &&
+                      ((BufPtr[-1] == '.') || (BufPtr[-1] == ','))))
                     PSERR(PrePtr - Buf, 1, emSpacePunct);
 
-                if(MathMode &&
-                   (((*BufPtr == '$') && (BufPtr[1] != '$')) ||
-                    (!strafter(BufPtr, "\\)"))))
+                if (MathMode &&
+                    (((*BufPtr == '$') && (BufPtr[1] != '$')) ||
+                     (!strafter(BufPtr, "\\)"))))
                     HEREA(1, emPunctMath, "outside inner");
 
-                if(!MathMode &&
-                   (((*PrePtr == '$') && (PrePtr[-1] == '$')) ||
-                    (!strinfront(PrePtr, "\\]"))))
+                if (!MathMode &&
+                    (((*PrePtr == '$') && (PrePtr[-1] == '$')) ||
+                     (!strinfront(PrePtr, "\\]"))))
                     HEREA(1, emPunctMath, "inside display");
 
                 break;
             case '\'':
             case '`':
-                if((Char == *BufPtr) && (Char == BufPtr[1]))
+                if ((Char == *BufPtr) && (Char == BufPtr[1]))
                 {
                     PrintError(CurStkName(&InputStack), RealBuf,
                                BufPtr - Buf - 1, 3, Line,
                                emThreeQuotes,
-                               Char, Char, Char,
-                               Char, Char, Char);
+                               Char, Char, Char, Char, Char, Char);
                 }
 
-                if(Char == '\'')
+                if (Char == '\'')
                     MatchC = '`';
                 else
                     MatchC = '\'';
@@ -995,48 +1019,50 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
 
                 MixingQuotes = FALSE;
 
-                if((*TmpPtr == MatchC) || (*TmpPtr == '\"') ||
-                   (*TmpPtr == '´'))
+                if ((*TmpPtr == MatchC) || (*TmpPtr == '\"') ||
+                    (*TmpPtr == '´'))
                     MixingQuotes = TRUE;
 
                 SKIP_AHEAD(TmpPtr, TmpC, strchr("`\'\"´", TmpC));
 
-                if(MixingQuotes)
+                if (MixingQuotes)
                     HERE(TmpPtr - BufPtr + 1, emQuoteMix);
 
-                switch(Char)
+                switch (Char)
                 {
                 case '\'':
-                    if(isalpha(*TmpPtr) &&
-                       (strchr(LTX_GenPunc, *PrePtr) || isspace(*PrePtr)))
+                    if (isalpha(*TmpPtr) &&
+                        (strchr(LTX_GenPunc, *PrePtr) || isspace(*PrePtr)))
                         HERE(TmpPtr - BufPtr + 1, emBeginQ);
 
                     /* Now check quote style */
 #define ISPUNCT(ptr) (strchr(LTX_GenPunc, *ptr) && (ptr[-1] != '\\'))
 
-		    /* We ignore all single words/abbreviations in quotes */
+                    /* We ignore all single words/abbreviations in quotes */
 
-		    {
-			char * WordPtr = PrePtr;
-			SKIP_BACK(WordPtr, TmpC, (isalnum(TmpC) ||
-						  strchr(LTX_GenPunc, TmpC)));
-			
-			if(*WordPtr != '`')
-			{
-			    if(*PrePtr && (Quote != quTrad) && ISPUNCT(PrePtr))
-				PSERRA(PrePtr - Buf, 1, emQuoteStyle, 
-				       "in front of");
-			    
-			    if(*TmpPtr && (Quote != quLogic) && 
-			       ISPUNCT(TmpPtr))
-				PSERRA(TmpPtr - Buf, 1, emQuoteStyle, "after");
-			}
-		    }
+                    {
+                        char *WordPtr = PrePtr;
+                        SKIP_BACK(WordPtr, TmpC, (isalnum(TmpC) ||
+                                                  strchr(LTX_GenPunc, TmpC)));
+
+                        if (*WordPtr != '`')
+                        {
+                            if (*PrePtr && (Quote != quTrad)
+                                && ISPUNCT(PrePtr))
+                                PSERRA(PrePtr - Buf, 1,
+                                       emQuoteStyle, "in front of");
+
+                            if (*TmpPtr && (Quote != quLogic)
+                                && ISPUNCT(TmpPtr))
+                                PSERRA(TmpPtr - Buf, 1,
+                                       emQuoteStyle, "after");
+                        }
+                    }
 
                     break;
                 case '`':
-                    if(isalpha(*PrePtr) &&
-                       (strchr(LTX_GenPunc, *TmpPtr) || isspace(*TmpPtr)))
+                    if (isalpha(*PrePtr) &&
+                        (strchr(LTX_GenPunc, *TmpPtr) || isspace(*TmpPtr)))
                         HERE(TmpPtr - BufPtr + 1, emEndQ);
                     break;
                 }
@@ -1046,34 +1072,34 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
                 HERE(1, emUseQuoteLiga);
                 break;
 
-		/* One of these are unnecessary, but what the heck... */
-            case 180: /* ´. NOTE: '\xb4' gets converted to - something*/
-	    case ~(0xff &(~180)):  /* This yields 0xff...fb4 in */
-				   /* arbitrary precision. */
+                /* One of these are unnecessary, but what the heck... */
+            case 180:          /* ´. NOTE: '\xb4' gets converted to - something */
+            case ~(0xff & (~180)):     /* This yields 0xff...fb4 in */
+                /* arbitrary precision. */
 
                 HERE(1, emUseOtherQuote);
                 break;
 
             case '_':
             case '^':
-                if(*PrePtr != '\\')
+                if (*PrePtr != '\\')
                 {
                     TmpPtr = PrePtr;
                     SKIP_BACK(TmpPtr, TmpC, LATEX_SPACE(TmpC));
 
                     CmdLen = 1;
 
-                    switch(*TmpPtr)
+                    switch (*TmpPtr)
                     {
-                        /*{*/
+                        /*{ */
                     case '}':
-                        if(PrePtr[-1] != '\\')
+                        if (PrePtr[-1] != '\\')
                             break;
 
                         CmdLen++;
                         PrePtr--;
                         /* FALLTHRU */
-                    /*[(*/
+                        /*[( */
                     case ')':
                     case ']':
                         PSERR(PrePtr - Buf, CmdLen, emEnclosePar);
@@ -1084,43 +1110,43 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
 
                     ErrPtr = TmpPtr;
 
-                    if(isalpha(*TmpPtr))
+                    if (isalpha(*TmpPtr))
                         pstcb = &my_isalpha;
-                    else if(isdigit(*TmpPtr))
+                    else if (isdigit(*TmpPtr))
                         pstcb = &my_isdigit;
                     else
                         break;
 
-                    while((*pstcb)(*TmpPtr++))
+                    while ((*pstcb) (*TmpPtr++))
                         ;
                     TmpPtr--;
 
-                    if((TmpPtr - ErrPtr) > 1)
+                    if ((TmpPtr - ErrPtr) > 1)
                         PSERR(ErrPtr - Buf, TmpPtr - ErrPtr, emEmbrace);
                 }
                 break;
             case '-':
                 CheckDash();
                 break;
-            case '\\':                    /* Command encountered  */
+            case '\\':         /* Command encountered  */
                 BufPtr = GetLTXToken(--BufPtr, CmdBuffer);
 
-                if(LATEX_SPACE(*PrePtr))
+                if (LATEX_SPACE(*PrePtr))
                 {
-                    if(HasWord(CmdBuffer, &Linker))
+                    if (HasWord(CmdBuffer, &Linker))
                         PSERR(PrePtr - Buf, 1, emNBSpace);
-                    if(HasWord(CmdBuffer, &PostLink))
+                    if (HasWord(CmdBuffer, &PostLink))
                         PSERR(PrePtr - Buf, 1, emFalsePage);
                 }
 
-                if(LATEX_SPACE(*BufPtr) && !MathMode &&
-                   (!HasWord(CmdBuffer, &Silent)) &&
-                   (strlen(CmdBuffer) != 2))
+                if (LATEX_SPACE(*BufPtr) && !MathMode &&
+                    (!HasWord(CmdBuffer, &Silent)) &&
+                    (strlen(CmdBuffer) != 2))
                 {
                     PSERR(BufPtr - Buf, 1, emSpaceTerm);
                 }
-                else if((*BufPtr == '\\') && (!isalpha(BufPtr[1])) &&
-                     (!LATEX_SPACE(BufPtr[1])))
+                else if ((*BufPtr == '\\') && (!isalpha(BufPtr[1])) &&
+                         (!LATEX_SPACE(BufPtr[1])))
                     PSERR(BufPtr - Buf, 2, emNotIntended);
 
                 PerformBigCmd(PrePtr + 1);
@@ -1128,59 +1154,47 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
 
                 break;
 
-            LOOP(bracket,
-            case '(':
-                if (!(!*PrePtr || LATEX_SPACE(*PrePtr) || isdigit(*PrePtr)) || 
-		    strchr("([{`~", *PrePtr))
-		{
-		    if(PrePtr[-1] != '\\') /* Short cmds */
-		    {
-			TmpPtr = PrePtr;
-			SKIP_BACK(TmpPtr, TmpC, istex(TmpC));
-			if(*TmpPtr != '\\') /* Long cmds */
-			    PSERRA(BufPtr - Buf - 1, 1, emSpaceParen,
-				   "in front of");
-		    }
-		}
-                if(isspace(*BufPtr))
-                    PSERRA(BufPtr - Buf, 1, emNoSpaceParen, "after");
-
-                LAST(bracket);
-            case ')':
-                if(isspace(*PrePtr))
-                    PSERRA(BufPtr - Buf - 1, 1, emNoSpaceParen,
-                           "in front of");
-                if(isalpha(*BufPtr))
-                    PSERRA(BufPtr - Buf, 1, emSpaceParen, "after");
-
-                LAST(bracket);
-            )
+            LOOP(bracket, case '(':
+if (!(!*PrePtr || LATEX_SPACE(*PrePtr) || isdigit(*PrePtr)) ||
+strchr("([{`~", *PrePtr))
+{
+if (PrePtr[-1] != '\\')         /* Short cmds */
+{
+TmpPtr = PrePtr; SKIP_BACK(TmpPtr, TmpC, istex(TmpC)); if (*TmpPtr != '\\')     /* Long cmds */
+PSERRA(BufPtr - Buf - 1, 1, emSpaceParen, "in front of");}
+}
+            if (isspace(*BufPtr)) PSERRA(BufPtr - Buf, 1, emNoSpaceParen, "after"); LAST(bracket); case ')':
+if (isspace(*PrePtr))
+PSERRA(BufPtr - Buf - 1, 1, emNoSpaceParen,
+      "in front of");
+if (isalpha(*BufPtr))
+PSERRA(BufPtr - Buf, 1, emSpaceParen, "after"); LAST(bracket);)
 
             case '}':
             case '{':
             case '[':
             case ']':
-                HandleBracket(Char);
+                    HandleBracket(Char);
                 break;
             case '$':
-                if(*PrePtr != '\\')
+                if (*PrePtr != '\\')
                 {
-                    if(*BufPtr == '$')
+                    if (*BufPtr == '$')
                         BufPtr++;
                     MathMode ^= TRUE;
-               }
+                }
 
                 break;
             }
         }
 
-        if(!VerbMode)
+        if (!VerbMode)
         {
             CheckRest();
         }
     }
 
-    return(TRUE);
+    return (TRUE);
 }
 
 /*
@@ -1188,9 +1202,9 @@ int FindErr(const char * _RealBuf, const unsigned long _Line)
  * suffix should be put, e.g. "warning%s". Watch your %'s!
  */
 
-static void Transit(FILE *fh, unsigned long Cnt, char * Str)
+static void Transit(FILE * fh, unsigned long Cnt, char *Str)
 {
-    switch(Cnt)
+    switch (Cnt)
     {
     case 0:
         fputs("No ", fh);
@@ -1214,48 +1228,45 @@ static void Transit(FILE *fh, unsigned long Cnt, char * Str)
 
 void PrintStatus(unsigned long Lines)
 {
-  unsigned long Cnt;
-  struct ErrInfo *ei;
+    unsigned long Cnt;
+    struct ErrInfo *ei;
 
 
-  while((ei = PopErr(&CharStack)))
-  {
-      PrintError(ei->File, ei->LineBuf, ei->Column,
-                 ei->ErrLen, ei->Line, emNoMatchC,
-                 (char *) ei->Data);
-      FreeErrInfo(ei);
-  }
+    while ((ei = PopErr(&CharStack)))
+    {
+        PrintError(ei->File, ei->LineBuf, ei->Column,
+                   ei->ErrLen, ei->Line, emNoMatchC, (char *) ei->Data);
+        FreeErrInfo(ei);
+    }
 
-  while((ei = PopErr(&EnvStack)))
-  {
-      PrintError(ei->File, ei->LineBuf, ei->Column,
-                 ei->ErrLen, ei->Line, emNoMatchC,
-                 (char *) ei->Data);
-      FreeErrInfo(ei);
-  }
+    while ((ei = PopErr(&EnvStack)))
+    {
+        PrintError(ei->File, ei->LineBuf, ei->Column,
+                   ei->ErrLen, ei->Line, emNoMatchC, (char *) ei->Data);
+        FreeErrInfo(ei);
+    }
 
-  if(MathMode)
-  {
-      PrintError(CurStkName(&InputStack), "", 0L, 0L, Lines,
-                 emMathStillOn);
-  }
+    if (MathMode)
+    {
+        PrintError(CurStkName(&InputStack), "", 0L, 0L, Lines, emMathStillOn);
+    }
 
-  for(Cnt = 0L; Cnt < (NUMBRACKETS>>1); Cnt++)
-  {
-      if(Brackets[Cnt << 1] != Brackets[(Cnt << 1) + 1])
-      {
-          PrintError(CurStkName(&InputStack), "", 0L, 0L, Lines,
-                     emNoMatchCC,
-                     BrOrder[Cnt<<1], BrOrder[(Cnt<<1) + 1]);
-      }
-  }
+    for (Cnt = 0L; Cnt < (NUMBRACKETS >> 1); Cnt++)
+    {
+        if (Brackets[Cnt << 1] != Brackets[(Cnt << 1) + 1])
+        {
+            PrintError(CurStkName(&InputStack), "", 0L, 0L, Lines,
+                       emNoMatchCC,
+                       BrOrder[Cnt << 1], BrOrder[(Cnt << 1) + 1]);
+        }
+    }
 
-  if(!Quiet)
-  {
-      Transit(stderr, ErrPrint, "error%s printed; ");
-      Transit(stderr, WarnPrint, "warning%s printed; ");
-      Transit(stderr, UserSupp, "user suppressed warning%s printed.\n");
-  }
+    if (!Quiet)
+    {
+        Transit(stderr, ErrPrint, "error%s printed; ");
+        Transit(stderr, WarnPrint, "warning%s printed; ");
+        Transit(stderr, UserSupp, "user suppressed warning%s printed.\n");
+    }
 }
 
 
@@ -1280,30 +1291,31 @@ void PrintStatus(unsigned long Lines)
  */
 
 
-void  PrintError(const  char *File,   const char *String,
-                 const long Position,   const long Len,
-                 const long LineNo, const enum ErrNum Error, ...)
+void
+PrintError(const char *File, const char *String,
+           const long Position, const long Len,
+           const long LineNo, const enum ErrNum Error, ...)
 {
-    static      /* Just to reduce stack usage... */
-        char   PrintBuffer[BUFSIZ];
-    va_list     MsgArgs;
+    static                      /* Just to reduce stack usage... */
+    char PrintBuffer[BUFSIZ];
+    va_list MsgArgs;
 
     char *LastNorm = OutputFormat;
-	char *of;
-    int         c;
+    char *of;
+    int c;
 
     enum Context Context;
 
-    if(betw(emMinFault, Error, emMaxFault))
+    if (betw(emMinFault, Error, emMaxFault))
     {
-        switch(LaTeXMsgs[Error].InUse)
+        switch (LaTeXMsgs[Error].InUse)
         {
         case iuOK:
             do
             {
-                Context  = LaTeXMsgs[Error].Context;
+                Context = LaTeXMsgs[Error].Context;
 
-                if(!HeadErrOut)
+                if (!HeadErrOut)
                     Context |= ctOutHead;
 
 #define RGTCTXT(Ctxt, Var) if((Context & Ctxt) && !(Var)) break;
@@ -1312,8 +1324,8 @@ void  PrintError(const  char *File,   const char *String,
                 RGTCTXT(ctOutMath, !MathMode);
                 RGTCTXT(ctInHead, InHeader);
                 RGTCTXT(ctOutHead, !InHeader);
-                
-                switch(LaTeXMsgs[Error].Type)
+
+                switch (LaTeXMsgs[Error].Type)
                 {
                 case etWarn:
                     WarnPrint++;
@@ -1325,7 +1337,7 @@ void  PrintError(const  char *File,   const char *String,
                     break;
                 }
 
-                while((of = strchr(LastNorm, '%')))
+                while ((of = strchr(LastNorm, '%')))
                 {
                     c = *of;
                     *of = 0;
@@ -1334,7 +1346,7 @@ void  PrintError(const  char *File,   const char *String,
 
                     *of++ = c;
 
-                    switch(c = *of++)
+                    switch (c = *of++)
                     {
                     case 'b':
                         fputs(Delimit, OutputFile);
@@ -1355,7 +1367,7 @@ void  PrintError(const  char *File,   const char *String,
                         fputs(ReverseOff, OutputFile);
                         break;
                     case 'k':
-                        switch(LaTeXMsgs[Error].Type)
+                        switch (LaTeXMsgs[Error].Type)
                         {
                         case etWarn:
                             fprintf(OutputFile, "Warning");
@@ -1373,8 +1385,8 @@ void  PrintError(const  char *File,   const char *String,
                         break;
                     case 'm':
                         va_start(MsgArgs, Error);
-                        vfprintf(OutputFile, LaTeXMsgs[Error].Message, 
-                                 MsgArgs);
+                        vfprintf(OutputFile,
+                                 LaTeXMsgs[Error].Message, MsgArgs);
                         va_end(MsgArgs);
                         break;
                     case 'n':
@@ -1396,7 +1408,8 @@ void  PrintError(const  char *File,   const char *String,
                         fputs(PrintBuffer, OutputFile);
                         break;
                     case 't':
-                        substring(String, PrintBuffer, Position + Len, LONG_MAX);
+                        substring(String, PrintBuffer,
+                                  Position + Len, LONG_MAX);
                         fputs(PrintBuffer, OutputFile);
                         break;
                     default:
@@ -1406,7 +1419,8 @@ void  PrintError(const  char *File,   const char *String,
                     LastNorm = of;
                 }
                 fputs(LastNorm, OutputFile);
-            } while(FALSE);
+            }
+            while (FALSE);
             break;
         case iuNotUser:
             UserSupp++;
@@ -1423,24 +1437,23 @@ void  PrintError(const  char *File,   const char *String,
  * or not.
  */
 
-static enum ErrNum PerformCommand(const char * Cmd, char * Arg)
+static enum ErrNum PerformCommand(const char *Cmd, char *Arg)
 {
-    char * Argument = "";
-    enum ErrNum
-        en = emMinFault;
+    char *Argument = "";
+    enum ErrNum en = emMinFault;
     int TmpC;
 
-    if(!strcmp(Cmd, "\\makeatletter"))
+    if (!strcmp(Cmd, "\\makeatletter"))
         AtLetter = TRUE;
-    else if(!strcmp(Cmd, "\\makeatother"))
+    else if (!strcmp(Cmd, "\\makeatother"))
         AtLetter = FALSE;
-    else if(InputFiles &&
-        !(strcmp(Cmd, "\\input") && strcmp(Cmd, "\\include")))
+    else if (InputFiles &&
+             !(strcmp(Cmd, "\\input") && strcmp(Cmd, "\\include")))
     {
         SKIP_AHEAD(Arg, TmpC, LATEX_SPACE(TmpC));
-        if(*Arg == '{') /* } */
+        if (*Arg == '{')        /* } */
         {
-            if(GetLTXArg(Arg, TmpBuffer, GET_STRIP_TOKEN, NULL))
+            if (GetLTXArg(Arg, TmpBuffer, GET_STRIP_TOKEN, NULL))
                 Argument = TmpBuffer;
         }
         else
@@ -1449,12 +1462,12 @@ static enum ErrNum PerformCommand(const char * Cmd, char * Arg)
         if (!(Argument && PushFileName(Argument, &InputStack)))
             en = emNoCmdExec;
     }
-    else if(HasWord(Cmd, &Primitives))
+    else if (HasWord(Cmd, &Primitives))
         en = emTeXPrim;
-    else if(*Cmd == '\\')
+    else if (*Cmd == '\\')
     {
         /* Quicker check of single lettered commands. */
-        switch(Cmd[1])
+        switch (Cmd[1])
         {
         case '(':
         case '[':
@@ -1465,7 +1478,7 @@ static enum ErrNum PerformCommand(const char * Cmd, char * Arg)
             MathMode = FALSE;
             break;
         case '/':
-            switch(ItState)
+            switch (ItState)
             {
             case itOn:
                 ItState = itCorrected;
@@ -1473,7 +1486,7 @@ static enum ErrNum PerformCommand(const char * Cmd, char * Arg)
 
                 SKIP_AHEAD(Argument, TmpC, TmpC == '{' || TmpC == '}');
 
-                if(strchr(".,", *Argument))
+                if (strchr(".,", *Argument))
                     en = emItPunct;
 
                 break;
@@ -1487,5 +1500,5 @@ static enum ErrNum PerformCommand(const char * Cmd, char * Arg)
         }
     }
 
-    return(en);
+    return (en);
 }

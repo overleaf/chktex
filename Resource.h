@@ -32,9 +32,9 @@
 # include "ChkTeX.h"
 #endif /* CHKTEX_H */
 
-#define QUOTE   '\"'	/* Char used to quote text containing blanks	*/
-#define ESCAPE  '!'     /* Char used to access special characters       */
-#define CMNT    '#'     /* Char used as comment                         */
+#define QUOTE   '\"'            /* Char used to quote text containing blanks    */
+#define ESCAPE  '!'             /* Char used to access special characters       */
+#define CMNT    '#'             /* Char used as comment                         */
 
 #define RESOURCE_INFO \
   LIST(Silent)     LIST(Linker)     LIST(IJAccent) LIST(Italic)\
@@ -52,13 +52,11 @@
 #define KEY(a,def) extern char *a;
 
 RESOURCE_INFO
-
 #undef KEY
 #undef LCASE
 #undef LNEMPTY
 #undef LIST
-
-int    ReadRC(const char *);
+int ReadRC(const char *);
 
 
 #endif /* RESOURCE */

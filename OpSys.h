@@ -195,21 +195,20 @@
 #ifndef WORDLIST_DEFINED
 struct WordList;
 #endif
-         /* Sorry; there are now cyclic dependencies in the
-		  * source tree. :-/ 
-		  */
+/* Sorry; there are now cyclic dependencies in the
+* source tree. :-/ 
+*/
 
 extern char *ReverseOn;
 extern char *ReverseOff;
 extern char ConfigFile[BUFSIZ];
 
-char *  MatchFileName(char * String);
-int    SetupVars(void);
-void    SetupTerm(void);
-void    AddAppendix(char * Name, const char * App);
-void    tackon(char *, const char *);
-int    LocateFile(const char * Filename, char * Dest, const char * App,
-		           struct WordList *wl);
+char *MatchFileName(char *String);
+int SetupVars(void);
+void SetupTerm(void);
+void AddAppendix(char *Name, const char *App);
+void tackon(char *, const char *);
+int LocateFile(const char *Filename, char *Dest, const char *App,
+               struct WordList *wl);
 
 #endif /* OPSYS_H */
-
