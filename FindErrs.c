@@ -1169,8 +1169,8 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                 }
                 if (isspace(*BufPtr))
                     PSERRA(BufPtr - Buf, 1, emNoSpaceParen, "after");
-				HandleBracket(Char);
-				break;
+                HandleBracket(Char);
+                break;
 
             case ')':
                 if (isspace(*PrePtr))
@@ -1178,8 +1178,8 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                            "in front of");
                 if (isalpha(*BufPtr))
                     PSERRA(BufPtr - Buf, 1, emSpaceParen, "after");
-				HandleBracket(Char);
-				break;
+                HandleBracket(Char);
+                break;
 
             case '}':
             case '{':
