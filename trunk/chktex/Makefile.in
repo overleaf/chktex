@@ -58,7 +58,7 @@ USRDEFS=-DDATADIR=\"$(datadir)\"
 
 #####################################################################
 
-INSTALLFILES= configure.in Makefile.in config.h.in chktexrc MakeHTML.in
+INSTALLFILES= configure.in Makefile.in config.h.in chktexrc MakeHTML.in chktex.el
 
 WEBFILES= chkweb deweb.in
 
@@ -68,8 +68,7 @@ DOCFILES= ChkTeX.tex COPYING \
 DOCFILES_GEN = chktex.doc chkweb.doc deweb.doc ChkTeX.readme ChkTeX.html
 
 SOURCEFILES= ChkTeX.c ChkTeX.h FindErrs.c FindErrs.h OpSys.c OpSys.h \
-Resource.c Resource.h Utility.c Utility.h \
-HashWord.a chktex.el
+	Resource.c Resource.h Utility.c Utility.h
 
 PORTFILES= config.msd ChkTeX.dsk ChkTeX.prj SCOPTIONS SMakefile config.AMIGA
 
@@ -215,6 +214,9 @@ uninstall:
 
 test:
 	chktex -v2 -mall Test.tex | less -r
+
+indent:
+	indent -npsl -bli0 -npcs -nut -i4 $(SOURCEFILES)
 
 mostlyclean: clean
 

@@ -37,19 +37,16 @@
 #define KEY(a,def) char *a = def;
 
 RESOURCE_INFO
-
 #undef KEY
 #undef LCASE
 #undef LNEMPTY
 #undef LIST
-
-struct KeyWord
+    struct KeyWord
 {
     char *Name;
-    char **String;         /* Keyword = item */
-    struct  WordList
-            *List,           /* Case-sensitive strings */
-            *CaseList;       /* Case-insensitive strings */
+    char **String;              /* Keyword = item */
+    struct WordList *List,      /* Case-sensitive strings */
+     *CaseList;                 /* Case-insensitive strings */
 };
 
 #define LNEMPTY LIST
@@ -57,10 +54,8 @@ struct KeyWord
 #define LCASE(name)      {#name, NULL, &name, &name ## Case},
 #define KEY(name,def)    {#name, &name, NULL, NULL},
 
-struct KeyWord Keys [] =
-{
-    RESOURCE_INFO
-    {NULL,          NULL,       NULL, NULL}
+struct KeyWord Keys[] = {
+    RESOURCE_INFO {NULL, NULL, NULL, NULL}
 };
 
 #undef KEY
@@ -85,17 +80,14 @@ struct KeyWord Keys [] =
 #undef BIT
 #define BIT BITDEF1
 TOKENBITS(Token_BIT)
-
 #undef BIT
 #define BIT BITDEF2
-TOKENBITS(Token)
+    TOKENBITS(Token)
+     static enum Token Expect;
+     static unsigned long RsrcLine;
 
-
-static enum Token Expect;
-static unsigned long RsrcLine;
-
-static enum Token ReadWord(char *, FILE *);
-static char MapChars(char **String);
+     static enum Token ReadWord(char *, FILE *);
+     static char MapChars(char **String);
 
 
 
@@ -112,30 +104,30 @@ static char MapChars(char **String);
  * Returns whether the attempt was a successful one.
  */
 
-int ReadRC(const char *Filename)
+     int ReadRC(const char *Filename)
 {
     char *String = NULL;
-    int        Success = FALSE;
-    FILE        *fh;
-    enum Token  Token;
-    unsigned long       Counter;
+    int Success = FALSE;
+    FILE *fh;
+    enum Token Token;
+    unsigned long Counter;
 
     struct KeyWord *CurWord = NULL;
 
     /* Interpret incoming words as ... */
     enum
     {
-        whList,     /* List elements */
-        whCaseList, /* Case insensitive list elements */
-        whEqual,    /* Solo elements */
-	whNone	    /* List items not accepted */
+        whList,                 /* List elements */
+        whCaseList,             /* Case insensitive list elements */
+        whEqual,                /* Solo elements */
+        whNone                  /* List items not accepted */
     } What = whNone;
 
 
     RsrcLine = 0;
     Expect = FLG_Word | FLG_Eof;
 
-    if((fh = fopen(Filename, "r")))
+    if ((fh = fopen(Filename, "r")))
     {
         Success = TRUE;
         do
@@ -143,7 +135,7 @@ int ReadRC(const char *Filename)
             Token = ReadWord(ReadBuffer, fh);
             if (!(Expect & Token))
             {
-                switch(Token)
+                switch (Token)
                 {
                 case FLG_Item:
                     String = "item";
@@ -175,23 +167,20 @@ int ReadRC(const char *Filename)
                 Token = FLG_Eof;
             }
 
-            switch(Token)
+            switch (Token)
             {
             case FLG_Word:
-                for(Counter = 0;
-                    Keys[Counter].Name;
-                    Counter++)
+                for (Counter = 0; Keys[Counter].Name; Counter++)
                 {
-                    if(!strcasecmp(ReadBuffer, Keys[Counter].Name))
+                    if (!strcasecmp(ReadBuffer, Keys[Counter].Name))
                     {
                         CurWord = &Keys[Counter];
-                        Expect = (CurWord->List? FLG_Open : 0) |
-                                 (CurWord->CaseList? FLG_BrOpen : 0) |
-                                 FLG_Equal;
+                        Expect = (CurWord->List ? FLG_Open : 0) |
+                            (CurWord->CaseList ? FLG_BrOpen : 0) | FLG_Equal;
                         break;
                     }
                 }
-                if(!Keys[Counter].Name)
+                if (!Keys[Counter].Name)
                 {
                     PrintPrgErr(pmKeyWord, ReadBuffer, Filename);
                     Success = FALSE;
@@ -199,7 +188,7 @@ int ReadRC(const char *Filename)
                 }
                 break;
             case FLG_Item:
-                switch(What)
+                switch (What)
                 {
                 case whEqual:
                     if (!(*(CurWord->String) = strdup(ReadBuffer)))
@@ -213,14 +202,14 @@ int ReadRC(const char *Filename)
                     Expect = FLG_Word | FLG_Eof;
                     break;
                 case whCaseList:
-                    if(!InsertWord(ReadBuffer, CurWord->CaseList))
+                    if (!InsertWord(ReadBuffer, CurWord->CaseList))
                     {
                         Token = FLG_Eof;
                         Success = FALSE;
                     }
                     break;
                 case whList:
-                    if(!InsertWord(ReadBuffer, CurWord->List))
+                    if (!InsertWord(ReadBuffer, CurWord->List))
                     {
                         Token = FLG_Eof;
                         Success = FALSE;
@@ -232,40 +221,41 @@ int ReadRC(const char *Filename)
                 break;
             case FLG_Equal:
                 What = whEqual;
-                Expect = (CurWord->List? FLG_Open : 0) |
-                         (CurWord->CaseList? FLG_BrOpen : 0) |
-                         (CurWord->String? FLG_Item : 0);
+                Expect = (CurWord->List ? FLG_Open : 0) |
+                    (CurWord->CaseList ? FLG_BrOpen : 0) |
+                    (CurWord->String ? FLG_Item : 0);
                 break;
             case FLG_BrOpen:
-                if(What == whEqual)
+                if (What == whEqual)
                     ClearWord(CurWord->CaseList);
                 What = whCaseList;
                 Expect = FLG_Item | FLG_BrClose;
                 break;
             case FLG_Open:
-                if(What == whEqual)
+                if (What == whEqual)
                     ClearWord(CurWord->List);
                 What = whList;
                 Expect = FLG_Item | FLG_Close;
                 break;
             case FLG_BrClose:
             case FLG_Close:
-                Expect = (CurWord->List? FLG_Open : 0) |
-                         (CurWord->CaseList? FLG_BrOpen : 0) |
-                         FLG_Equal | FLG_Word | FLG_Eof;
+                Expect = (CurWord->List ? FLG_Open : 0) |
+                    (CurWord->CaseList ? FLG_BrOpen : 0) |
+                    FLG_Equal | FLG_Word | FLG_Eof;
                 What = whNone;
                 break;
             case FLG_Eof:
                 break;
             }
-        } while(Token != FLG_Eof);
+        }
+        while (Token != FLG_Eof);
 
         fclose(fh);
     }
     else
         PrintPrgErr(pmRsrcOpen, Filename);
 
-    return(Success);
+    return (Success);
 }
 
 /*
@@ -274,46 +264,44 @@ int ReadRC(const char *Filename)
  * token. If not, the contents are undefined.
  */
 
-static enum Token ReadWord(char *Buffer, FILE *fh)
+static enum Token ReadWord(char *Buffer, FILE * fh)
 {
-    static
-        char *String = NULL;
-    static
-        char    StatBuf[BUFSIZ];
+    static char *String = NULL;
+    static char StatBuf[BUFSIZ];
     enum Token Retval = FLG_Eof;
 
-    unsigned short       Chr;
+    unsigned short Chr;
 
     char *Ptr;
-    int        OnceMore = TRUE, Cont = TRUE;
+    int OnceMore = TRUE, Cont = TRUE;
 
-    if(Buffer)
+    if (Buffer)
     {
         do
         {
-            if(!(String && *String))
+            if (!(String && *String))
             {
-                if(fgets(StatBuf, BUFSIZ-1, fh))
+                if (fgets(StatBuf, BUFSIZ - 1, fh))
                     String = strip(StatBuf, STRP_RGT);
                 RsrcLine++;
             }
 
             Ptr = Buffer;
-            if(String && (String = strip(String, STRP_LFT)))
+            if (String && (String = strip(String, STRP_LFT)))
             {
-                switch(Chr = *String)
+                switch (Chr = *String)
                 {
                 case 0:
                 case CMNT:
                     String = NULL;
                     break;
-                case QUOTE:     /* Quoted argument */
+                case QUOTE:    /* Quoted argument */
                     Cont = TRUE;
                     String++;
 
-                    while(Cont)
+                    while (Cont)
                     {
-                        switch(Chr = *String++)
+                        switch (Chr = *String++)
                         {
                         case 0:
                         case QUOTE:
@@ -338,14 +326,12 @@ static enum Token ReadWord(char *Buffer, FILE *fh)
 #define TOKEN(c, ctxt, tk) case c: if(Expect & (ctxt)) Retval = tk; LAST(token);
 
                     LOOP(token,
-                        TOKEN('{', DONEKEY, FLG_Open);
-                        TOKEN('[', DONEKEY, FLG_BrOpen);
-                        TOKEN('=', DONEKEY, FLG_Equal);
-                        TOKEN(']', DONELIST, FLG_BrClose);
-                        TOKEN('}', DONELIST, FLG_Close);
-                    )
-
-                    if(Retval != FLG_Eof)
+                         TOKEN('{', DONEKEY, FLG_Open);
+                         TOKEN('[', DONEKEY, FLG_BrOpen);
+                         TOKEN('=', DONEKEY, FLG_Equal);
+                         TOKEN(']', DONELIST, FLG_BrClose);
+                         TOKEN('}', DONELIST, FLG_Close);
+                        )if (Retval != FLG_Eof)
                     {
                         OnceMore = FALSE;
                         String++;
@@ -354,14 +340,14 @@ static enum Token ReadWord(char *Buffer, FILE *fh)
 
                     /* FALLTHRU */
 
-                default:        /* Non-quoted argument */
+                default:       /* Non-quoted argument */
                     OnceMore = FALSE;
-                    if(Expect & FLG_Word)
+                    if (Expect & FLG_Word)
                     {
-                        while(Cont)
+                        while (Cont)
                         {
                             Chr = *String++;
-                            if(isalpha(Chr))
+                            if (isalpha(Chr))
                                 *Ptr++ = Chr;
                             else
                                 Cont = FALSE;
@@ -369,11 +355,11 @@ static enum Token ReadWord(char *Buffer, FILE *fh)
                         String--;
                         Retval = FLG_Word;
                     }
-                    else /* Expect & FLG_Item */
+                    else        /* Expect & FLG_Item */
                     {
-                        while(Cont)
+                        while (Cont)
                         {
-                            switch(Chr = *String++)
+                            switch (Chr = *String++)
                             {
                             case CMNT:
                             case 0:
@@ -387,7 +373,7 @@ static enum Token ReadWord(char *Buffer, FILE *fh)
                                 *Ptr++ = Chr;
                                 break;
                             default:
-                                if(!isspace(Chr))
+                                if (!isspace(Chr))
                                     *Ptr++ = Chr;
                                 else
                                     Cont = FALSE;
@@ -399,7 +385,7 @@ static enum Token ReadWord(char *Buffer, FILE *fh)
                     if (!(Buffer[0]))
                     {
                         PrintPrgErr(pmEmptyToken);
-                        if(*String)
+                        if (*String)
                             String++;
                     }
                     *Ptr = 0;
@@ -408,9 +394,10 @@ static enum Token ReadWord(char *Buffer, FILE *fh)
             }
             else
                 OnceMore = FALSE;
-        } while(OnceMore);
+        }
+        while (OnceMore);
     }
-    return(Retval);
+    return (Retval);
 }
 
 
@@ -424,12 +411,12 @@ static enum Token ReadWord(char *Buffer, FILE *fh)
 
 static char MapChars(char **String)
 {
-    int    Chr, Tmp = 0;
-    unsigned short  Cnt;
+    int Chr, Tmp = 0;
+    unsigned short Cnt;
 
     Chr = *((char *) (*String)++);
 
-    switch(tolower(Chr))
+    switch (tolower(Chr))
     {
         MAP(QUOTE, QUOTE);
         MAP(ESCAPE, ESCAPE);
@@ -448,22 +435,22 @@ static char MapChars(char **String)
     case 'x':
         Tmp = 0;
 
-        for(Cnt = 0; Cnt < 2; Cnt++)
+        for (Cnt = 0; Cnt < 2; Cnt++)
         {
             Chr = *((*String)++);
-            if(isxdigit(Chr))
+            if (isxdigit(Chr))
             {
                 Chr = toupper(Chr);
-                Tmp = (Tmp<<4) + Chr;
+                Tmp = (Tmp << 4) + Chr;
 
-                if(isdigit(Chr))
+                if (isdigit(Chr))
                     Tmp -= '0';
                 else
                     Tmp -= 'A' - 10;
             }
             else
             {
-                if(Chr)
+                if (Chr)
                 {
                     PrintPrgErr(pmNotPSDigit, Chr, "hex");
                     Tmp = 0;
@@ -472,19 +459,25 @@ static char MapChars(char **String)
             }
         }
         break;
-    case '0': case '1': case '2': case '3': case '4':
-    case '5': case '6': case '7':
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
 
         Tmp = Chr - '0';
 
-        for(Cnt = 0; Cnt < 2; Cnt++)
+        for (Cnt = 0; Cnt < 2; Cnt++)
         {
             Chr = *((*String)++);
-            if(within('0',Chr,'7'))
+            if (within('0', Chr, '7'))
                 Tmp = (Tmp * 8) + Chr - '0';
             else
             {
-                if(Chr)
+                if (Chr)
                 {
                     PrintPrgErr(pmNotPSDigit, Chr, "octal");
                     Tmp = 0;
@@ -494,13 +487,13 @@ static char MapChars(char **String)
         }
         break;
     case 'd':
-        for(Cnt = 0; Cnt < 3; Cnt++)
+        for (Cnt = 0; Cnt < 3; Cnt++)
         {
-            if(isdigit(Chr = *((*String)++)))
+            if (isdigit(Chr = *((*String)++)))
                 Tmp = (Tmp * 10) + Chr - '0';
             else
             {
-                if(Chr)
+                if (Chr)
                 {
                     PrintPrgErr(pmNotPSDigit, Chr, "");
                     Tmp = 0;
@@ -512,7 +505,5 @@ static char MapChars(char **String)
     default:
         PrintPrgErr(pmEscCode, ESCAPE, Chr);
     }
-    return(Tmp);
+    return (Tmp);
 }
-
-

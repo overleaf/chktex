@@ -80,8 +80,8 @@
 #  elif HAVE_TERMLIB_H
 #    include <termlib.h>
 #  else
-int tgetent (char *BUFFER, char *TERMTYPE);
-char *tgetstr (char *NAME, char **AREA);
+int tgetent(char *BUFFER, char *TERMTYPE);
+char *tgetstr(char *NAME, char **AREA);
 #  endif
 static char term_buffer[2048];
 #endif
@@ -101,19 +101,18 @@ static char term_buffer[2048];
 
 #ifdef AMIGA
 const char
-	VersString [] = "$VER: ChkTeX 1.6.1 " __AMIGADATE__
-	" Copyright (c) 1995-96 Jens T. Berger Thielemann "
-        "<jensthi@ifi.uio.no>",
-	__stdiowin [] = "CON:0/10/640/180/ChkTeX",
-	__stdiov37 [] = "/AUTO/CLOSE/WAIT";
+    VersString[] = "$VER: ChkTeX 1.6.1 " __AMIGADATE__
+    " Copyright (c) 1995-96 Jens T. Berger Thielemann "
+    "<jensthi@ifi.uio.no>",
+    __stdiowin[] = "CON:0/10/640/180/ChkTeX", __stdiov37[] =
+    "/AUTO/CLOSE/WAIT";
 
-const unsigned long __MemPoolPuddleSize = 16384,
-            __MemPoolThreshSize = 8192;
+const unsigned long __MemPoolPuddleSize = 16384, __MemPoolThreshSize = 8192;
 
-static struct AnchorPath	*AnchorPath = NULL;
+static struct AnchorPath *AnchorPath = NULL;
 
-static void	KillAnchorPath(void);
-static char *	InitAnchorPath(char * String);
+static void KillAnchorPath(void);
+static char *InitAnchorPath(char *String);
 #  define V37 (DOSBase->dl_lib.lib_Version > 36)
 #endif
 
@@ -141,15 +140,15 @@ static char *	InitAnchorPath(char * String);
 #  define LOCALRCFILE             "." RCBASENAME
 #endif
 
-char   ConfigFile [BUFSIZ] = LOCALRCFILE;
+char ConfigFile[BUFSIZ] = LOCALRCFILE;
 char *ReverseOn;
 char *ReverseOff;
 
 
-static int HasFile(char * Dir, const char * Filename, const char * App);
+static int HasFile(char *Dir, const char *Filename, const char *App);
 
 #if USE_RECURSE
-static int SearchFile(char * Dir, const char * Filename, const char * App);
+static int SearchFile(char *Dir, const char *Filename, const char *App);
 #endif /* USE_RECURSE */
 
 /*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */
@@ -173,46 +172,50 @@ static int SearchFile(char * Dir, const char * Filename, const char * App);
 
 enum LookIn
 {
-  liMin,
-  liSysDir,
-  liUsrDir,
-  liEnvir,
-  liCurDir,
-  liNFound,
-  liMax
+    liMin,
+    liSysDir,
+    liUsrDir,
+    liEnvir,
+    liCurDir,
+    liNFound,
+    liMax
 };
 
 
 int SetupVars(void)
 {
-    char * Env;
+    char *Env;
 #ifdef __MSDOS__
-    char * Ptr;
+
+    char *Ptr;
 #endif
+
     static enum LookIn i = liMin;
     static int FoundFile;
 
-    while(++i < liMax)
+    while (++i < liMax)
     {
-	switch(i)
-	{
-	case liCurDir:  /* Current directory */
-	    strcpy(ConfigFile, LOCALRCFILE);
-	    break;
-	case liEnvir:  /* Environment defined */
+        switch (i)
+        {
+        case liCurDir:         /* Current directory */
+            strcpy(ConfigFile, LOCALRCFILE);
+            break;
+        case liEnvir:          /* Environment defined */
 #ifdef __MSDOS__
-	    if((Env = getenv("CHKTEXRC")) ||
-	       (Env = getenv("CHKTEX_HOME")))
+
+            if ((Env = getenv("CHKTEXRC")) || (Env = getenv("CHKTEX_HOME")))
 #else
-	    if((Env = getenv("CHKTEXRC")))
+
+            if ((Env = getenv("CHKTEXRC")))
 #endif
-	    {
-		strcpy(ConfigFile, Env);
-		tackon(ConfigFile, LOCALRCFILE);
-	    }
-	    else
+
+            {
+                strcpy(ConfigFile, Env);
+                tackon(ConfigFile, LOCALRCFILE);
+            }
+            else
 #ifdef __MSDOS__
-            if((Env = getenv("EMTEXDIR")))
+            if ((Env = getenv("EMTEXDIR")))
             {
                 strcpy(ConfigFile, Env);
                 tackon(ConfigFile, "data");
@@ -220,56 +223,63 @@ int SetupVars(void)
             }
             else
 #endif
-		*ConfigFile = 0;
-	    break;
-	case liUsrDir: /* User dir for resource files */
-#ifdef AMIGA
-            if(V37)
-		strcpy(ConfigFile, "ENV:");
-            else
-		strcpy(ConfigFile, "S:");
 
-	    tackon(ConfigFile, LOCALRCFILE);
+                *ConfigFile = 0;
+            break;
+        case liUsrDir:         /* User dir for resource files */
+#ifdef AMIGA
+
+            if (V37)
+                strcpy(ConfigFile, "ENV:");
+            else
+                strcpy(ConfigFile, "S:");
+
+            tackon(ConfigFile, LOCALRCFILE);
 #elif defined(__unix__)
-	    if((Env = getenv("HOME")) ||
-	       (Env = getenv("LOGDIR")))
-	    {
-		strcpy(ConfigFile, Env);
-		tackon(ConfigFile, LOCALRCFILE);
-	    }
-	    else
-		*ConfigFile = 0;
+
+            if ((Env = getenv("HOME")) || (Env = getenv("LOGDIR")))
+            {
+                strcpy(ConfigFile, Env);
+                tackon(ConfigFile, LOCALRCFILE);
+            }
+            else
+                *ConfigFile = 0;
 #elif defined(__MSDOS__)
+
             strcpy(ConfigFile, PrgName);
-            if((Ptr = strrchr(ConfigFile, '\\')) ||
-	       (Ptr = strchr(ConfigFile, ':')))
+            if ((Ptr = strrchr(ConfigFile, '\\')) ||
+                (Ptr = strchr(ConfigFile, ':')))
                 strcpy(++Ptr, RCBASENAME);
             else
                 *ConfigFile = 0;
 #endif
-	    break;
-	case liSysDir: /* System dir for resource files */
-#if defined(__unix__) || defined(__MSDOS__)
-	  strcpy(ConfigFile, DATADIR);
-	  tackon(ConfigFile, RCBASENAME);
-#else
-	    *ConfigFile = 0;
-#endif
-	  break;
-	case liNFound:
-	case liMin:
-	case liMax:
-	  *ConfigFile = 0;
-	  if(!FoundFile)
-	    PrintPrgErr(pmNoRsrc);
-	}
 
-	if(*ConfigFile && fexists(ConfigFile))
-	    break;
+            break;
+        case liSysDir:         /* System dir for resource files */
+#if defined(__unix__) || defined(__MSDOS__)
+
+            strcpy(ConfigFile, DATADIR);
+            tackon(ConfigFile, RCBASENAME);
+#else
+
+            *ConfigFile = 0;
+#endif
+
+            break;
+        case liNFound:
+        case liMin:
+        case liMax:
+            *ConfigFile = 0;
+            if (!FoundFile)
+                PrintPrgErr(pmNoRsrc);
+        }
+
+        if (*ConfigFile && fexists(ConfigFile))
+            break;
     }
     FoundFile |= *ConfigFile;
 
-    return(*ConfigFile);
+    return (*ConfigFile);
 }
 
 
@@ -291,18 +301,18 @@ void SetupTerm(void)
     if (termtype)
     {
 
-	success = tgetent(term_buffer, termtype);
-	if(success < 0)
-	    PrintPrgErr(pmNoTermData);
-	if(success == 0)
-	    PrintPrgErr(pmNoTermDefd);
+        success = tgetent(term_buffer, termtype);
+        if (success < 0)
+            PrintPrgErr(pmNoTermData);
+        if (success == 0)
+            PrintPrgErr(pmNoTermDefd);
 
-	buffer = (char *)malloc(sizeof(term_buffer));
-	ReverseOn = tgetstr("so", &buffer);
-	ReverseOff = tgetstr("se", &buffer);
+        buffer = (char *) malloc(sizeof(term_buffer));
+        ReverseOn = tgetstr("so", &buffer);
+        ReverseOff = tgetstr("se", &buffer);
 
-	if (ReverseOn && ReverseOff)
-	    return;
+        if (ReverseOn && ReverseOff)
+            return;
     }
 #endif
 
@@ -323,18 +333,18 @@ void SetupTerm(void)
  *
  */
 
-void tackon(char * Dir, const char * File)
+void tackon(char *Dir, const char *File)
 {
-    int         EndC;
-    unsigned long       SLen;
+    int EndC;
+    unsigned long SLen;
 
-    if(Dir && (SLen = strlen(Dir)))
+    if (Dir && (SLen = strlen(Dir)))
     {
-        EndC = Dir[SLen -1];
+        EndC = Dir[SLen - 1];
         if (!(strchr(DIRCHARS, EndC)))
         {
             Dir[SLen++] = SLASH;
-            Dir[SLen  ] = 0L;
+            Dir[SLen] = 0L;
         }
     }
 
@@ -351,18 +361,18 @@ void tackon(char * Dir, const char * File)
  * The appendix should contain a leading dot.
  */
 
-void AddAppendix(char * Name, const char * App)
+void AddAppendix(char *Name, const char *App)
 {
 #ifdef __MSDOS__
-    char * p;
+    char *p;
 
-    if((p = strrchr(Name, '.')))
+    if ((p = strrchr(Name, '.')))
         strcpy(p, App);
     else
         strcat(Name, App);
 #else
     /*
-     * NOTE! This may fail if your system has a claustrophobic file 
+     * NOTE! This may fail if your system has a claustrophobic file
      * name length limit.
      */
     strcat(Name, App);
@@ -390,16 +400,17 @@ void AddAppendix(char * Name, const char * App)
  */
 
 
-int LocateFile(const char * Filename,    /* File to search for */
-                char * Dest,              /* Where to put final file */
-                const char * App,         /* Extra optional appendix */
-                struct WordList *wl)      /* List of paths, entries
-                                           * ending in // will be recursed
-                                           */
+int LocateFile(const char *Filename,    /* File to search for */
+               char *Dest,      /* Where to put final file */
+               const char *App, /* Extra optional appendix */
+               struct WordList *wl)     /* List of paths, entries
+                                         * ending in // will be recursed
+                                         */
 {
     unsigned long i;
 #if USE_RECURSE
-	unsigned long Len;
+
+    unsigned long Len;
 #endif
 
     FORWL(i, *wl)
@@ -407,47 +418,49 @@ int LocateFile(const char * Filename,    /* File to search for */
         strcpy(Dest, wl->Stack.Data[i]);
 
 #if USE_RECURSE
+
         Len = strlen(Dest);
 
-        if(Len && (Dest[Len - 1] == SLASH) && (Dest[Len - 2] == SLASH))
+        if (Len && (Dest[Len - 1] == SLASH) && (Dest[Len - 2] == SLASH))
         {
             Dest[Len - 1] = Dest[Len - 2] = 0;
-            if(SearchFile(Dest, Filename, App))
-                return(TRUE);
+            if (SearchFile(Dest, Filename, App))
+                return (TRUE);
         }
         else
 #endif /* USE_RECURSE */
+
         {
-            if(HasFile(Dest, Filename, App))
-                return(TRUE);
+            if (HasFile(Dest, Filename, App))
+                return (TRUE);
         }
     }
-    return(FALSE);
+    return (FALSE);
 }
 
-static int HasFile(char * Dir, const char * Filename, const char * App)
+static int HasFile(char *Dir, const char *Filename, const char *App)
 {
     int DirLen = strlen(Dir);
 
     tackon(Dir, Filename);
-    if(fexists(Dir))
-        return(TRUE);
+    if (fexists(Dir))
+        return (TRUE);
 
-    if(App)
+    if (App)
     {
         AddAppendix(Dir, App);
-        if(fexists(Dir))
-            return(TRUE);
+        if (fexists(Dir))
+            return (TRUE);
     }
 
     Dir[DirLen] = 0;
-    return(FALSE);
+    return (FALSE);
 
 }
 
 
 #if USE_RECURSE
-static int SearchFile(char * Dir, const char * Filename, const char * App)
+static int SearchFile(char *Dir, const char *Filename, const char *App)
 {
     struct stat *statbuf;
     struct dirent *de;
@@ -458,27 +471,27 @@ static int SearchFile(char * Dir, const char * Filename, const char * App)
 
     DEBUG(("Searching %s for %s\n", Dir, Filename));
 
-    if(HasFile(Dir, Filename, App))
-        return(TRUE);
+    if (HasFile(Dir, Filename, App))
+        return (TRUE);
     else
     {
-        if((statbuf = malloc(sizeof(struct stat))))
+        if ((statbuf = malloc(sizeof(struct stat))))
         {
-            if((dh = opendir(Dir)))
+            if ((dh = opendir(Dir)))
             {
-                while(!Found && (de = readdir(dh)))
+                while (!Found && (de = readdir(dh)))
                 {
                     Dir[DirLen] = 0;
-		    if(strcmp(de->d_name, ".") && strcmp(de->d_name, ".."))
-		    {
-			tackon(Dir, de->d_name);
+                    if (strcmp(de->d_name, ".") && strcmp(de->d_name, ".."))
+                    {
+                        tackon(Dir, de->d_name);
 
-			if(!stat(Dir, statbuf))
-			{
-			    if((statbuf->st_mode & S_IFMT) == S_IFDIR)
-				Found = SearchFile(Dir, Filename, App);
-			}
-		    }
+                        if (!stat(Dir, statbuf))
+                        {
+                            if ((statbuf->st_mode & S_IFMT) == S_IFDIR)
+                                Found = SearchFile(Dir, Filename, App);
+                        }
+                    }
                 }
                 closedir(dh);
             }
@@ -487,7 +500,7 @@ static int SearchFile(char * Dir, const char * Filename, const char * App)
             free(statbuf);
         }
     }
-    return(Found);
+    return (Found);
 }
 #endif /* USE_RECURSE */
 
@@ -512,47 +525,47 @@ static int SearchFile(char * Dir, const char * Filename, const char * App)
 
 #ifdef AMIGA
 
-char * MatchFileName(char * String)
+char *MatchFileName(char *String)
 {
-    char *	Retval = NULL;
+    char *Retval = NULL;
 
-    if(AnchorPath || String)	/* Is this the first invocation? */
+    if (AnchorPath || String)   /* Is this the first invocation? */
     {
-	if(V37)
-	{
-	    if (!(AnchorPath))
-	    {
-		if(AnchorPath = malloc(sizeof(struct AnchorPath) + FMSIZE))
-		{
-		    Retval = InitAnchorPath(String);
-		    atexit(&KillAnchorPath);
-		}
-	    }
-	    else
-	    {
-		if(String)
-		{
-		    MatchEnd(AnchorPath);
-		    Retval = InitAnchorPath(String);
-		}
-		else
-		{
-		    if (!(MatchNext(AnchorPath)))
-			Retval = AnchorPath->ap_Buf;
-		}
-	    }
-	}
-	else		/* ARP support may be added in the future */
-	    Retval = String;
+        if (V37)
+        {
+            if (!(AnchorPath))
+            {
+                if (AnchorPath = malloc(sizeof(struct AnchorPath) + FMSIZE))
+                {
+                    Retval = InitAnchorPath(String);
+                    atexit(&KillAnchorPath);
+                }
+            }
+            else
+            {
+                if (String)
+                {
+                    MatchEnd(AnchorPath);
+                    Retval = InitAnchorPath(String);
+                }
+                else
+                {
+                    if (!(MatchNext(AnchorPath)))
+                        Retval = AnchorPath->ap_Buf;
+                }
+            }
+        }
+        else                    /* ARP support may be added in the future */
+            Retval = String;
 
-	if(AnchorPath && AnchorPath->ap_FoundBreak)
-	    raise(SIGINT);
+        if (AnchorPath && AnchorPath->ap_FoundBreak)
+            raise(SIGINT);
     }
 
-    if(!Retval && String)
-	Retval = String;
+    if (!Retval && String)
+        Retval = String;
 
-    return(Retval);
+    return (Retval);
 }
 
 static void KillAnchorPath(void)
@@ -560,9 +573,9 @@ static void KillAnchorPath(void)
     MatchEnd(AnchorPath);
 }
 
-static char * InitAnchorPath(char * String)
+static char *InitAnchorPath(char *String)
 {
-    char *	Retval = NULL;
+    char *Retval = NULL;
 
     AnchorPath->ap_BreakBits = SIGBREAKF_CTRL_C;
     AnchorPath->ap_Strlen = FMSIZE;
@@ -570,17 +583,17 @@ static char * InitAnchorPath(char * String)
     AnchorPath->ap_Flags = 0L;
 
     if (!(MatchFirst(String, AnchorPath)))
-	Retval = AnchorPath->ap_Buf;
+        Retval = AnchorPath->ap_Buf;
     else
-	PrintPrgErr(pmNoFileMatch, String);
+        PrintPrgErr(pmNoFileMatch, String);
 
     AnchorPath->ap_Flags &= ~(APF_DODIR);
-    return(Retval);
+    return (Retval);
 }
 
 #else
-char * MatchFileName(char * String)
+char *MatchFileName(char *String)
 {
-    return(String);
+    return (String);
 }
 #endif

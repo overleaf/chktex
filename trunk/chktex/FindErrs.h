@@ -134,61 +134,65 @@
 
 enum ErrNum
 {
-  ERRMSGS
-  emMaxFault
+    ERRMSGS emMaxFault
 };
 #undef MSG
 
-enum Context {
-    ctNone    = 0x00,
-    ctInMath  = 0x01,
+enum Context
+{
+    ctNone = 0x00,
+    ctInMath = 0x01,
     ctOutMath = 0x02,
-    ctInHead  = 0x04,
+    ctInHead = 0x04,
     ctOutHead = 0x08
 };
 
-struct  ErrMsg {
-    enum ErrNum   Number;
-    enum {
+struct ErrMsg
+{
+    enum ErrNum Number;
+    enum
+    {
         etMsg,
         etWarn,
         etErr
     } Type;
 
-    enum {
-	iuNotSys,
-	iuNotUser,
-	iuOK
+    enum
+    {
+        iuNotSys,
+        iuNotUser,
+        iuOK
     } InUse;
 
     /* Requirements posed upon environment */
     enum Context Context;
 
-    char *        Message;
+    char *Message;
 };
 
-enum ItState {
-  itOff,
-  itOn,
-  itCorrected
+enum ItState
+{
+    itOff,
+    itOn,
+    itCorrected
 };
 
 
-enum DotLevel {
-  dtUnknown = 0x0,
-  dtCDots = 0x1,
-  dtLDots = 0x2,
-  dtDots = 0x4
+enum DotLevel
+{
+    dtUnknown = 0x0,
+    dtCDots = 0x1,
+    dtLDots = 0x2,
+    dtDots = 0x4
 };
 
-extern struct ErrMsg
-    LaTeXMsgs [emMaxFault + 1];
+extern struct ErrMsg LaTeXMsgs[emMaxFault + 1];
 
-extern char * OutputFormat;
+extern char *OutputFormat;
 
-int    FindErr(const char *, const unsigned long);
-void    PrintError(const  char *, const char *, const long, const long,
-                   const long, const enum ErrNum, ...);
+int FindErr(const char *, const unsigned long);
+void PrintError(const char *, const char *, const long, const long,
+                const long, const enum ErrNum, ...);
 void PrintStatus(unsigned long Lines);
 
 #endif /* FINDERRS */
