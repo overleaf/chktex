@@ -86,45 +86,14 @@ char *tgetstr(char *NAME, char **AREA);
 static char term_buffer[2048];
 #endif
 
-#ifdef AMIGA
-#  define __USE_SYSBASE
-#  include <dos.h>
-#  include <dos/dos.h>
-#  include <dos/dosasl.h>
-#  include <proto/dos.h>
-#  include <proto/exec.h>
-#  include <signal.h>
-#endif
-
 /*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */
-
-
-#ifdef AMIGA
-const char
-    VersString[] = "$VER: ChkTeX v" PACKAGE_VERSION " " __AMIGADATE__
-    " Copyright (c) 1995-96 Jens T. Berger Thielemann "
-    "<jensthi@ifi.uio.no>",
-    __stdiowin[] = "CON:0/10/640/180/ChkTeX", __stdiov37[] =
-    "/AUTO/CLOSE/WAIT";
-
-const unsigned long __MemPoolPuddleSize = 16384, __MemPoolThreshSize = 8192;
-
-static struct AnchorPath *AnchorPath = NULL;
-
-static void KillAnchorPath(void);
-static char *InitAnchorPath(char *String);
-#  define V37 (DOSBase->dl_lib.lib_Version > 36)
-#endif
-
 
 /*
  * This is the name of the global resource file.
  */
 
 #ifndef SYSCONFDIR
-#  ifdef AMIGA
-#    define SYSCONFDIR  "S:"
-#  elif defined(__unix__)
+#  if defined(__unix__)
 #    define SYSCONFDIR "/usr/local/lib/"
 #  elif defined(__MSDOS__)
 #    define SYSCONFDIR "\\emtex\\data\\"
@@ -227,15 +196,7 @@ int SetupVars(void)
                 *ConfigFile = 0;
             break;
         case liUsrDir:         /* User dir for resource files */
-#ifdef AMIGA
-
-            if (V37)
-                strcpy(ConfigFile, "ENV:");
-            else
-                strcpy(ConfigFile, "S:");
-
-            tackon(ConfigFile, LOCALRCFILE);
-#elif defined(__unix__)
+#if defined(__unix__)
 
             if ((Env = getenv("HOME")) || (Env = getenv("LOGDIR")))
             {
