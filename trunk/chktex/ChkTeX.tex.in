@@ -112,10 +112,9 @@ processing by editors or other programs, making errors easy to cycle through.
 Software is provided for beautifully interfacing against the 
 AUC-\TeX\ Emacs mode, CygnusED, GoldEd and various Amiga message browsers.
 
-The program itself does not have any machine requirements; Amiga,
-MSDOS and OS/2 binaries are available.  Of course, you'll need ARexx
-and ScMsg or VBrowse to benefit from the ARexx scripts.
-
+The program itself does not have any machine requirements; However compiling
+for other platforms has not been done for a long time now so the code has been
+removed. If interest rises it can be resurrected.
 
 
 \section{Features}
@@ -303,15 +302,6 @@ Various other stuff I've done to the product:
   the user specify his own format.  Uses a \Cmd{printf()} similar
   syntax. \Cmd{lacheck} compatible mode included for interfacing with
   the AUC-\TeX\ Emacs mode.
-\item ARexx scripts for interfacing with ScMsg and VBrowse are
-  included. Special scripts included for CygnusED/GoldED, for binding
-  to hotkey.
-\item Amiga Workbench support. Parameters may be passed by
-  shift-clicking the \LaTeX\ files and setting the remaining options
-  in the tooltypes.
-\item Wildcard matching (Amiga only).  Matches file patterns
-  internally, thus saving a lot of work.  This is, however,
-  platform-specific code --- on UNIX boxes this is done by the shell.
 \item Written in ANSI C\@. \Cmd{configure} script included for easy
   setup and installation on UNIX systems.
 \end{itemize}
@@ -365,17 +355,6 @@ found at any mirrors of those.
 A few words on installation on various platforms:
 
 \begin{description}
-\item[Amiga:] Use the supplied Installer script.
-\item[MS-DOS \& OS/2:] Copy the binary (\Cmd{ChkTeX.exe}) to somewhere in
-  your path, and place the \rsrc\ file in the same directory.
-
-  If you're running Emacs, you may wish to copy the file \Cmd{chktex.el}
-  to your elisp source directory, and add the following line to your
-  \Cmd{.emacs} file:
-\begin{verbatim}
-(require 'chktex)
-\end{verbatim}
-
 \item[UNIX:] Type \Cmd{configure}, \Cmd{make} and finally
   \Cmd{make~install}. To make sure everything proceeded correctly,
   type \Cmd{make~check}.  If you don't have superuser privileges and thus
@@ -525,27 +504,6 @@ reading/editing the \rsrc\ file.
 
 %latex
 \section{Usage}
-
-\subsection{\chktex}
-
-Amiga v2.04+ users may wish to note that you may pass the files that
-\chktex\ is to process by shift-clicking them. In addition, you may
-specify the arguments as tooltypes to the main program icon, using the
-{\sf Info} menu option. For instance, if you wish to make the `fancy'
-output the default when starting from Workbench, enter the following
-as a tooltype:
-%
-\begin{verbatim}
-Verbosity=2
-\end{verbatim}
-%
-We use the WB2Argv package (also developed by me, available on Aminet as
-\Cmd{dev/c/WB2Argv.lha}), and
-will fold case until the \Cmd{=} character, in tradition with the
-case-insensitivity of Amiga OS\@.  In all other respects (and platforms), the
-options listed below are case-sensitive.
-
-
 
 \subsubsection{Synopsis}
 
@@ -785,15 +743,13 @@ following keycombinations:
 \smallskip
 \begin{tabular}{ll}
   \bf Machine & \bf Key-combination \\
-  Amiga & $\fbox{\tt  Ctrl} + \fbox{\tt\BS}$ \\
   UNIX & $\fbox{\tt Ctrl} + \fbox{\tt D}$ \\
   MS-DOS & $\fbox{\tt Ctrl} + \fbox{Z}$, followed by return.
 \end{tabular}
 \smallskip
 
 By default, we're using the 1994 version of GNU's \Cmd{getopt()}
-routine.  For those of you who have only used the Amiga's \Cmd{ReadArgs()},
-here are some quick instructions:
+routine.
 
 \begin{itemize}
 \item Options may be given in any order; the names of the \LaTeX-files
@@ -825,8 +781,7 @@ In this list, \Cmd{\$foo} is assumed to be the environment variable
 
 \begin{enumerate}
 \item First, we'll take a look at the directory which was specified as
-  \Cmd{DATADIR} during compilation (this does not happen on Amiga
-  machines). On UNIX boxes, this usually evaluates to
+  \Cmd{DATADIR} during compilation. On UNIX boxes, this usually evaluates to
   \Cmd{/usr/local/share/chktexrc} or similar, under MS-DOS it is set
   to \Cmd{\BS{}emtex\BS{}data\BS{}chktexrc}.
 
@@ -834,8 +789,6 @@ In this list, \Cmd{\$foo} is assumed to be the environment variable
 
   \begin{tabular}{ll}
     \bf Machine & \bf Directory \\
-    2.04+ Amiga & {\tt ENV:.chktexrc}   \\
-    1.3 Amiga   & {\tt S:.chktexrc}      \\
     UNIX        & \Cmd{\$HOME/.chktexrc} or \Cmd{\$LOGDIR/.chktexrc} \\
     MSDOS       & Program installation path
   \end{tabular}
@@ -845,13 +798,12 @@ In this list, \Cmd{\$foo} is assumed to be the environment variable
 
   \begin{tabularx}\linewidth{lY}
     \bf Machine & \bf Directory \\
-    Amiga & \Cmd{\$CHKTEXRC/.chktexrc} \\
     UNIX & \Cmd{\$CHKTEXRC/.chktexrc} \\
     MSDOS &  \Cmd{\$CHKTEXRC\BS{}chktexrc}, \Cmd{\$CHKTEX\_HOME\BS
       chktexrc} or \Cmd{\$EMTEXDIR\BS{}data\BS{}chktexrc}
   \end{tabularx}
 
-\item Look for it in the current directory. On UNIX and Amiga boxes,
+\item Look for it in the current directory. On UNIX boxes,
   we expect the filename to be \Cmd{.chktexrc}; on other machines
   \Cmd{chktexrc}.
 
