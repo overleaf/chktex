@@ -250,9 +250,9 @@ ChkTeX.readme: ChkTeX.tex
 	cd rme; $(LATEX2HTML) -split 0 ChkTeX.tex
 	$(PERL5) -i -pe 's%L<SUP><SMALL>A</SMALL></SUP>%La%g;s%T<SMALL>E</SMALL>X%TeX%g;s%<SUB>(.*)</SUB>%$$1%g' rme/ChkTeX/*.html
 	$(PERL5) -i -pe 's%</code> %</code>%gi;s%\s+([.,?!])%$$1%g;' rme/ChkTeX/*.html
-	$(LYNX) -dump rme/ChkTeX/ChkTeX.html > ChkTeX.rme
+	$(LYNX) -dump rme/ChkTeX/ChkTeX.html > rme/ChkTeX.rme
 	cp Readme.header ChkTeX.readme
-	$(PERL5) -e 'undef $$/;$$_=<>;($$_)=/(.*INTRODUCTION(.|\n)*?)[ \t]+ABOUT THIS DOCUMENT/i;s/[ \t]+\n/\n/g;s/\n\n\n/\n/g;s/\[\d+\]//g;print;' ChkTeX.rme >> ChkTeX.readme
+	$(PERL5) -e 'undef $$/;$$_=<>;($$_)=/(.*INTRODUCTION(.|\n)*?)[ \t]+ABOUT THIS DOCUMENT/i;s/[ \t]+\n/\n/g;s/\n\n\n/\n/g;s/\[\d+\]//g;print;' rme/ChkTeX.rme >> ChkTeX.readme
 
 ###################### INDIVIDUAL DEPENDENCIES ##########################
 
