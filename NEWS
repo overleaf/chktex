@@ -1,0 +1,7 @@
+1.6.3
+
+  - Support DESTDIR for installation to help distributions.
+  - Apply old standing patch from Jean-Marc Lasgouttes to compile outside the
+    directory.
+  - Enable compilation on MacOS X.
+  - Fix various coding issues.
