@@ -180,6 +180,7 @@ maintainer-clean: clean
 
 dvi: ChkTeX.dvi
 
+ifneq ($(LATEX2HTML),)
 html: ChkTeX.tex MakeHTML
 	-rm -r HTML
 	mkdir HTML
@@ -199,6 +200,10 @@ ChkTeX.readme: ChkTeX.tex MakeHTML
 	$(LYNX) -dump rme/ChkTeX/ChkTeX.html > rme/ChkTeX.rme
 	cp Readme.header ChkTeX.readme
 	$(PERL5) -e 'undef $$/;$$_=<>;($$_)=/(.*INTRODUCTION(.|\n)*?)[ \t]+ABOUT THIS DOCUMENT/i;s/[ \t]+\n/\n/g;s/\n\n\n/\n/g;s/\[\d+\]//g;print;' rme/ChkTeX.rme >> ChkTeX.readme
+else
+html ChkTeX.readme:
+	@echo "latex2html is unavailable on this system, cant create target $@."; exit 1
+endif
 
 ###################### AUTOCONF REMAKING ################################
 
