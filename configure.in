@@ -87,7 +87,7 @@ fi
 
 AC_MSG_CHECKING(whether lacheck replacement should be installed)
 if test "$enable_lacheck_replace" = "yes"; then
-  SCRIPTS="$SCRIPTS lacheck"
+  SCRIPTS="$SCRIPTS \$(srcdir)/lacheck"
   AC_MSG_RESULT(yes)
 else
   SCRIPTS=
@@ -145,7 +145,7 @@ fi
 if test "$PERL5" != no; then
     AC_SYS_INTERPRETER
     if test "$ac_cv_sys_interpreter" = "yes"; then
-	SCRIPTS="$SCRIPTS chkweb deweb"
+	SCRIPTS="$SCRIPTS \$(srcdir)/chkweb deweb"
     else
 	AC_MSG_WARN(deweb will not be installed since your system does)
 	AC_MSG_WARN(not support the pound-bang notation.)
