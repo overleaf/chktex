@@ -59,103 +59,34 @@ USRDEFS=-DSYSCONFDIR=\"$(sysconfdir)\"
 
 #####################################################################
 
-INSTALLFILES= configure.in Makefile.in config.h.in chktexrc MakeHTML.in chktex.el
+EXTRA_DIST=configure.in Makefile.in stamp-h.in config.h.in Readme.header.in \
+	MakeHTML.in ChkTeX.tex.in aclocal.m4 \
+	chktex.el chkweb deweb.in ChkTeX.tex COPYING chktex.1 chkweb.1 deweb.1 \
+	Test.tex input.tex Test.out configure install-sh lacheck chktexrc
 
-WEBFILES= chkweb deweb.in
-
-DOCFILES= ChkTeX.tex COPYING \
-	chktex.1 chkweb.1 deweb.1
-
-DOCFILES_GEN = chktex.doc chkweb.doc deweb.doc ChkTeX.readme ChkTeX.html
+DOCFILES_GEN=chktex.doc chkweb.doc deweb.doc ChkTeX.readme ChkTeX.dvi
 
 CSOURCES=ChkTeX.c FindErrs.c OpSys.c Resource.c Utility.c
 
 # The sources are the C sources and possibly the files with the same base name
 # but ending with .h
-SOURCEFILES=$(CSOURCES) $(wildcard $(CSOURCES:.c=.h))
+SOURCEFILES=$(CSOURCES) $(wildcard $(CSOURCES:.c=.h)) types.h
 
-PORTFILES= config.msd ChkTeX.dsk ChkTeX.prj SCOPTIONS SMakefile config.AMIGA
-
-TESTFILES= Test.tex input.tex Test.out
-
-
-###
-#
-# OS specific files
-#
-###
-
-## AMIGA
-
-REXXFILES= amiga/ChkTeX.ced amiga/ChkTeX.ged amiga/ChkTeX.scm \
-amiga/ChkTeX.vbr amiga/GotoFile.ced
-
-AMIGAFILES= amiga/ChkTeX.install amiga/ChkTeX.install.info \
-amiga/ChkTeX amiga/ChkTeX.info amiga/COPYING.info \
-amiga/ChkTeX.readme.info amiga/lacheck $(REXXFILES)
-
-## MSDOS
-
-MSDOSFILES= msdos/ChkTeX.exe 
-
-## OS/2
-
-OS2FILES= os2/Readme.os2 os2/ChkTeX.exe
-
-## UNIX
-
-UNIXFILES= configure install-sh unix/lacheck
-
-COMMONFILES= $(INSTALLFILES) $(WEBFILES) $(DOCFILES) $(SOURCEFILES) \
-$(TESTFILES) $(PORTFILES)
-
-ARCHIVES= chktex.lha chktex.tar.gz
+DISTFILES=$(DOCFILES_GEN) $(EXTRA_DIST) $(SOURCEFILES)
 
 all: chktex 
 
-dist: configure Test.out $(DOCFILES_GEN)
-	-rm -r chktex $(ARCHIVES)
-	mkdir chktex chktex/generic chktex/generic
-	for file in $(COMMONFILES); do \
-		cp $$file chktex/generic; \
-	done
-	cp types.h chktex/generic
-	srcdir=`pwd`; \
-	for dir in chktex/amiga/ chktex/msdos/ chktex/os2/ chktex/unix; do \
-		cd $$srcdir; \
-		mkdir $$dir; \
-		cd $$dir; \
-		for file in $(COMMONFILES); do \
-			$(LN_S) ../generic/$$file .; \
-		done; \
-		$(LN_S) ../generic/types.h .; \
-	done
-	for file in $(AMIGAFILES); do\
-		cp /hom/jensthi/chktex/source/$$file chktex/amiga; \
-	done
-	for file in $(MSDOSFILES); do\
-		cp /hom/jensthi/chktex/source/$$file chktex/msdos; \
-	done
-	for file in $(OS2FILES); do\
-		cp /hom/jensthi/chktex/source/$$file chktex/os2; \
-	done
-	for file in $(UNIXFILES); do\
-		cp /hom/jensthi/chktex/source/$$file chktex/unix; \
-	done
-	cp README chktex/
-	-rm chktex.lha
-	lha a chktex.lha chktex/amiga/ chktex/README
-	-rm chktex_unix.tar.gz
-	tar chf chktex_unix.tar chktex/unix
-	gzip chktex_unix.tar
-	-rm chktex_gen.tar.gz
-	tar chf chktex_gen.tar chktex/generic
-	gzip chktex_gen.tar
-	-rm chktex_msdos.zip chktex_os2.zip
-	zip -r chktex_msdos chktex/msdos
-	tar cf chktex.tar chktex
-	gzip chktex.tar
-	rm -r chktex
+DISTDIR:=chktex-@PACKAGE_VERSION@
+dist: $(DISTDIR).tar.gz
+$(DISTDIR).tar.gz: $(DISTFILES) html
+	rm -r $(DISTDIR) 2>/dev/null ; true
+	mkdir $(DISTDIR)
+	cp $(DISTFILES) $(DISTDIR)
+	mkdir $(DISTDIR)/html
+	cp HTML/ChkTeX/*.{html,css} $(DISTDIR)/html
+	rm $(DISTDIR).tar.gz 2>/dev/null ; true
+	tar --owner=0 --group=0 -chzf $@ $(DISTDIR)
+	rm -rf $(DISTDIR)
 
 ########################################################################
 
@@ -239,7 +170,7 @@ clean:
 	-rm -r $(CLEAN) *.aux *.log  MakeHTML chktex deweb HTML rme 2> /dev/null
 
 distclean: clean
-	-rm -r *.cache *.status *.log *.tar.gz *.lha 2> /dev/null
+	-rm -r *.cache *.status *.log *.tar.gz 2> /dev/null
 
 maintainer-clean: clean
 	-rm -r config.h *.rme *.ps $(DOCFILES_GEN) install-sh config.guess \
