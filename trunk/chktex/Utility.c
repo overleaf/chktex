@@ -448,10 +448,16 @@ inline STRPTR HasHash(const STRPTR a, const struct Hash *h)
      struct HashEntry *he;
      HASH_TYPE i; /* Special magic to optimize SAS/C */
 
+     /* Do we have a hash? */
+     if (!h->Index)
+	 return NULL;
+
+     /* Find entry in hash */
      i = HashWord(a);
      i %= HASH_SIZE;
      he = h->Index[i];
 
+     /* Search in the entry for the item */
      while(he)
      {
         if(!strcmp(he->Str, a))

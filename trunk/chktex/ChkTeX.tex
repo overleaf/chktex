@@ -1,5 +1,5 @@
 %%
-%%  ChkTeX v1.5, LaTeX documentation for ChkTeX program.
+%%  ChkTeX v1.6, LaTeX documentation for ChkTeX program.
 %%  Copyright (C) 1995-96 Jens T. Berger Thielemann
 %%
 %%  This program is free software; you can redistribute it and/or modify
@@ -62,9 +62,9 @@
 \newenvironment{rawhtml}{\comment}{\endcomment}
 
 \makeatletter
-\@namedef{errdesc*}#1{\begin{errdesc}{\textit{#1}}}
+\@namedef{errdesc*}#1{\begin{errdesc}{\textit{#1\/}}}
 \@namedef{enderrdesc*}{\end{errdesc}}
-\@ifundefined{textit}{\gdef\textit#1{{\it #1}}}\relax
+\@ifundefined{textit}{\gdef\textit#1{{\it #1\/}}}\relax
 \@ifundefined{LaTeXe}{\gdef\LaTeXe{\LaTeX2${}_{\textstyle\varepsilon}$}}\relax
 \makeatother
 
@@ -84,7 +84,7 @@
 %endlatex
 
 
-\title{\chktex\ v1.5}
+\title{\chktex\ v1.6}
 \author{Jens~T. Berger~Thielemann}
 \date{\today}
 
@@ -127,8 +127,14 @@ As you will see, \chktex\ offers the ability to adapt to many environments
 and configurations.
 
 \subsection{New features}
-Modifications and additions since v1.4:
+Modifications and additions since v1.5:
+\begin{itemize}
+  \item Fixed a crash when running from emacs
+  \item Fixed a crash when checking our own manual
+  \item Added \tt{\BS{}verb*} support
+\end{itemize}
 
+Modifications and additions since v1.4:
 
 \subsubsection{Program}
 
@@ -385,241 +391,7 @@ Send your contribution to the following address:
 
 This program will be uploaded to AmiNet and CTAN\@; thus it can be
 found at any mirrors of those.
-
-Please note that earlier versions of \chktex\ have been uploaded to
-Aminet under the same archive name, to keep consistent with Aminet's
-policy of keeping versions out of filenames. Please read the file
-\Cmd{ChkTeX.readme} (which is in the same directory as the archive) to
-find out the version number.
-
-I'm now uploading the archive uncompressed to CTAN\@; however, most of
-the ftpservers in that network allow you to retrieve a directory
-compressed in whatever way you prefer. Aminet will as usual receive a
-LhArc archive.
-
-Mirrors  of  both  networks  include:
-
-  \subsection{Comprehensive \TeX\ Archive Network (CTAN)}
 \end{html}
-
-\begin{rawhtml}
-  Directory: <tt> support/chktex</tt>
-  <ul>
-<li> <a href="ftp://ftp.adfa.oz.au/pub/tex/ctan/support/chktex/">
-     ftp://ftp.adfa.oz.au/pub/tex/ctan/</a>, (Australia)
-
-<li> <a href="ftp://ftp.cs.rmit.edu.au/tex-archive/support/chktex/">
-     ftp://ftp.cs.rmit.edu.au/tex-archive/</a>, (Australia)
-
-<li> <a href="ftp://gw.pacbell.com/mirror/ftp.shsu.edu/tex-archive/support/chktex/">
-     ftp://gw.pacbell.com/mirror/ftp.shsu.edu/tex-archive/</a>, (California, USA)
-
-<li> <a href="ftp://sunsite.queensu.ca/pub/tex-archive/support/chktex/">
-     ftp://sunsite.queensu.ca/pub/tex-archive/</a>, (Canada)
-
-<li> <a href="ftp://ftp.dante.de/pub/tex/support/chktex/">
-     ftp://ftp.dante.de/pub/tex/</a>, (Deutschland)
-
-<li> <a href="ftp://ftp.germany.eu.net/pub/packages/TeX/support/chktex/">
-     ftp://ftp.germany.eu.net/pub/packages/TeX/</a>, (Deutschland)
-
-<li> <a href="ftp://ftp.gwdg.de/pub/dante/support/chktex/">
-     ftp://ftp.gwdg.de/pub/dante/</a>, (Deutschland)
-
-<li> <a href="ftp://ftp.tex.ac.uk/pub/tex /support/chktex/">
-     ftp://ftp.tex.ac.uk/pub/tex /</a>, (England)
-
-<li> <a href="ftp://src.doc.ic.ac.uk/packages/tex/uk-tex/support/chktex/">
-     ftp://src.doc.ic.ac.uk/packages/tex/uk-tex/</a>, (England)
-
-<li> <a href="ftp://kadri.ut.ee/pub/tex/support/chktex/">
-     ftp://kadri.ut.ee/pub/tex/</a>, (Estonia)
-
-<li> <a href="ftp://ftp.funet.fi/pub/TeX/CTAN/support/chktex/">
-     ftp://ftp.funet.fi/pub/TeX/CTAN/</a>, (Finland)
-
-<li> <a href="ftp://ftp.jussieu.fr/pub4/TeX/CTAN/support/chktex/">
-     ftp://ftp.jussieu.fr/pub4/TeX/CTAN/</a>, (France)
-
-<li> <a href="ftp://ftp.loria.fr/pub/unix/tex/ctan/support/chktex/">
-     ftp://ftp.loria.fr/pub/unix/tex/ctan/</a>, (France)
-
-<li> <a href="ftp://ftp.comp.hkbu.edu.hk/pub/TeX/CTAN/support/chktex/">
-     ftp://ftp.comp.hkbu.edu.hk/pub/TeX/CTAN/</a>, (Hong Kong)
-
-<li> <a href="ftp://ftp.unina.it/pub/TeX/support/chktex/">
-     ftp://ftp.unina.it/pub/TeX/</a>, (Italia)
-
-<li> <a href="ftp://sunsite.dsi.unimi.it/pub/TeX/support/chktex/">
-     ftp://sunsite.dsi.unimi.it/pub/TeX/</a>, (Italia)
-
-<li> <a href="ftp://ftp.riken.go.jp/pub/tex-archive/support/chktex/">
-     ftp://ftp.riken.go.jp/pub/tex-archive/</a>, (Japan)
-
-<li> <a href="ftp://wuarchive.wustl.edu/packages/TeX/support/chktex/">
-     ftp://wuarchive.wustl.edu/packages/TeX/</a>, (Missouri, USA)
-
-<li> <a href="ftp://ftp.rge.com/pub/tex/support/chktex/">
-     ftp://ftp.rge.com/pub/tex/</a>, (New York, USA)
-
-<li> <a href="ftp://ftp.duke.edu/tex-archive/support/chktex/">
-     ftp://ftp.duke.edu/tex-archive/</a>, (North Carolina, USA)
-
-<li> <a href="ftp://sunsite.unc.edu/pub/packages/TeX/support/chktex/">
-     ftp://sunsite.unc.edu/pub/packages/TeX/</a>, (North Carolina, USA)
-
-<li> <a href="ftp://sunsite.icm.edu.pl/pub/CTAN/support/chktex/">
-     ftp://sunsite.icm.edu.pl/pub/CTAN/</a>, (Poland)
-
-<li> <a href="ftp://ftpserver.nus.sg/pub/zi/TeX/support/chktex/">
-     ftp://ftpserver.nus.sg/pub/zi/TeX/</a>, (Singapore)
-
-<li> <a href="ftp://ftp.ee.up.ac.za/tex-archive/support/chktex/">
-     ftp://ftp.ee.up.ac.za/tex-archive/</a>, (South Africa)
-
-<li> <a href="ftp://nic.switch.ch/mirror/tex/support/chktex/">
-     ftp://nic.switch.ch/mirror/tex/</a>, (Switzerland)
-
-<li> <a href="ftp://dongpo.math.ncu.edu.tw/tex-archive/support/chktex/">
-     ftp://dongpo.math.ncu.edu.tw/tex-archive/</a>, (Taiwan)
-
-<li> <a href="ftp://ftp.ccu.edu.tw/pub/tex/support/chktex/">
-     ftp://ftp.ccu.edu.tw/pub/tex/</a>, (Taiwan)
-
-<li> <a href="ftp://ftp.fcu.edu.tw/pub2/tex/support/chktex/">
-     ftp://ftp.fcu.edu.tw/pub2/tex/</a>, (Taiwan)
-
-<li> <a href="ftp://ftp.shsu.edu/pub/tex/support/chktex/">
-     ftp://ftp.shsu.edu/pub/tex/</a>, (Texas, USA)
-
-<li> <a href="ftp://ftp.muni.cz/pub/tex/CTAN/support/chktex/">
-     ftp://ftp.muni.cz/pub/tex/CTAN/</a>, (The Czech Republic)
-
-<li> <a href="ftp://ftp.cs.ruu.nl/pub/tex-archive/support/chktex/">
-     ftp://ftp.cs.ruu.nl/pub/tex-archive/</a>, (The Netherlands)
-
-<li> <a href="ftp://ftp.uu.net/pub/text-processing/TeX/support/chktex/">
-     ftp://ftp.uu.net/pub/text-processing/TeX/</a>, (Virginia, USA)
-
-<li> <a href="ftp://ftp.cdrom.com/pub/tex/ctan/support/chktex/">
-     ftp://ftp.cdrom.com/pub/tex/ctan/</a>, (West coast, USA)
-
-<li> <a href="ftp://ftp.univie.ac.at/packages/tex/support/chktex/">
-     ftp://ftp.univie.ac.at/packages/tex/</a>, (\"Osterreich)
-
-
-  </ul>
-\end{rawhtml}
-
-\begin{html}
-\subsection{Aminet}
-\end{html}
-\begin{rawhtml}
-  I'm only uploading the Amiga version of the archive to Aminet (so
-  that unsuspecting Amiga users won't have to download hundreds of
-  unwanted kilobytes). If you wish to use ChkTeX on another machine,
-  please refer to CTAN.
-
-  <p> Directory: <tt> text/tex/</tt>, filename: <tt>chktex.lha</tt>
-  <ul>
-<li> <a href="ftp://ftp.wustl.edu/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.wustl.edu/pub/aminet/text/tex/</a>, (USA (MO))
-
-<li> <a href="ftp://ftp.netnet.net/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.netnet.net/pub/aminet/text/tex/</a>, (USA (WI))
-
-<li> <a href="ftp://ftp.ninemoons.com/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.ninemoons.com/pub/aminet/text/tex/</a>, (USA (AZ))
-
-<li> <a href="ftp://ftp.livewire.com.au/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.livewire.com.au/pub/aminet/text/tex/</a>, (Australia)
-
-<li> <a href="ftp://ftp.tas.gov.au/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.tas.gov.au/pub/aminet/text/tex/</a>, (Australia)
-
-<li> <a href="ftp://ftp.luth.se/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.luth.se/pub/aminet/text/tex/</a>, (Scandinavia)
-
-<li> <a href="ftp://ftp.eunet.ch/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.eunet.ch/pub/aminet/text/tex/</a>, (Switzerland)
-
-<li> <a href="ftp://ftp.germany.aminet.org/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.germany.aminet.org/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.pb.aminet.org/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.pb.aminet.org/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.uni-stuttgart.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.uni-stuttgart.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.uni-erlangen.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.uni-erlangen.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.cs.tu-berlin.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.cs.tu-berlin.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.tu-chemnitz.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.tu-chemnitz.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.fh-augsburg.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.fh-augsburg.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.uni-bremen.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.uni-bremen.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.uni-kl.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.uni-kl.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.uni-trier.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.uni-trier.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.informatik.rwth-aachen.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.informatik.rwth-aachen.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.uni-siegen.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.uni-siegen.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://ftp.uni-regensburg.de/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.uni-regensburg.de/pub/aminet/text/tex/</a>, (Germany)
-
-<li> <a href="ftp://sunsite.cnam.fr/pub/aminet/text/tex/chktex.lha">
-     ftp://sunsite.cnam.fr/pub/aminet/text/tex/</a>, (France)
-
-<li> <a href="ftp://aminet.grolier.fr/pub/aminet/text/tex/chktex.lha">
-     ftp://aminet.grolier.fr/pub/aminet/text/tex/</a>, (France)
-
-<li> <a href="ftp://ftp.giga.or.at/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.giga.or.at/pub/aminet/text/tex/</a>, (Austria)
-
-<li> <a href="ftp://sunsite.auc.dk/pub/aminet/text/tex/chktex.lha">
-     ftp://sunsite.auc.dk/pub/aminet/text/tex/</a>, (Denmark)
-
-<li> <a href="ftp://ftp.acropolis.gr/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.acropolis.gr/pub/aminet/text/tex/</a>, (Greece)
-
-<li> <a href="ftp://aminet.iit.uni-miskolc.hu/pub/aminet/text/tex/chktex.lha">
-     ftp://aminet.iit.uni-miskolc.hu/pub/aminet/text/tex/</a>, (Hungary)
-
-<li> <a href="ftp://ftp.italy.aminet.org/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.italy.aminet.org/pub/aminet/text/tex/</a>, (Italy)
-
-<li> <a href="ftp://ftp.man.szczecin.pl/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.man.szczecin.pl/pub/aminet/text/tex/</a>, (Poland)
-
-<li> <a href="ftp://ftp.portugal.aminet.org/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.portugal.aminet.org/pub/aminet/text/tex/</a>, (Portugal)
-
-<li> <a href="ftp://ftp.gui.uva.es/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.gui.uva.es/pub/aminet/text/tex/</a>, (Spain)
-
-<li> <a href="ftp://ftp.uk.aminet.org/pub/aminet/text/tex/chktex.lha">
-     ftp://ftp.uk.aminet.org/pub/aminet/text/tex/</a>, (UK)
-
-<li> <a href="ftp://micros.hensa.ac.uk/pub/aminet/text/tex/chktex.lha">
-     ftp://micros.hensa.ac.uk/pub/aminet/text/tex/</a>, (UK)
-
-  </ul>
-\end{rawhtml}
 
 \section{Installation}
 
@@ -2017,7 +1789,7 @@ The author wishes to thank the following people (in alphabetical order):
   In addition, he sent me a huge list of 238 common English
   abbreviations, for inclusion in the \rsrc\ file! Together with the
   enhanced abbreviation recognizer, I do now believe most
-  abbreviations should be catched\dots\smiley
+  abbreviations should be catched\dots\smiley\ 
 
   Finally, he has also given me valuable hints for improving the
   program's outputting routine, and given me lots of suggestions for
@@ -2087,7 +1859,6 @@ If you wish to contact me for any reason or would like to participate in
 the development of \chktex, please write to:
 %latex
 \begin{samepage}
-%endlatex
   \begin{quote}
     Jens Berger           \\
     Spektrumvn. 4         \\
@@ -2104,6 +1875,4 @@ Any signs of intelligent life are welcomed; that should exclude piracy.
 Have fun.
 
 \end{document}
-
-
 

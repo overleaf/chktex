@@ -468,9 +468,13 @@ static void PerformBigCmd(STRPTR CmdPtr)
     {
         if(!strcmp(CmdBuffer, "\\verb"))
         {
-            if(*BufPtr)
+            if(*BufPtr && (*BufPtr!='*' || BufPtr[1]))
             {
-                if((TmpPtr = strchr(&BufPtr[1], *BufPtr)))
+				if (*BufPtr=='*')
+					TmpPtr = strchr(&BufPtr[2], BufPtr[1]);
+				else
+					TmpPtr = strchr(&BufPtr[1], *BufPtr);
+                if(TmpPtr)
                     strwrite(CmdPtr, VerbClear, (TmpPtr - CmdPtr) + 1);
                 else
                     PSERR(CmdPtr - Buf, 5, emNoArgFound);

@@ -114,7 +114,7 @@ static TEXT MapChars       __PROTO((STRPTR *String));
 
 BOOL ReadRC(const STRPTR Filename)
 {
-    STRPTR      String;
+    STRPTR      String = NULL;
     BOOL        Success = FALSE;
     FILE        *fh;
     enum Token  Token;

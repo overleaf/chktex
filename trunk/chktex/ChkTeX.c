@@ -592,7 +592,7 @@ static void ShowIntStatus(void)
 {
 #ifndef STRIP_DEBUG
     ULONG       Cnt;
-    STRPTR      String, iuStr;
+    STRPTR      String, iuStr = "";
 
     if(DebugLevel & FLG_DbgMsgs)
     {
