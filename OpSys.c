@@ -107,7 +107,7 @@ const char
 	__stdiowin [] = "CON:0/10/640/180/ChkTeX",
 	__stdiov37 [] = "/AUTO/CLOSE/WAIT";
 
-const ULONG __MemPoolPuddleSize = 16384,
+const unsigned long __MemPoolPuddleSize = 16384,
             __MemPoolThreshSize = 8192;
 
 static struct AnchorPath	*AnchorPath = NULL;
@@ -141,14 +141,14 @@ static STRPTR	InitAnchorPath(STRPTR String);
 #  define LOCALRCFILE             "." RCBASENAME
 #endif
 
-TEXT   ConfigFile [BUFSIZ] = LOCALRCFILE;
+char   ConfigFile [BUFSIZ] = LOCALRCFILE;
 STRPTR ReverseOn, ReverseOff;
 
 
-static BOOL HasFile(STRPTR Dir, const STRPTR Filename, const STRPTR App);
+static int HasFile(STRPTR Dir, const STRPTR Filename, const STRPTR App);
 
 #if USE_RECURSE
-static BOOL SearchFile(STRPTR Dir, const STRPTR Filename, const STRPTR App);
+static int SearchFile(STRPTR Dir, const STRPTR Filename, const STRPTR App);
 #endif /* USE_RECURSE */
 
 /*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */
@@ -182,14 +182,14 @@ enum LookIn
 };
 
 
-BOOL SetupVars(void)
+int SetupVars(void)
 {
     STRPTR Env;
 #ifdef __MSDOS__
     STRPTR Ptr;
 #endif
     static enum LookIn i = liMin;
-    static BOOL FoundFile;
+    static int FoundFile;
 
     while(++i < liMax)
     {
@@ -325,7 +325,7 @@ void SetupTerm(void)
 void tackon(STRPTR Dir, const STRPTR File)
 {
     int         EndC;
-    ULONG       SLen;
+    unsigned long       SLen;
 
     if(Dir && (SLen = strlen(Dir)))
     {
@@ -389,16 +389,16 @@ void AddAppendix(STRPTR Name, const STRPTR App)
  */
 
 
-BOOL LocateFile(const STRPTR Filename,    /* File to search for */
+int LocateFile(const STRPTR Filename,    /* File to search for */
                 STRPTR Dest,              /* Where to put final file */
                 const STRPTR App,         /* Extra optional appendix */
                 struct WordList *wl)      /* List of paths, entries
                                            * ending in // will be recursed
                                            */
 {
-    ULONG i;
+    unsigned long i;
 #if USE_RECURSE
-	ULONG Len;
+	unsigned long Len;
 #endif
 
     FORWL(i, *wl)
@@ -424,7 +424,7 @@ BOOL LocateFile(const STRPTR Filename,    /* File to search for */
     return(FALSE);
 }
 
-static BOOL HasFile(STRPTR Dir, const STRPTR Filename, const STRPTR App)
+static int HasFile(STRPTR Dir, const STRPTR Filename, const STRPTR App)
 {
     int DirLen = strlen(Dir);
 
@@ -446,14 +446,14 @@ static BOOL HasFile(STRPTR Dir, const STRPTR Filename, const STRPTR App)
 
 
 #if USE_RECURSE
-static BOOL SearchFile(STRPTR Dir, const STRPTR Filename, const STRPTR App)
+static int SearchFile(STRPTR Dir, const STRPTR Filename, const STRPTR App)
 {
     struct stat *statbuf;
     struct dirent *de;
     DIR *dh;
 
     int DirLen = strlen(Dir);
-    BOOL Found = FALSE;
+    int Found = FALSE;
 
     DEBUG(("Searching %s for %s\n", Dir, Filename));
 

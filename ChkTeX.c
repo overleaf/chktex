@@ -56,9 +56,9 @@ struct Stack
 
 /************************************************************************/
 
-const TEXT BrOrder     [NUMBRACKETS + 1] = "()[]{}";
+const char BrOrder     [NUMBRACKETS + 1] = "()[]{}";
 
-ULONG Brackets  [NUMBRACKETS];
+unsigned long Brackets  [NUMBRACKETS];
 
 /************************************************************************/
 
@@ -180,9 +180,9 @@ HelpText  =
 
 #define CHAR(a)  a,
 
-TEXT LTX_EosPunc[] = {LATEX_EOSPUNC 0};
-TEXT LTX_GenPunc[] = {LATEX_GENPUNC 0};
-TEXT LTX_SmallPunc[] = {LATEX_SMALLPUNC 0};
+char LTX_EosPunc[] = {LATEX_EOSPUNC 0};
+char LTX_GenPunc[] = {LATEX_GENPUNC 0};
+char LTX_SmallPunc[] = {LATEX_SMALLPUNC 0};
 
 /*
  * Options we will set.
@@ -191,7 +191,7 @@ TEXT LTX_SmallPunc[] = {LATEX_SMALLPUNC 0};
 
 enum Quote Quote;
 
-TEXT VerbNormal [] =
+char VerbNormal [] =
   "%k %n in %f line %l: %m\n"
   "%r%s%t\n"
   "%u\n";
@@ -205,7 +205,7 @@ FILE *OutputFile = NULL;
 
 STRPTR  PrgName;
 
-BOOL   StdInTTY, StdOutTTY;
+int   StdInTTY, StdOutTTY;
 
 /*
  * End of config params.
@@ -213,7 +213,7 @@ BOOL   StdInTTY, StdOutTTY;
 
 static int ParseArgs(int argc, char **argv);
 static void ShowIntStatus(void);
-static BOOL OpenOut(void);
+static int OpenOut(void);
 static int ShiftArg(STRPTR *Argument);
 
 
@@ -223,7 +223,7 @@ static int ShiftArg(STRPTR *Argument);
 
 static void AddStars(struct WordList *wl)
 {
-    ULONG Count, CmdLen;
+    unsigned long Count, CmdLen;
     STRPTR  Data;
 
     FORWL(Count, *wl)
@@ -246,7 +246,7 @@ static void AddStars(struct WordList *wl)
 
 static void SetupLists(void)
 {
-    ULONG i;
+    unsigned long i;
 
     AddStars(&VerbEnvir);
     AddStars(&MathEnvir);
@@ -279,7 +279,7 @@ static void SetupLists(void)
 static void NoCommon(struct WordList *a, const STRPTR aName,
                      struct WordList *b, const STRPTR bName)
 {
-    ULONG i;
+    unsigned long i;
     
     FORWL(i, *a)
     {
@@ -293,10 +293,10 @@ static void NoCommon(struct WordList *a, const STRPTR aName,
  * TSize.
  */
 
-static void ExpandTabs(STRPTR From, STRPTR To, LONG TSize)
+static void ExpandTabs(STRPTR From, STRPTR To, long TSize)
 {
     STRPTR Next, Orig;
-    ULONG Diff;
+    unsigned long Diff;
 
     Next = From;
     Orig = To;
@@ -324,10 +324,10 @@ static void ExpandTabs(STRPTR From, STRPTR To, LONG TSize)
 int main(int argc, char **argv)
 {
   int    retval = EXIT_FAILURE, CurArg;
-  ULONG  Count;
-  BOOL   StdInUse = FALSE;
+  unsigned long  Count;
+  int   StdInUse = FALSE;
   STRPTR NameMatch = "";
-  LONG  Tab = 8;
+  long  Tab = 8;
 
 #ifdef __LOCALIZED
   InitStrings();
@@ -366,7 +366,7 @@ int main(int argc, char **argv)
       CmdLine.Stack.Used = 1L;
   }
   
-  if((CurArg = ParseArgs((ULONG) argc, argv)))
+  if((CurArg = ParseArgs((unsigned long) argc, argv)))
   {
       if(CmdLine.Stack.Used)
       {
@@ -492,12 +492,12 @@ int main(int argc, char **argv)
  * Opens the output file handle & possibly renames
  */
 
-static BOOL OpenOut(void)
+static int OpenOut(void)
 {
 #ifdef __MSDOS__
     char *p;
 #endif
-    BOOL Success = TRUE;
+    int Success = TRUE;
 
     if(*OutputName)
     {
@@ -539,7 +539,7 @@ static BOOL OpenOut(void)
 #ifndef STRIP_DEBUG
 static void ShowWL(const STRPTR Name, const struct WordList *wl)
 {
-    ULONG i, j, percent;
+    unsigned long i, j, percent;
 
     fprintf(stderr,
             "Name: %12s", Name);
@@ -591,7 +591,7 @@ static void ShowWL(const STRPTR Name, const struct WordList *wl)
 static void ShowIntStatus(void)
 {
 #ifndef STRIP_DEBUG
-    ULONG       Cnt;
+    unsigned long       Cnt;
     STRPTR      String, iuStr = "";
 
     if(DebugLevel & FLG_DbgMsgs)
@@ -703,8 +703,8 @@ OPTION_DEFAULTS
  * of arguments (main purpose)
  */
 
-static int ParseNumArg(LONG *Dest,             /* Where to put the value */
-		       LONG Default,           /* Value to put in if no in argue */
+static int ParseNumArg(long *Dest,             /* Where to put the value */
+		       long Default,           /* Value to put in if no in argue */
 		       STRPTR *Argument)       /* optarg or similar */
 {
     if(Argument && *Argument && isdigit(**Argument))
@@ -720,10 +720,10 @@ static int ParseNumArg(LONG *Dest,             /* Where to put the value */
  * supply value
  */
 
-static int ParseBoolArg(BOOL *Dest,            /* Boolean value */
+static int ParseBoolArg(int *Dest,            /* Boolean value */
 			STRPTR *Argument)      /* optarg or similar */
 {
-    LONG        D = *Dest? 1L : 0L;
+    long        D = *Dest? 1L : 0L;
     int         Retval;
     
     Retval = ParseNumArg(&D, *Dest? 0L : 1L, Argument);
@@ -790,8 +790,8 @@ static const
   int   option_index = 0L, c, i, nextc, ErrType;
 
   int   Retval = FALSE, InUse;
-  BOOL  Success, Foo;
-  LONG  Err, Verb = 1, PipeVerb = 1;
+  int  Success, Foo;
+  long  Err, Verb = 1, PipeVerb = 1;
 
   enum
   {
@@ -924,7 +924,7 @@ static const
           case 'v':
               nextc = ParseNumArg(&Verb, 2, &optarg);
 
-	      if(Verb < (LONG) OutFormat.Stack.Used)
+	      if(Verb < (long) OutFormat.Stack.Used)
 		  OutputFormat = strdup(OutFormat.Stack.Data[Verb]);
 	      else
 	      {
@@ -935,7 +935,7 @@ static const
           case 'V':
               nextc = ParseNumArg(&PipeVerb, 1, &optarg);
 
-	      if(PipeVerb < (LONG) OutFormat.Stack.Used)
+	      if(PipeVerb < (long) OutFormat.Stack.Used)
 		  PipeOutputFormat = strdup(OutFormat.Stack.Data[PipeVerb]);
 	      else
 	      {
