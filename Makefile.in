@@ -36,6 +36,7 @@ INSTALL=@INSTALL@
 INSTALL_PROGRAM=@INSTALL_PROGRAM@
 INSTALL_DATA=@INSTALL_DATA@
 ELISPDIR=@ELISPDIR@
+CLEAN=@CLEAN@
 
 CC=@CC@
 CFLAGS=@CFLAGS@
@@ -101,7 +102,6 @@ CLEAN+=$(CSOURCES:.c=.o)
 
 DEPFILES=$(patsubst %.c,.%.d,$(CSOURCES))
 include $(DEPFILES)
-CLEAN+=$(DEPFILES)
 
 ###################### MAIN DEPENDENCIES ################################
 
@@ -241,29 +241,29 @@ ChkTeX.pdf: ChkTeX.ps
 	$(PS2PDF) $< $@
 
 cover:
-	chktex -h
-	chktex Test.tex
-	chktex -v2 -t -o tmptmptmp <Test.tex
-	chktex -v2 -t -o tmptmptmp Test.tex
-	chktex Test.tex -v
-	chktex Test.tex -v0
-	chktex Test.tex -v1
-	chktex Test.tex -v2
-	chktex Test.tex -v3
-	chktex Test.tex -v4
-	chktex -t -v0s::: Test.tex -x
-	chktex -p FOO Test.tex
-	chktex -t Test.tex
-	chktex -o tmptmptmp -o tmptmptmptmp Test.tex
-	chktex -l t:faultrc test.tex
-	chktex -e30w22n1 Test.tex
-	chktex -w33e-n1 Test.tex
-	chktex -i
-	chktex -v2 -t -o tmptmptmp <Test.tex
-	chktex -I Test.tex
-	chktex -rd2 Test.tex
-	chktex -gd2 Test.tex
-	chktex -f "*N\
+	-./chktex -h
+	-./chktex Test.tex
+	-./chktex -v2 -t -o tmptmptmp <Test.tex
+	-./chktex -v2 -t -o tmptmptmp Test.tex
+	-./chktex Test.tex -v
+	-./chktex Test.tex -v0
+	-./chktex Test.tex -v1
+	-./chktex Test.tex -v2
+	-./chktex Test.tex -v3
+	-./chktex Test.tex -v4
+	-./chktex -t -v0s::: Test.tex -x
+	-./chktex -p FOO Test.tex
+	-./chktex -t Test.tex
+	-./chktex -o tmptmptmp -o tmptmptmptmp Test.tex
+	-./chktex -l t:faultrc test.tex
+	-./chktex -e30w22n1 Test.tex
+	-./chktex -w33e-n1 Test.tex
+	-./chktex -i
+	-./chktex -v2 -t -o tmptmptmp <Test.tex
+	-./chktex -I Test.tex
+	-./chktex -rd2 Test.tex
+	-./chktex -gd2 Test.tex
+	-./chktex -f "*N\
 Between: %b*N\
 Column: %c*N\
 Length: %d*N\
@@ -282,8 +282,8 @@ Post: %t*N\
 %r%i%s%I%t*N\
 %u*N\
 *N" Test.tex
-	chktex -o tmptmptmp -r -d2 Test.tex
-	chktex -qv0 Test.tex
-	chktex -w30 Test.tex
-	chktex -g --localrc=.testrc -d2 Test.tex
-	cover
+	-./chktex -o tmptmptmp -r -d2 Test.tex
+	-./chktex -qv0 Test.tex
+	-./chktex -w30 Test.tex
+	-./chktex -g --localrc=.testrc -d2 Test.tex
+	for file in $(CSOURCES); do gcov $(GCOVOPTS) $$file; done

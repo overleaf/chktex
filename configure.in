@@ -32,7 +32,8 @@ AC_SUBST(SCRIPTS)
 SCRIPTS=
 AC_SUBST(ELISPDIR)
 ELISPDIR=
-
+AC_SUBST(CLEAN)
+CLEAN=
 
 AC_ARG_ENABLE(lacheck-replace,[
     --enable-lacheck-replace:  Installs  a lacheck replacement for the
@@ -51,6 +52,10 @@ AC_ARG_ENABLE(debug-info,[
     --enable-debug-info:       Compile in miscellaneous runtime debugging
 			       information.  (Default: yes).],,
 enable_debug_info=yes)
+
+AC_ARG_ENABLE(coverage-testing,[
+    --enable-coverage-testing: Activate coverage testing with gcov. (Default: no)],,
+enable_coverage_testing=yes)
 
 if test "$silent" != "yes"; then
 cat <<EOF
@@ -76,19 +81,6 @@ cat <<EOF
                            Copyright © 1995-96
                         Jens T. Berger Thielemann
                           <jensthi@ifi.uio.no>
-EOF
-sleep 1
-cat <<EOF
-Supported features:
-    --enable-lacheck-replace:  Installs  a lacheck replacement for the
-                               AUC-TeX interface.  (Default:  no).
-    --enable-debug-info:       Compile in miscellaneous runtime debugging
-			       information.  (Default: yes).
-    --enable-emacs-hack:       Installs a Elisp file, which makes ChkTeX
-                               available in Emacs. Must be followed by
-                               the path of your elisp files (e.g.
-                               "--enable-emacs-hack=/usr/lib/emacs/").
-                               (Default: no).
 EOF
 sleep 1
 fi
@@ -121,6 +113,15 @@ case $enable_emacs_hack in
     AC_MSG_ERROR(--enable-emacs-hack needs the *full path* of Elisp files)
      ;;
 esac
+
+AC_MSG_CHECKING(whether coverage testing is enabled)
+if test "$enable_coverage_testing" = "yes"; then
+  AC_MSG_RESULT(yes)
+  CFLAGS="${CFLAGS} -fprofile-arcs -ftest-coverage -O0"
+  CLEAN="${CLEAN} \$(wildcard *.bb *.bbg *.da *.gcov)"
+else
+  AC_MSG_RESULT(no)
+fi
 
 dnl Check compiler and flags
 AC_PROG_CC
