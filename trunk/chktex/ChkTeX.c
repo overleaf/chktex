@@ -449,7 +449,7 @@ int main(int argc, char **argv)
                       }
                   } else {
                       if((CurArg <= argc) || NameMatch) {
-                          ifn(NameMatch = MatchFileName(NULL)) {
+                          if (!(NameMatch = MatchFileName(NULL))) {
                               if(CurArg < argc)
                                   NameMatch = MatchFileName(argv[CurArg++]);
                           }
@@ -523,7 +523,7 @@ static BOOL OpenOut(void)
         
         if(Success)
         {
-            ifn(OutputFile = fopen(OutputName, "w"))
+            if (!(OutputFile = fopen(OutputName, "w")))
             {
                 PrintPrgErr(pmOutOpen);
                 Success = FALSE;
@@ -815,14 +815,14 @@ static const
           switch(c)
           {
           case 's':
-              ifn(Delimit = strdup(optarg)) {
+              if (!(Delimit = strdup(optarg))) {
                   PrintPrgErr(pmStrDupErr);
                   ArgErr = aeMem;
               }
 
               break;
           case 'p':
-              ifn(PseudoInName = strdup(optarg)) {
+              if (!(PseudoInName = strdup(optarg))) {
                   PrintPrgErr(pmStrDupErr);
                   ArgErr = aeMem;
               }
@@ -914,7 +914,7 @@ static const
               break;
               
           case 'f':
-              ifn(OutputFormat = strdup(optarg))
+              if (!(OutputFormat = strdup(optarg)))
               {
                   PrintPrgErr(pmStrDupErr);
                   ArgErr = aeMem;
@@ -954,7 +954,7 @@ static const
                   }
                   else
                   {
-                      ifn(OutputName = strdup(optarg))
+                      if (!(OutputName = strdup(optarg)))
                       {
                           PrintPrgErr(pmStrDupErr);
                           ArgErr = aeMem;
