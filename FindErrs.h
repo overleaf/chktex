@@ -28,12 +28,7 @@
 
 #ifndef FINDERRS_H
 #define FINDERRS_H
-#ifndef FINDERRS_H
-# include "FindErrs.h"
-#endif /* FINDERRS_H */
-#ifndef CHKTEX_H
-# include "ChkTeX.h"
-#endif /* CHKTEX_H */
+#include "ChkTeX.h"
 
 
 #undef ERRMSGS

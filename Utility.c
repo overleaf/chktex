@@ -418,7 +418,7 @@ static unsigned long HashWord(const char *str)
  * duplicate the string yourself.
  */
 
-void InsertHash(const char *a, struct Hash *h)
+void InsertHash(char *a, struct Hash *h)
 {
     struct HashEntry **he, *newhe;
 
@@ -445,7 +445,7 @@ void InsertHash(const char *a, struct Hash *h)
  * hash index.
  */
 
-const char *HasHash(const char *a, const struct Hash *h)
+char *HasHash(const char *a, const struct Hash *h)
 {
     struct HashEntry *he;
     HASH_TYPE i;                /* Special magic to optimize SAS/C */
@@ -548,9 +548,9 @@ void ClearWord(struct WordList *WL)
  */
 
 
-const char *HasWord(const char *Word, struct WordList *WL)
+char *HasWord(const char *Word, struct WordList *WL)
 {
-    return (HasHash(Word, &WL->Hash));
+    return HasHash(Word, &WL->Hash);
 }
 
 /*

@@ -112,7 +112,7 @@ CTYPE(isalpha)
  */
 
 
-static const char *GetLTXToken(const char *Src, char *Dest)
+static char *GetLTXToken(char *Src, char *Dest)
 {
     int Char;
 
@@ -165,12 +165,11 @@ static const char *GetLTXToken(const char *Src, char *Dest)
 #define GET_TOKEN       256
 #define GET_STRIP_TOKEN 257
 
-static const char *GetLTXArg(const char *SrcBuf,
-                             char *OrigDest, const int Until,
-                             struct WordList *wl)
+static char *GetLTXArg(char *SrcBuf, char *OrigDest, const int Until,
+	struct WordList *wl)
 {
-    const char *Retval;
-    const char *TmpPtr;
+    char *Retval;
+    char *TmpPtr;
     char *Dest = OrigDest;
     unsigned long DeliCnt = 0;
 
@@ -374,7 +373,7 @@ static void WipeArgument(const char *Cmd, char *CmdPtr)
 {
     unsigned long CmdLen = strlen(Cmd);
     const char *Format;
-    const char *TmpPtr;
+    char *TmpPtr;
     int c, TmpC;
 
     if (Cmd && *Cmd)
@@ -447,7 +446,7 @@ static void CheckItal(const char *Cmd)
 
 static void PerformBigCmd(char *CmdPtr)
 {
-    const char *TmpPtr;
+    char *TmpPtr;
     const char *ArgEndPtr;
     unsigned long CmdLen = strlen(CmdBuffer);
     int TmpC;

@@ -28,12 +28,9 @@
 
 #ifndef OPSYS_H
 #define OPSYS_H
-#ifndef CHKTEX_H
-# include "ChkTeX.h"
-#endif /* CHKTEX_H */
-#ifndef UTILITY_H
-# include "Utility.h"
-#endif /* UTILITY_H */
+
+#include "ChkTeX.h"
+#include "Utility.h"
 
 /********************************************************************/
 /**************** START OF USER SETTABLE PREFERENCES ****************/
