@@ -221,9 +221,11 @@ install: chktex ChkTeX.dvi
 
 uninstall:
 	-rm -f $(bindir)/chktex
-	-rm -f $(bindir)/chkweb
-	-rm -f $(bindir)/deweb
+	for script in $(SCRIPTS); do \
+		rm -f $(bindir)/$$script; \
+	done
 	-rm -f $(sysconfdir)/chktexrc
+	# TODO: remove manpages and chktex.el too
 
 test:
 	chktex -v2 -mall Test.tex | less -r
@@ -242,6 +244,7 @@ distclean: clean
 maintainer-clean: clean
 	-rm -r config.h *.rme *.ps $(DOCFILES_GEN) install-sh config.guess \
 	       config.sub Makefile aclocal.m4 autom4te.cache configure missing \
+	       ChkTeX.tex Readme.header stamp-h \
 	       mkinstalldirs tags config.status chktest ChkTeX.dvi 2> /dev/null
 
 dvi: ChkTeX.dvi
