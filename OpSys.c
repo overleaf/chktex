@@ -287,24 +287,26 @@ void SetupTerm(void)
     int success;
     char *buffer;
 
-    ifn(termtype)
-	PrintPrgErr(pmSpecifyTerm);
-
-    success = tgetent(term_buffer, termtype);
-    if(success < 0)
-	PrintPrgErr(pmNoTermData);
-    if(success == 0)
-	PrintPrgErr(pmNoTermDefd);
-
-    ifn((buffer = (char *) malloc(strlen(term_buffer))) &&
-        (ReverseOn = tgetstr("so", &buffer)) &&
-	(ReverseOff = tgetstr("se", &buffer)))
-#endif
+    if (termtype)
     {
-	ReverseOn = PRE_ERROR_STR;
-	ReverseOff = POST_ERROR_STR;
-    }
 
+	success = tgetent(term_buffer, termtype);
+	if(success < 0)
+	    PrintPrgErr(pmNoTermData);
+	if(success == 0)
+	    PrintPrgErr(pmNoTermDefd);
+
+	buffer = (char *) malloc(strlen(term_buffer));
+	ReverseOn = tgetstr("so", &buffer);
+	ReverseOff = tgetstr("se", &buffer);
+
+	if (ReverseOn && ReverseOff)
+	    return;
+    }
+#endif
+
+    ReverseOn = PRE_ERROR_STR;
+    ReverseOff = POST_ERROR_STR;
 }
 
 /*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */

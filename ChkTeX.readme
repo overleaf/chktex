@@ -1,12 +1,10 @@
-Short:    v1.5. Finds typographic errors in LaTeX
-Author:   <jensthi@ifi.uio.no> (Jens T. Berger Thielemann)
-Uploader: <jensthi@ifi.uio.no> (Jens T. Berger Thielemann)
+Short:    v1.6. Finds typographic errors in LaTeX
+Author:   <chktex@ev-en.org> (Baruch Even)
+Uploader: <chktex@ev-en.org> (Baruch Even)
 Type:     text/tex
 Replaces: text/tex/ChkTeX.lha
-Version:  1.5
-URL:      http://www.ifi.uio.no/~jensthi/chktex/
-Porting:  <bjort@ifi.uio.no> (Bjørn Ove Thue) [MSDOS]
-          <fritsch@hmi.de> (Wolfgang Fritsch) [OS/2]
+Version:  1.6
+URL:      http://www.freesoftware.fsf.org/chktex
 
 
              #####  ###       ###    ########     ###     ##
@@ -15,7 +13,7 @@ Porting:  <bjort@ifi.uio.no> (Bjørn Ove Thue) [MSDOS]
           @@         @@@  @@   @@ @@    @@   ##   #   @@
           &&         &&   &&   &&&&     &&   @@      & &&
            &&&   &&  &&   &&   && &&    &&   @@@@   &   &&
-             %%%%%  %%%   %%% %%%  %%%  %%   &&   %%%    %%% v1.5
+             %%%%%  %%%   %%% %%%  %%%  %%   &&   %%%    %%% v1.6
                                              &&   &
                                             %%%%%%%
 
@@ -51,6 +49,12 @@ Porting:  <bjort@ifi.uio.no> (Bjørn Ove Thue) [MSDOS]
    environments and configurations.
 
 New features
+
+   Modifications and additions since v1.5:
+
+     * Fixed a crash when running from emacs
+	 * Fixed a crash when checking ChkTeX.tex
+	 * Added \verb* support
 
    Modifications and additions since v1.4:
 
@@ -255,103 +259,8 @@ Registration
 
                                  Availability
 
-   This program will be uploaded to AmiNet and CTAN; thus it can be found
+   This program will be uploaded to CTAN; thus it can be found
    at any mirrors of those.
-
-   Please note that earlier versions of ChkTeX have been uploaded to
-   Aminet under the same archive name, to keep consistent with Aminet's
-   policy of keeping versions out of filenames. Please read the file
-   ``ChkTeX.readme'' (which is in the same directory as the archive) to
-   find out the version number.
-
-   I'm now uploading the archive uncompressed to CTAN; however, most of
-   the ftpservers in that network allow you to retrieve a directory
-   compressed in whatever way you prefer. Aminet will as usual receive a
-   LhArc archive.
-
-   Mirrors of both networks include:
-
-Comprehensive TeX Archive Network (CTAN)
-
-   Directory: support/chktex
-     * ftp://ftp.adfa.oz.au/pub/tex/ctan/, (Australia)
-     * ftp://ftp.cs.rmit.edu.au/tex-archive/, (Australia)
-     * ftp://gw.pacbell.com/mirror/ftp.shsu.edu/tex-archive/,
-       (California, USA)
-     * ftp://sunsite.queensu.ca/pub/tex-archive/, (Canada)
-     * ftp://ftp.dante.de/pub/tex/, (Deutschland)
-     * ftp://ftp.germany.eu.net/pub/packages/TeX/, (Deutschland)
-     * ftp://ftp.gwdg.de/pub/dante/, (Deutschland)
-     * ftp://ftp.tex.ac.uk/pub/tex /, (England)
-     * ftp://src.doc.ic.ac.uk/packages/tex/uk-tex/, (England)
-     * ftp://kadri.ut.ee/pub/tex/, (Estonia)
-     * ftp://ftp.funet.fi/pub/TeX/CTAN/, (Finland)
-     * ftp://ftp.jussieu.fr/pub4/TeX/CTAN/, (France)
-     * ftp://ftp.loria.fr/pub/unix/tex/ctan/, (France)
-     * ftp://ftp.comp.hkbu.edu.hk/pub/TeX/CTAN/, (Hong Kong)
-     * ftp://ftp.unina.it/pub/TeX/, (Italia)
-     * ftp://sunsite.dsi.unimi.it/pub/TeX/, (Italia)
-     * ftp://ftp.riken.go.jp/pub/tex-archive/, (Japan)
-     * ftp://wuarchive.wustl.edu/packages/TeX/, (Missouri, USA)
-     * ftp://ftp.rge.com/pub/tex/, (New York, USA)
-     * ftp://ftp.duke.edu/tex-archive/, (North Carolina, USA)
-     * ftp://sunsite.unc.edu/pub/packages/TeX/, (North Carolina, USA)
-     * ftp://sunsite.icm.edu.pl/pub/CTAN/, (Poland)
-     * ftp://ftpserver.nus.sg/pub/zi/TeX/, (Singapore)
-     * ftp://ftp.ee.up.ac.za/tex-archive/, (South Africa)
-     * ftp://nic.switch.ch/mirror/tex/, (Switzerland)
-     * ftp://dongpo.math.ncu.edu.tw/tex-archive/, (Taiwan)
-     * ftp://ftp.ccu.edu.tw/pub/tex/, (Taiwan)
-     * ftp://ftp.fcu.edu.tw/pub2/tex/, (Taiwan)
-     * ftp://ftp.shsu.edu/pub/tex/, (Texas, USA)
-     * ftp://ftp.muni.cz/pub/tex/CTAN/, (The Czech Republic)
-     * ftp://ftp.cs.ruu.nl/pub/tex-archive/, (The Netherlands)
-     * ftp://ftp.uu.net/pub/text-processing/TeX/, (Virginia, USA)
-     * ftp://ftp.cdrom.com/pub/tex/ctan/, (West coast, USA)
-     * ftp://ftp.univie.ac.at/packages/tex/, (\"Osterreich)
-
-Aminet
-
-   I'm only uploading the Amiga version of the archive to Aminet (so that
-   unsuspecting Amiga users won't have to download hundreds of unwanted
-   kilobytes). If you wish to use ChkTeX on another machine, please refer
-   to CTAN.
-
-   Directory: text/tex/, filename: chktex.lha
-     * ftp://ftp.wustl.edu/pub/aminet/text/tex/, (USA (MO))
-     * ftp://ftp.netnet.net/pub/aminet/text/tex/, (USA (WI))
-     * ftp://ftp.ninemoons.com/pub/aminet/text/tex/, (USA (AZ))
-     * ftp://ftp.livewire.com.au/pub/aminet/text/tex/, (Australia)
-     * ftp://ftp.tas.gov.au/pub/aminet/text/tex/, (Australia)
-     * ftp://ftp.luth.se/pub/aminet/text/tex/, (Scandinavia)
-     * ftp://ftp.eunet.ch/pub/aminet/text/tex/, (Switzerland)
-     * ftp://ftp.germany.aminet.org/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.pb.aminet.org/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.uni-stuttgart.de/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.uni-erlangen.de/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.cs.tu-berlin.de/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.tu-chemnitz.de/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.fh-augsburg.de/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.uni-bremen.de/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.uni-kl.de/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.uni-trier.de/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.informatik.rwth-aachen.de/pub/aminet/text/tex/,
-       (Germany)
-     * ftp://ftp.uni-siegen.de/pub/aminet/text/tex/, (Germany)
-     * ftp://ftp.uni-regensburg.de/pub/aminet/text/tex/, (Germany)
-     * ftp://sunsite.cnam.fr/pub/aminet/text/tex/, (France)
-     * ftp://aminet.grolier.fr/pub/aminet/text/tex/, (France)
-     * ftp://ftp.giga.or.at/pub/aminet/text/tex/, (Austria)
-     * ftp://sunsite.auc.dk/pub/aminet/text/tex/, (Denmark)
-     * ftp://ftp.acropolis.gr/pub/aminet/text/tex/, (Greece)
-     * ftp://aminet.iit.uni-miskolc.hu/pub/aminet/text/tex/,
-       (Hungary)
-     * ftp://ftp.italy.aminet.org/pub/aminet/text/tex/, (Italy)
-     * ftp://ftp.man.szczecin.pl/pub/aminet/text/tex/, (Poland)
-     * ftp://ftp.portugal.aminet.org/pub/aminet/text/tex/, (Portugal)
-     * ftp://ftp.gui.uva.es/pub/aminet/text/tex/, (Spain)
-     * ftp://ftp.uk.aminet.org/pub/aminet/text/tex/, (UK)
-     * ftp://micros.hensa.ac.uk/pub/aminet/text/tex/, (UK)
 
                                  Installation
 
@@ -510,6 +419,11 @@ Aminet
 
    Any signs of intelligent life are welcomed; that should exclude
    piracy.
+
+   The actual maintainer as of now is:
+      
+	 Baruch Even
+	 E-mail: <chktex@ev-en.org>
 
    Have fun.
 
