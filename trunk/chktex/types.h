@@ -7,8 +7,6 @@
 #ifndef EXEC_TYPES_H
 #define	EXEC_TYPES_H
 
-typedef char *			STRPTR;     /* pointer to a string */
-
 #ifndef TRUE
 #	define TRUE			1L
 #endif

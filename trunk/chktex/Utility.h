@@ -62,7 +62,7 @@ enum Strip {
 
 struct HashEntry {
     struct HashEntry *Next;
-    STRPTR Str;
+    const char * Str;
 };
 
 struct Hash {
@@ -83,7 +83,7 @@ struct WordList {
 #define WORDLIST_DEFINED
 
 struct FileNode {
-  STRPTR        Name;
+  char *        Name;
   FILE  *fh;
   unsigned long Line;
 };
@@ -94,26 +94,26 @@ struct FileNode {
 /* Rotates x n bits right (should be an int, long, etc.) */
 #define ROTATER(x,n) ((x>>n) | (x<<((CHAR_BIT*sizeof(x)) - n)))
 
-int    fexists(const STRPTR Filename);
+int    fexists(const char *Filename);
 
 void *  sfmemset(void *to, int c, long n);
 void *  saferealloc(void *old, size_t newsize);
 
-int     strafter(const STRPTR Str, const STRPTR Cmp);
-void    strrep(STRPTR String, const char From, const char To);
-void    strxrep(STRPTR Buf, const STRPTR Prot, const char To);
-STRPTR  strip(STRPTR String, const enum Strip What);
-void    strwrite(STRPTR To, const STRPTR From, unsigned long Len);
-int     strinfront(STRPTR Str, STRPTR Cmp);
-STRPTR  strdupx(const STRPTR String, int Extra);
+int     strafter(const char * Str, const char * Cmp);
+void    strrep(char * String, const char From, const char To);
+void    strxrep(char * Buf, const char * Prot, const char To);
+char *  strip(char * String, const enum Strip What);
+void    strwrite(char * To, const char * From, unsigned long Len);
+int     strinfront(char * Str, char * Cmp);
+char *  strdupx(const char * String, int Extra);
 void    strmove(char *a, const char *b);
 
 void    ClearHash(struct Hash *h);
-void    InsertHash(const STRPTR a, struct Hash *h);
-STRPTR  HasHash(const STRPTR a, const struct Hash *h);
+void    InsertHash(const char * a, struct Hash *h);
+const char *  HasHash(const char * a, const struct Hash *h);
 
-int    InsertWord(const STRPTR Word, struct WordList *WL);
-STRPTR  HasWord(const STRPTR Word, struct WordList *WL);
+int    InsertWord(const char * Word, struct WordList *WL);
+const char *  HasWord(const char * Word, struct WordList *WL);
 void    MakeLower(struct WordList *wl);
 void    ListRep(struct WordList *wl, const char From, const char To);
 void    ClearWord(struct WordList *WL);
@@ -123,23 +123,23 @@ void   *StkPop(struct Stack *Stack);
 void   *StkTop(struct Stack *Stack);
 
 FILE *  CurStkFile(struct Stack *stack);
-STRPTR  CurStkName(struct Stack *stack);
+char *  CurStkName(struct Stack *stack);
 unsigned long   CurStkLine(struct Stack *stack);
-STRPTR  FGetsStk(STRPTR Dest, unsigned long len, struct Stack *stack);
-int    PushFileName(const STRPTR Name, struct Stack *stack);
-int    PushFile(STRPTR, FILE *, struct Stack *);
+char *  FGetsStk(char * Dest, unsigned long len, struct Stack *stack);
+int    PushFileName(const char * Name, struct Stack *stack);
+int    PushFile(char *, FILE *, struct Stack *);
 
 
 void    FreeErrInfo(struct ErrInfo* ei);
 struct ErrInfo *PushChar(const char c, const unsigned long Line,
 				 const unsigned long Column, struct Stack *Stk,
-				 const STRPTR LineCpy);
-struct ErrInfo *PushErr(const STRPTR Data, const unsigned long Line, const unsigned long Column,
-		const unsigned long ErrLen, const STRPTR LineCpy, struct Stack *Stk);
+				 const char * LineCpy);
+struct ErrInfo *PushErr(const char * Data, const unsigned long Line, const unsigned long Column,
+		const unsigned long ErrLen, const char * LineCpy, struct Stack *Stk);
 struct ErrInfo *TopChar(struct Stack *Stack);
 struct ErrInfo *TopErr(struct Stack *Stack);
 struct ErrInfo *PopErr(struct Stack *Stack);
-struct ErrInfo *TopMatch(struct Stack *Stack, STRPTR String);
+struct ErrInfo *TopMatch(struct Stack *Stack, char * String);
 
 long    BrackIndex(char const c);
 void    AddBracket(char const c);
@@ -147,16 +147,16 @@ char   MatchBracket(char const);
 
 
 
-short    substring(const STRPTR source, STRPTR dest, unsigned long pos, long len);
+short    substring(const char *source, char *dest, unsigned long pos, long len);
 
 #ifndef  HAVE_STRLWR
 #  define  strlwr  mystrlwr
-STRPTR  mystrlwr(STRPTR String);
+char *  mystrlwr(char * String);
 #endif
 
 #ifndef  HAVE_STRDUP
 #  define  strdup  mystrdup
-STRPTR  mystrdup(const STRPTR String);
+char *  mystrdup(const char * String);
 #endif
 
 

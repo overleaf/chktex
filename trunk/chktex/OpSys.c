@@ -113,7 +113,7 @@ const unsigned long __MemPoolPuddleSize = 16384,
 static struct AnchorPath	*AnchorPath = NULL;
 
 static void	KillAnchorPath(void);
-static STRPTR	InitAnchorPath(STRPTR String);
+static char *	InitAnchorPath(char * String);
 #  define V37 (DOSBase->dl_lib.lib_Version > 36)
 #endif
 
@@ -142,13 +142,14 @@ static STRPTR	InitAnchorPath(STRPTR String);
 #endif
 
 char   ConfigFile [BUFSIZ] = LOCALRCFILE;
-STRPTR ReverseOn, ReverseOff;
+char *ReverseOn;
+char *ReverseOff;
 
 
-static int HasFile(STRPTR Dir, const STRPTR Filename, const STRPTR App);
+static int HasFile(char * Dir, const char * Filename, const char * App);
 
 #if USE_RECURSE
-static int SearchFile(STRPTR Dir, const STRPTR Filename, const STRPTR App);
+static int SearchFile(char * Dir, const char * Filename, const char * App);
 #endif /* USE_RECURSE */
 
 /*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */
@@ -184,9 +185,9 @@ enum LookIn
 
 int SetupVars(void)
 {
-    STRPTR Env;
+    char * Env;
 #ifdef __MSDOS__
-    STRPTR Ptr;
+    char * Ptr;
 #endif
     static enum LookIn i = liMin;
     static int FoundFile;
@@ -322,7 +323,7 @@ void SetupTerm(void)
  *
  */
 
-void tackon(STRPTR Dir, const STRPTR File)
+void tackon(char * Dir, const char * File)
 {
     int         EndC;
     unsigned long       SLen;
@@ -350,10 +351,10 @@ void tackon(STRPTR Dir, const STRPTR File)
  * The appendix should contain a leading dot.
  */
 
-void AddAppendix(STRPTR Name, const STRPTR App)
+void AddAppendix(char * Name, const char * App)
 {
 #ifdef __MSDOS__
-    STRPTR p;
+    char * p;
 
     if((p = strrchr(Name, '.')))
         strcpy(p, App);
@@ -389,9 +390,9 @@ void AddAppendix(STRPTR Name, const STRPTR App)
  */
 
 
-int LocateFile(const STRPTR Filename,    /* File to search for */
-                STRPTR Dest,              /* Where to put final file */
-                const STRPTR App,         /* Extra optional appendix */
+int LocateFile(const char * Filename,    /* File to search for */
+                char * Dest,              /* Where to put final file */
+                const char * App,         /* Extra optional appendix */
                 struct WordList *wl)      /* List of paths, entries
                                            * ending in // will be recursed
                                            */
@@ -424,7 +425,7 @@ int LocateFile(const STRPTR Filename,    /* File to search for */
     return(FALSE);
 }
 
-static int HasFile(STRPTR Dir, const STRPTR Filename, const STRPTR App)
+static int HasFile(char * Dir, const char * Filename, const char * App)
 {
     int DirLen = strlen(Dir);
 
@@ -446,7 +447,7 @@ static int HasFile(STRPTR Dir, const STRPTR Filename, const STRPTR App)
 
 
 #if USE_RECURSE
-static int SearchFile(STRPTR Dir, const STRPTR Filename, const STRPTR App)
+static int SearchFile(char * Dir, const char * Filename, const char * App)
 {
     struct stat *statbuf;
     struct dirent *de;
@@ -511,9 +512,9 @@ static int SearchFile(STRPTR Dir, const STRPTR Filename, const STRPTR App)
 
 #ifdef AMIGA
 
-STRPTR MatchFileName(STRPTR String)
+char * MatchFileName(char * String)
 {
-    STRPTR	Retval = NULL;
+    char *	Retval = NULL;
 
     if(AnchorPath || String)	/* Is this the first invocation? */
     {
@@ -559,9 +560,9 @@ static void KillAnchorPath(void)
     MatchEnd(AnchorPath);
 }
 
-static STRPTR InitAnchorPath(STRPTR String)
+static char * InitAnchorPath(char * String)
 {
-    STRPTR	Retval = NULL;
+    char *	Retval = NULL;
 
     AnchorPath->ap_BreakBits = SIGBREAKF_CTRL_C;
     AnchorPath->ap_Strlen = FMSIZE;
@@ -578,7 +579,7 @@ static STRPTR InitAnchorPath(STRPTR String)
 }
 
 #else
-STRPTR MatchFileName(STRPTR String)
+char * MatchFileName(char * String)
 {
     return(String);
 }

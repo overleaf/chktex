@@ -49,7 +49,7 @@
 #define LIST(a) extern struct WordList a;
 #define LNEMPTY LIST
 #define LCASE(a) LIST(a) LIST(a ## Case)
-#define KEY(a,def) extern STRPTR a;
+#define KEY(a,def) extern char *a;
 
 RESOURCE_INFO
 
@@ -58,7 +58,7 @@ RESOURCE_INFO
 #undef LNEMPTY
 #undef LIST
 
-int    ReadRC(STRPTR const);
+int    ReadRC(const char *);
 
 
 #endif /* RESOURCE */

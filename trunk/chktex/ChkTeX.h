@@ -175,7 +175,7 @@
 
 #define NEWBUF(name,len) \
 static char _ ## name [len  + (WALLBYTES<<1)] = {0};  \
-const STRPTR name = &_ ## name[WALLBYTES]
+char *name = &_ ## name[WALLBYTES]
 
 #define INTFAULTMSG "INTERNAL FAULT OCCURED! PLEASE SUBMIT A BUG REPORT!\n"
 
@@ -283,7 +283,9 @@ enum PrgErrNum {
 extern struct ErrMsg  PrgMsgs [pmMaxFault + 1];
 
 struct ErrInfo {
-    STRPTR Data, LineBuf, File;
+    char *Data;
+	const char *LineBuf;
+	char *File;
     unsigned long  Line, Column, ErrLen;
     enum
     {
@@ -293,10 +295,9 @@ struct ErrInfo {
     } Flags;
 };
 
-extern const STRPTR
-    ReadBuffer,
-    CmdBuffer,
-    TmpBuffer;
+extern char *ReadBuffer;
+extern char *CmdBuffer;
+extern char *TmpBuffer;
 
 extern const
     char BrOrder[NUMBRACKETS + 1];
@@ -316,11 +317,11 @@ extern FILE *OutputFile, *InputFile;
   DEF(int, UsingStdIn,  FALSE) \
   DEF(int, InputFiles,  TRUE) \
   DEF(int, HeadErrOut,  TRUE) \
-  DEF(STRPTR, OutputName, "") \
-  DEF(STRPTR, PseudoInName, NULL) \
-  DEF(STRPTR, OutputFormat, VerbNormal) \
-  DEF(STRPTR, PipeOutputFormat, NULL) \
-  DEF(STRPTR, Delimit, ":") \
+  DEF(char *, OutputName, "") \
+  DEF(char *, PseudoInName, NULL) \
+  DEF(char *, OutputFormat, VerbNormal) \
+  DEF(char *, PipeOutputFormat, NULL) \
+  DEF(char *, Delimit, ":") \
   DEF(long,  DebugLevel, 0)
 
 #define STATE_VARS \
@@ -329,7 +330,7 @@ extern FILE *OutputFile, *InputFile;
   DEF(int, InHeader, TRUE)  /* Whether we're in the header */ \
   DEF(int, VerbMode, FALSE) /* Whether we're in complete ignore-mode */ \
   DEF(long, MathMode, 0)     /* Whether we're in math mode or not */ \
-  DEF(STRPTR, VerbStr, "")   /* String we'll terminate verbmode upon */ \
+  DEF(char *, VerbStr, "")   /* String we'll terminate verbmode upon */ \
   DEF(unsigned long, ErrPrint, 0)    /* # errors printed */ \
   DEF(unsigned long, WarnPrint, 0)   /* # warnings printed */ \
   DEF(unsigned long, UserSupp, 0)    /* # user suppressed warnings */
@@ -357,6 +358,6 @@ void    PrintPrgErr(enum PrgErrNum , ...);
 void    ErrPrintf(const char *fmt, ...);
 
 extern char LTX_EosPunc[], LTX_GenPunc[], LTX_SmallPunc[];
-extern STRPTR PrgName;
+extern char *PrgName;
 
 #endif /* CHKTEX_H */

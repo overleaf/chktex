@@ -34,7 +34,7 @@
 #define LNEMPTY(a) struct WordList a = {0, 1, {0}, {0}};
 #define LIST(a)    struct WordList a = {0, 0, {0}, {0}};
 #define LCASE(a)   LIST(a) LIST(a ## Case)
-#define KEY(a,def) STRPTR a = def;
+#define KEY(a,def) char *a = def;
 
 RESOURCE_INFO
 
@@ -45,8 +45,8 @@ RESOURCE_INFO
 
 struct KeyWord
 {
-    STRPTR  Name;
-    STRPTR  *String;         /* Keyword = item */
+    char *Name;
+    char **String;         /* Keyword = item */
     struct  WordList
             *List,           /* Case-sensitive strings */
             *CaseList;       /* Case-insensitive strings */
@@ -94,8 +94,8 @@ TOKENBITS(Token)
 static enum Token Expect;
 static unsigned long RsrcLine;
 
-static enum Token ReadWord(STRPTR, FILE *);
-static char MapChars(STRPTR *String);
+static enum Token ReadWord(char *, FILE *);
+static char MapChars(char **String);
 
 
 
@@ -112,9 +112,9 @@ static char MapChars(STRPTR *String);
  * Returns whether the attempt was a successful one.
  */
 
-int ReadRC(const STRPTR Filename)
+int ReadRC(const char *Filename)
 {
-    STRPTR      String = NULL;
+    char *String = NULL;
     int        Success = FALSE;
     FILE        *fh;
     enum Token  Token;
@@ -274,17 +274,17 @@ int ReadRC(const STRPTR Filename)
  * token. If not, the contents are undefined.
  */
 
-static enum Token ReadWord(STRPTR Buffer, FILE *fh)
+static enum Token ReadWord(char *Buffer, FILE *fh)
 {
     static
-        STRPTR  String = NULL;
+        char *String = NULL;
     static
         char    StatBuf[BUFSIZ];
     enum Token Retval = FLG_Eof;
 
     unsigned short       Chr;
 
-    STRPTR      Ptr;
+    char *Ptr;
     int        OnceMore = TRUE, Cont = TRUE;
 
     if(Buffer)
@@ -422,12 +422,12 @@ static enum Token ReadWord(STRPTR Buffer, FILE *fh)
 
 #define MAP(a,b)        case a: Tmp = b; break;
 
-static char MapChars(STRPTR *String)
+static char MapChars(char **String)
 {
     int    Chr, Tmp = 0;
     unsigned short  Cnt;
 
-    Chr = *((STRPTR) (*String)++);
+    Chr = *((char *) (*String)++);
 
     switch(tolower(Chr))
     {
