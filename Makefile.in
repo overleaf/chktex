@@ -68,7 +68,7 @@ DOCFILES_GEN = chktex.doc chkweb.doc deweb.doc ChkTeX.readme ChkTeX.html
 
 SOURCEFILES= ChkTeX.c ChkTeX.h FindErrs.c FindErrs.h OpSys.c OpSys.h \
 Resource.c Resource.h Utility.c Utility.h WB2Argv.c WB2Argv.h \
-getopt.c getopt.h getopt1.c HashWord.a chktex.el
+HashWord.a chktex.el
 
 PORTFILES= config.msd ChkTeX.dsk ChkTeX.prj SCOPTIONS SMakefile config.AMIGA
 
@@ -161,7 +161,7 @@ dist: configure Test.out $(DOCFILES_GEN)
 
 ###################### MAIN DEPENDENCIES ################################
 
-OBJS= ChkTeX.o FindErrs.o getopt.o getopt1.o OpSys.o Resource.o Utility.o
+OBJS= ChkTeX.o FindErrs.o OpSys.o Resource.o Utility.o
 
 MAKETEST= ./chktex -mall -r -g0 -lchktexrc Test.tex 
 
@@ -272,15 +272,11 @@ ChkTeX.ps: ChkTeX.dvi
 ChkTeX: ChkTeX.c
 	@echo
 
-ChkTeX.o: ChkTeX.c WB2Argv.h getopt.h ChkTeX.h types.h \
+ChkTeX.o: ChkTeX.c WB2Argv.h ChkTeX.h types.h \
 Utility.h OpSys.h FindErrs.h Resource.h config.h
 
 FindErrs.o: FindErrs.c ChkTeX.h types.h FindErrs.h \
 Utility.h OpSys.h Resource.h config.h
-
-getopt.o: getopt.c config.h getopt.h
-
-getopt1.o: getopt1.c config.h getopt.h
 
 OpSys.o: OpSys.c ChkTeX.h types.h Utility.h OpSys.h config.h
 
