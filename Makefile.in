@@ -332,7 +332,7 @@ cover:
 	chktex -f "*N\
 Between: %b*N\
 Column: %c*N\
-Lenght: %d*N\
+Length: %d*N\
 File: %f*N\
 %iInverse%I*N\
 Kind: %k*N\
