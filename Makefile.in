@@ -63,7 +63,8 @@ USRDEFS=-DSYSCONFDIR=\"$(sysconfdir)\"
 EXTRA_DIST=configure.in Makefile.in stamp-h.in config.h.in Readme.header.in \
 	MakeHTML.in ChkTeX.tex.in aclocal.m4 \
 	chktex.el chkweb deweb.in ChkTeX.tex COPYING chktex.1 chkweb.1 deweb.1 \
-	Test.tex input.tex Test.out configure install-sh lacheck chktexrc
+	Test.tex input.tex Test.out configure install-sh lacheck chktexrc \
+	$(wildcard m4/*.m4)
 
 DOCFILES_GEN=chktex.doc chkweb.doc deweb.doc ChkTeX.readme ChkTeX.dvi
 
@@ -82,7 +83,7 @@ dist: $(DISTDIR).tar.gz
 $(DISTDIR).tar.gz: $(DISTFILES) html
 	rm -r $(DISTDIR) 2>/dev/null ; true
 	mkdir $(DISTDIR)
-	cp $(DISTFILES) $(DISTDIR)
+	cp --parent $(DISTFILES) $(DISTDIR)
 	mkdir $(DISTDIR)/html
 	cp HTML/ChkTeX/*.{html,css} $(DISTDIR)/html
 	rm $(DISTDIR).tar.gz 2>/dev/null ; true
