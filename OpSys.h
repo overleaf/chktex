@@ -61,9 +61,8 @@
  * of the `.chktexrc' file into the ConfigFile array. The array is sized
  * BUFSIZ bytes.
  *
- * The program does also assume that AMIGA is defined if the source
- * compiled on an Amiga machine, and that __unix__ is defined if the
- * source is compiled on a UNIX machine.
+ * The program does also assume that __unix__ is defined if the source is
+ * compiled on a UNIX machine.
  *
  */
 
@@ -77,11 +76,7 @@
  */
 
 #ifndef EXIT_FAILURE
-#  ifdef  AMIGA
-#    define  EXIT_FAILURE    20
-#  else
 #    define  EXIT_FAILURE    1
-#  endif
 #endif
 
 #ifndef EXIT_SUCCESS
@@ -106,15 +101,13 @@
  */
 
 
-#if defined(__unix__) || defined(AMIGA)
+#if defined(__unix__)
 #  define  SLASH  '/'
 #elif defined(__MSDOS__)
 #  define SLASH   '\\'
 #endif
 
-#if defined(AMIGA)
-#  define DIRCHARS ":/"
-#elif defined(__unix__)
+#if defined(__unix__)
 #  define DIRCHARS "/"
 #elif defined(__MSDOS__)
 #  define DIRCHARS ":\\"
@@ -128,9 +121,7 @@
  * information to the user.
  */
 
-#ifdef AMIGA
-#  define STDIN_BREAK "Ctrl-\\"
-#elif defined(__unix__)
+#if defined(__unix__)
 #  define STDIN_BREAK "Ctrl-D"
 #elif defined(__MSDOS__)
 #  define STDIN_BREAK "Ctrl-Z + Enter"
@@ -163,13 +154,8 @@
  *
  */
 
-#ifdef AMIGA
-#  define PRE_ERROR_STR   "\033[43m\033[32m"
-#  define POST_ERROR_STR  "\033[0m"
-#else
 #  define PRE_ERROR_STR   "\033[7m"
 #  define POST_ERROR_STR  "\033[0m"
-#endif
 
 
 /*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */

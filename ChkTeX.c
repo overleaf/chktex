@@ -27,11 +27,6 @@
  */
 
 
-#ifdef AMIGA
-#  include <exec/execbase.h>
-#  include "WB2Argv.h"
-#endif
-
 #include "getopt.h"
 #include "ChkTeX.h"
 #include "OpSys.h"
@@ -328,17 +323,6 @@ int main(int argc, char **argv)
 #ifdef __LOCALIZED
 
     InitStrings();
-#endif
-
-#ifdef AMIGA
-
-    if (_WBenchMsg)
-    {
-        if (argv = WB2Argv(_WBenchMsg, W2A_LOWER))
-            argc = CountArgv(argv);
-        else
-            exit(EXIT_FAILURE);
-    }
 #endif
 
     OutputFile = stdout;
