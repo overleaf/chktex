@@ -68,7 +68,7 @@
 #  include <strings.h>
 #endif
 
-#include "exec/types.h"
+#include "types.h"
 
 #ifndef LONG_MAX
 #  define LONG_MAX (0x7fffffff)

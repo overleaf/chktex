@@ -111,11 +111,11 @@ all: chktex
 
 dist: configure Test.out $(DOCFILES_GEN)
 	-rm -r chktex $(ARCHIVES)
-	mkdir chktex chktex/generic chktex/generic/exec
+	mkdir chktex chktex/generic chktex/generic
 	for file in $(COMMONFILES); do \
 		cp $$file chktex/generic; \
 	done
-	cp exec/types.h chktex/generic/exec
+	cp types.h chktex/generic
 	srcdir=`pwd`; \
 	for dir in chktex/amiga/ chktex/msdos/ chktex/os2/ chktex/unix; do \
 		cd $$srcdir; \
@@ -124,8 +124,7 @@ dist: configure Test.out $(DOCFILES_GEN)
 		for file in $(COMMONFILES); do \
 			$(LN_S) ../generic/$$file .; \
 		done; \
-		mkdir exec; cd exec; \
-		$(LN_S) ../../generic/exec/types.h .; \
+		$(LN_S) ../generic/types.h .; \
 	done
 	for file in $(AMIGAFILES); do\
 		cp /hom/jensthi/chktex/source/$$file chktex/amiga; \
@@ -273,22 +272,22 @@ ChkTeX.ps: ChkTeX.dvi
 ChkTeX: ChkTeX.c
 	@echo
 
-ChkTeX.o: ChkTeX.c WB2Argv.h getopt.h ChkTeX.h exec/types.h \
+ChkTeX.o: ChkTeX.c WB2Argv.h getopt.h ChkTeX.h types.h \
 Utility.h OpSys.h FindErrs.h Resource.h config.h
 
-FindErrs.o: FindErrs.c ChkTeX.h exec/types.h FindErrs.h \
+FindErrs.o: FindErrs.c ChkTeX.h types.h FindErrs.h \
 Utility.h OpSys.h Resource.h config.h
 
 getopt.o: getopt.c config.h getopt.h
 
 getopt1.o: getopt1.c config.h getopt.h
 
-OpSys.o: OpSys.c ChkTeX.h exec/types.h Utility.h OpSys.h config.h
+OpSys.o: OpSys.c ChkTeX.h types.h Utility.h OpSys.h config.h
 
-Resource.o: Resource.c ChkTeX.h exec/types.h Utility.h OpSys.h Resource.h \
+Resource.o: Resource.c ChkTeX.h types.h Utility.h OpSys.h Resource.h \
 config.h
 
-Utility.o: Utility.c ChkTeX.h exec/types.h Utility.h OpSys.h Resource.h \
+Utility.o: Utility.c ChkTeX.h types.h Utility.h OpSys.h Resource.h \
 config.h
 
 RegExps.o: RegExps.c RegExps.h config.h

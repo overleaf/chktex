@@ -28,7 +28,7 @@
 
 #ifdef AMIGA
 
-#include <exec/types.h>
+#include <types.h>
 
 /*
  * These bits are intended for the WB2Argv Flags arg.
