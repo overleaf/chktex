@@ -168,7 +168,7 @@ indent:
 mostlyclean: clean
 
 clean:
-	-rm -r $(CLEAN) *.aux *.log  MakeHTML chktex deweb HTML rme 2> /dev/null
+	-rm -r $(CLEAN) *.aux *.log *.pdf *.dvi *.ps MakeHTML chktex deweb HTML rme 2> /dev/null
 
 distclean: clean
 	-rm -r *.cache *.status *.log *.tar.gz 2> /dev/null
