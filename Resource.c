@@ -94,8 +94,8 @@ TOKENBITS(Token)
 static enum Token Expect;
 static ULONG RsrcLine;
 
-static enum Token ReadWord __PROTO((STRPTR, FILE *));
-static TEXT MapChars       __PROTO((STRPTR *String));
+static enum Token ReadWord(STRPTR, FILE *);
+static TEXT MapChars(STRPTR *String);
 
 
 

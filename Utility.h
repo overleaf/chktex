@@ -94,76 +94,69 @@ struct FileNode {
 /* Rotates x n bits right (should be an int, long, etc.) */
 #define ROTATER(x,n) ((x>>n) | (x<<((CHAR_BIT*sizeof(x)) - n)))
 
-BOOL    fexists         __PROTO((const STRPTR Filename));
+BOOL    fexists(const STRPTR Filename);
 
-APTR    sfmemset        __PROTO((APTR to, int c, LONG n));
-void *  saferealloc     __PROTO((void *old, size_t newsize));
+APTR    sfmemset(APTR to, int c, LONG n);
+void *  saferealloc(void *old, size_t newsize);
 
-int     strafter        __PROTO((const STRPTR Str, const STRPTR Cmp));
-void    strrep          __PROTO((STRPTR String, const TEXT From,
-				 const TEXT To));
-void    strxrep         __PROTO((STRPTR Buf, const STRPTR Prot,
-				 const TEXT To));
-STRPTR  strip           __PROTO((STRPTR String, const enum Strip What));
-void    strwrite        __PROTO((STRPTR To, const STRPTR From, ULONG Len));
-int     strinfront      __PROTO((STRPTR Str, STRPTR Cmp));
-STRPTR  strdupx         __PROTO((const STRPTR String, int Extra));
-void    strmove         __PROTO((char *a, const char *b));
+int     strafter(const STRPTR Str, const STRPTR Cmp);
+void    strrep(STRPTR String, const TEXT From, const TEXT To);
+void    strxrep(STRPTR Buf, const STRPTR Prot, const TEXT To);
+STRPTR  strip(STRPTR String, const enum Strip What);
+void    strwrite(STRPTR To, const STRPTR From, ULONG Len);
+int     strinfront(STRPTR Str, STRPTR Cmp);
+STRPTR  strdupx(const STRPTR String, int Extra);
+void    strmove(char *a, const char *b);
 
-void    ClearHash       __PROTO((struct Hash *h));
-void    InsertHash      __PROTO((const STRPTR a, struct Hash *h));
-STRPTR  HasHash         __PROTO((const STRPTR a, const struct Hash *h));
+void    ClearHash(struct Hash *h);
+void    InsertHash(const STRPTR a, struct Hash *h);
+STRPTR  HasHash(const STRPTR a, const struct Hash *h);
 
-BOOL    InsertWord      __PROTO((const STRPTR Word, struct WordList *WL));
-STRPTR  HasWord         __PROTO((const STRPTR Word, struct WordList *WL));
-void    MakeLower       __PROTO((struct WordList *wl));
-void    ListRep         __PROTO((struct WordList *wl, const TEXT From,
-                                 const TEXT To));
-void    ClearWord       __PROTO((struct WordList *WL));
+BOOL    InsertWord(const STRPTR Word, struct WordList *WL);
+STRPTR  HasWord(const STRPTR Word, struct WordList *WL);
+void    MakeLower(struct WordList *wl);
+void    ListRep(struct WordList *wl, const TEXT From, const TEXT To);
+void    ClearWord(struct WordList *WL);
 
-BOOL    StkPush         __PROTO((const APTR Data, struct Stack *Stack));
-APTR    StkPop          __PROTO((struct Stack *Stack));
-APTR    StkTop          __PROTO((struct Stack *Stack));
+BOOL    StkPush(const APTR Data, struct Stack *Stack);
+APTR    StkPop(struct Stack *Stack);
+APTR    StkTop(struct Stack *Stack);
 
-FILE *  CurStkFile      __PROTO((struct Stack *stack));
-STRPTR  CurStkName      __PROTO((struct Stack *stack));
-ULONG   CurStkLine      __PROTO((struct Stack *stack));
-STRPTR  FGetsStk        __PROTO((STRPTR Dest, ULONG len, struct Stack *stack));
-BOOL    PushFileName    __PROTO((const STRPTR Name, struct Stack *stack));
-BOOL    PushFile        __PROTO((STRPTR, FILE *, struct Stack *));
+FILE *  CurStkFile(struct Stack *stack);
+STRPTR  CurStkName(struct Stack *stack);
+ULONG   CurStkLine(struct Stack *stack);
+STRPTR  FGetsStk(STRPTR Dest, ULONG len, struct Stack *stack);
+BOOL    PushFileName(const STRPTR Name, struct Stack *stack);
+BOOL    PushFile(STRPTR, FILE *, struct Stack *);
 
 
-void    FreeErrInfo     __PROTO((struct ErrInfo* ei));
-struct ErrInfo *
-        PushChar        __PROTO((const TEXT c, const ULONG Line,
+void    FreeErrInfo(struct ErrInfo* ei);
+struct ErrInfo *PushChar(const TEXT c, const ULONG Line,
 				 const ULONG Column, struct Stack *Stk,
-				 const STRPTR LineCpy));
-struct ErrInfo *
-        PushErr         __PROTO((const STRPTR Data, const ULONG Line,
-                                const ULONG Column, const ULONG ErrLen,
-                                const STRPTR LineCpy, struct Stack *Stk));
-struct ErrInfo *TopChar __PROTO((struct Stack *Stack));
-struct ErrInfo *TopErr  __PROTO((struct Stack *Stack));
-struct ErrInfo *PopErr  __PROTO((struct Stack *Stack));
-struct ErrInfo *TopMatch __PROTO((struct Stack *Stack, STRPTR String));
+				 const STRPTR LineCpy);
+struct ErrInfo *PushErr(const STRPTR Data, const ULONG Line, const ULONG Column,
+		const ULONG ErrLen, const STRPTR LineCpy, struct Stack *Stk);
+struct ErrInfo *TopChar(struct Stack *Stack);
+struct ErrInfo *TopErr(struct Stack *Stack);
+struct ErrInfo *PopErr(struct Stack *Stack);
+struct ErrInfo *TopMatch(struct Stack *Stack, STRPTR String);
 
-LONG    BrackIndex      __PROTO((TEXT const c));
-void    AddBracket      __PROTO((TEXT const c));
-TEXT   MatchBracket    __PROTO((TEXT const));
+LONG    BrackIndex(TEXT const c);
+void    AddBracket(TEXT const c);
+TEXT   MatchBracket(TEXT const);
 
 
 
-WORD    substring       __PROTO((const STRPTR source, STRPTR dest,
-				 ULONG pos, LONG len));
+WORD    substring(const STRPTR source, STRPTR dest, ULONG pos, LONG len);
 
 #ifndef  HAVE_STRLWR
 #  define  strlwr  mystrlwr
-STRPTR  mystrlwr          __PROTO((STRPTR String));
+STRPTR  mystrlwr(STRPTR String);
 #endif
 
 #ifndef  HAVE_STRDUP
 #  define  strdup  mystrdup
-STRPTR  mystrdup          __PROTO((const STRPTR String));
+STRPTR  mystrdup(const STRPTR String);
 #endif
 
 

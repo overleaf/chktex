@@ -58,7 +58,7 @@ RESOURCE_INFO
 #undef LNEMPTY
 #undef LIST
 
-BOOL    ReadRC          __PROTO((STRPTR const));
+BOOL    ReadRC(STRPTR const);
 
 
 #endif /* RESOURCE */

@@ -211,10 +211,10 @@ BOOL   StdInTTY, StdOutTTY;
  * End of config params.
  */
 
-static int ParseArgs      __PROTO((int argc, char **argv));
-static void ShowIntStatus __PROTO((void));
-static BOOL OpenOut       __PROTO((void));
-static int ShiftArg       __PROTO((STRPTR *Argument));
+static int ParseArgs(int argc, char **argv);
+static void ShowIntStatus(void);
+static BOOL OpenOut(void);
+static int ShiftArg(STRPTR *Argument);
 
 
 /*

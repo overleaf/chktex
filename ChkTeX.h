@@ -70,16 +70,6 @@
 
 #include "exec/types.h"
 
-#ifndef __NOPROTO
-#  ifndef __PROTO
-#    define __PROTO(a) a
-#  endif
-#else
-#  ifndef __PROTO
-#    define __PROTO(a) ()
-#  endif
-#endif
-
 #ifndef LONG_MAX
 #  define LONG_MAX (0x7fffffff)
 #endif
@@ -368,9 +358,9 @@ enum Quote {
 extern enum Quote Quote;
 extern BOOL StdInTTY, StdOutTTY, UsingStdIn;
 
-int     main            __PROTO((int argc, char **argv));
-void    PrintPrgErr     __PROTO((enum PrgErrNum , ...));
-void    ErrPrintf       __PROTO((const char *fmt, ...));
+int     main(int argc, char **argv);
+void    PrintPrgErr(enum PrgErrNum , ...);
+void    ErrPrintf(const char *fmt, ...);
 
 extern TEXT LTX_EosPunc[], LTX_GenPunc[], LTX_SmallPunc[];
 extern STRPTR PrgName;
