@@ -306,9 +306,6 @@ ChkTeX.ps: ChkTeX.dvi
 ChkTeX.pdf: ChkTeX.ps
 	$(PS2PDF) $< $@
 
-ChkTeX: ChkTeX.c
-	@echo
-
 cover:
 	chktex -h
 	chktex Test.tex
