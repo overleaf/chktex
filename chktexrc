@@ -541,7 +541,7 @@ NonItalic
 
 ItalCmd
 {
-    \textit \textsl \emph
+#    \textit \textsl \emph -- Do not need italic correction.
 }
 
 #####################################################################
