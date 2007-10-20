@@ -3,6 +3,7 @@
   - For some reason 1.6.3 did not include all the changes it was supposed to
     have, this release should fix it. One such issue is the MacOS X
     compilation.
+  - Include some updates to the default chktexrc from Jean-Marc Lasgouttes.
 
 1.6.3
 
