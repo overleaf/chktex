@@ -61,7 +61,7 @@ Testing \textem{italic} in \/ this \textit{sentence\/}, as \textem{you \/ see\/}
 Message 4 in Test.tex: Italic correction (`\/') found in non-italic buffer.
 Testing \textem{italic} in \/ this \textit{sentence\/}, as \textem{you \/ see\/}.  
                            ^^
-Message 28 in Test.tex: Don't use \/ in front of small punctuation.
+Message 4 in Test.tex: Italic correction (`\/') found in non-italic buffer.
 Testing \textem{italic} in \/ this \textit{sentence\/}, as \textem{you \/ see\/}.  
                                                    ^^
 Message 42 in Test.tex: You should remove spaces in front of `\/'
@@ -361,9 +361,6 @@ Message 22 in Test.tex: Comment displayed.
 Message 38 in Test.tex: You should not use punctuation in front of quotes.
 ``An example,'' he said, ``would be great.''  
             ^
-Message 38 in Test.tex: You should not use punctuation in front of quotes.
-``An example,'' he said, ``would be great.''  
-                                         ^
 Message 22 in Test.tex: Comment displayed.
 % Warning 39  
 ^
