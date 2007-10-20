@@ -465,7 +465,6 @@ int main(int argc, char **argv)
             }
         }
     }
-    exit(retval);
     return retval;
 }
 
