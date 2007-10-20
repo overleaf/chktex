@@ -409,6 +409,7 @@ WipeArg
 MathEnvir
 {
     displaymath math eqnarray array equation
+    align alignat gather flalign multline
 }
 
 #####################################################################
