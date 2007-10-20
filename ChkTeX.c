@@ -474,10 +474,6 @@ int main(int argc, char **argv)
 
 static int OpenOut(void)
 {
-#ifdef __MSDOS__
-    char *p;
-#endif
-
     int Success = TRUE;
 
     if (*OutputName)
