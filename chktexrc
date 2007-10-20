@@ -522,6 +522,7 @@ IJAccent
 Italic
 {
     \it \em \sl
+    \itshape \slshape
 }
 
 #####################################################################
@@ -532,17 +533,20 @@ Italic
 NonItalic
 {
     \bf \rm \sf \tt \sc
+    \upshape
 }
 
 #####################################################################
 #
 # Commands   which puts their argument into italic (and thus possibly
-# needs italic correction in the end.
+# needs italic correction in the end).
+#
+# This is currently empty, since \textit, \textsl and \emph do that
+# automatically.
 #
 
 ItalCmd
 {
-#    \textit \textsl \emph -- Do not need italic correction.
 }
 
 #####################################################################
