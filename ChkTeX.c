@@ -172,12 +172,6 @@ static const char *HelpText =
 
 
 
-#define CHAR(a)  a,
-
-char LTX_EosPunc[] = { LATEX_EOSPUNC 0 };
-char LTX_GenPunc[] = { LATEX_GENPUNC 0 };
-char LTX_SmallPunc[] = { LATEX_SMALLPUNC 0 };
-
 /*
  * Options we will set.
  *

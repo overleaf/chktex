@@ -96,35 +96,6 @@
 #define __MSDOS__ 1
 #endif
 
-/*
- * The next macro should contain a list of characters LaTeX (and you?)
- * considers as an end-of-sentence characters, which should be
- * detected when whether sentence spacing is correct.
- *
- */
-
-#define LATEX_EOSPUNC        CHAR('.') CHAR(':') CHAR('?') CHAR('!')
-
-/*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */
-
-/*
- * The next macro should contain general punctuation characters
- * used on your system.
- */
-
-#define LATEX_GENPUNC         LATEX_EOSPUNC CHAR(',') CHAR(';')
-
-
-/*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */
-
-/*
- * The next macro should contain a list of characters LaTeX (and you?)
- * considers as an small punctuation characters, which should not be
- * preceded by a \/.
- */
-
-#define LATEX_SMALLPUNC       CHAR('.') CHAR(',')
-
 /*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */
 
 /*
@@ -342,7 +313,6 @@ DEBUGBITS(Debug_BIT)
      void PrintPrgErr(enum PrgErrNum, ...);
      void ErrPrintf(const char *fmt, ...);
 
-     extern char LTX_EosPunc[], LTX_GenPunc[], LTX_SmallPunc[];
      extern char *PrgName;
 
 #endif /* CHKTEX_H */

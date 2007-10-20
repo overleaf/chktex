@@ -80,6 +80,25 @@ static int my_##func(int c) \
 
 /*  -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=- -=><=-  */
 
+/*
+ * A list of characters LaTeX considers as an end-of-sentence characters, which
+ * should be detected when whether sentence spacing is correct.
+ *
+ */
+static const char LTX_EosPunc[] = { '.', ':', '?', '!', 0 };
+
+/*
+ * General punctuation characters used on your system.
+ */
+static const char LTX_GenPunc[] = { ',', ';', 0 };
+
+/*
+ * A list of characters LaTeX considers as an small punctuation characters,
+ * which should not be preceded by a \/.
+ */
+static const char LTX_SmallPunc[] = { '.', ',', 0 };
+
+
 static unsigned long Line;
 
 static const char *RealBuf;
