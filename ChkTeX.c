@@ -311,7 +311,6 @@ int main(int argc, char **argv)
     int retval = EXIT_FAILURE, CurArg;
     unsigned long Count;
     int StdInUse = FALSE;
-    char *NameMatch = "";
     long Tab = 8;
 
 #ifdef __LOCALIZED
@@ -428,12 +427,13 @@ int main(int argc, char **argv)
                     }
                     else
                     {
-                        if ((CurArg <= argc) || NameMatch)
+                        if (CurArg <= argc)
                         {
+                            const char *filename = NULL;
                             if (CurArg < argc)
-                                NameMatch = argv[CurArg++];
+                                filename = argv[CurArg++];
 
-                            if (!PushFileName(NameMatch, &InputStack))
+                            if (!PushFileName(filename, &InputStack))
                                 break;
                         }
                     }
