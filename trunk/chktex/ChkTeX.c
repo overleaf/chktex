@@ -838,7 +838,7 @@ static int ParseArgs(int argc, char **argv)
             ErrType = etWarn; InUse = iuOK; LAST(warntype); case 'e':
             ErrType = etErr; InUse = iuOK; LAST(warntype); case 'm':
             ErrType = etMsg; InUse = iuOK; LAST(warntype); case 'n':
-ErrType = etMsg; InUse = iuNotUser; LAST(warntype);) if (isdigit(*optarg))
+            ErrType = etMsg; InUse = iuNotUser; LAST(warntype);) if (isdigit(*optarg))
                 {
                     nextc = ParseNumArg(&Err, -1, &optarg);
                     if (betw(emMinFault, Err, emMaxFault))
