@@ -430,11 +430,8 @@ int main(int argc, char **argv)
                     {
                         if ((CurArg <= argc) || NameMatch)
                         {
-                            if (!(NameMatch = MatchFileName(NULL)))
-                            {
-                                if (CurArg < argc)
-                                    NameMatch = MatchFileName(argv[CurArg++]);
-                            }
+                            if (CurArg < argc)
+                                NameMatch = argv[CurArg++];
 
                             if (!PushFileName(NameMatch, &InputStack))
                                 break;
