@@ -1,23 +1,38 @@
 #!/bin/sh
-#
-# autogen.sh glue
-#
-# Requires: automake, autoconf
-set -e
 
-echo "Update aclocal"
-aclocal -I m4
+ACLOCAL="aclocal -I m4"
+AUTOHEADER="autoheader"
+AUTOCONF="autoconf"
 
-echo "Update autoheader"
-( [ `which autoheader2.50` ] && autoheader2.50 ) || ( [ `which autoheader` ] && autoheader )
+# Delete old cache directories.
+# automake will stop if their contents was created by an earlier version.
+rm -rf autom4te.cache
 
-echo "Update automake"
-set +e
-automake --foreign --add-missing 2>/dev/null
-set -e
+# Generate the Makefiles and configure files
+echo "Building macros..."
+if ( $ACLOCAL --version ) < /dev/null > /dev/null 2>&1; then
+	$ACLOCAL
+else
+	echo "aclocal not found -- aborting"
+	exit 1
+fi
 
-echo "Update autoconf"
-( [ `which autoconf2.50` ] && autoconf2.50 ) || ( [ `which autoconf` ] && autoconf )
+echo "Building config header template..."
+if ( $AUTOHEADER --version ) < /dev/null > /dev/null 2>&1; then
+	$AUTOHEADER
+else
+	echo "autoheader not found -- aborting"
+	exit 1
+fi
 
-echo timestamp > stamp-h.in
-exit 0
+echo "Building configure..."
+if ( $AUTOCONF --version ) < /dev/null > /dev/null 2>&1; then
+	$AUTOCONF
+else
+	echo "autoconf not found -- aborting"
+	exit 1
+fi
+
+echo
+echo 'run "./configure ; make"'
+echo

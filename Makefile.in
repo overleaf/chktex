@@ -28,7 +28,8 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 bindir=@bindir@
-datadir=@datadir@/chktex
+dataootdir=@datarootdir@
+datadir=@datadir@
 sysconfdir=@sysconfdir@
 srcdir=@srcdir@
 mandir=@mandir@

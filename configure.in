@@ -125,7 +125,7 @@ fi
 
 dnl Check compiler and flags
 AC_PROG_CC
-AC_PROG_CC_STRICT_PROTOTYPES
+dnl AC_PROG_CC_STRICT_PROTOTYPES
 VL_PROG_CC_WARNINGS()
 
 dnl Checks for programs.
