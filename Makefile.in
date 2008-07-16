@@ -149,7 +149,6 @@ install: chktex ChkTeX.dvi
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	$(INSTALL_DATA) $(srcdir)/chktexrc $(DESTDIR)$(sysconfdir)
 	if (eval echo "$(SCRIPTS)") | egrep deweb >/dev/null 2>&1; then \
-		$(MKDIR_P) $(DESTDIR)$(mandir); \
 		$(MKDIR_P) $(DESTDIR)$(mandir)/man1; \
                 cp $(srcdir)/deweb.1 $(DESTDIR)$(mandir)/man1; \
 	fi
@@ -160,12 +159,13 @@ install: chktex ChkTeX.dvi
 
 
 uninstall:
-	-rm -f $(DESTDIR)$(bindir)/chktex
-	for script in $(SCRIPTS); do \
-		rm -f $(DESTDIR)$(bindir)/$$script; \
+	for program in chktex $(SCRIPTS); do \
+		rm -f $(DESTDIR)$(bindir)/$$program; \
 	done
-	-rm -f $(DESTDIR)$(sysconfdir)/chktexrc
-# TODO: remove manpages and chktex.el too
+	rm -f $(DESTDIR)$(sysconfdir)/chktexrc  $(DESTDIR)$(mandir)/man1/deweb.1
+	if (eval echo "$(ELISPDIR)") | egrep "/" >/dev/null 2>&1; then \
+		rm -f $(DESTDIR)$(ELISPDIR)/chktex.el ; \
+	fi
 
 test:
 	chktex -v2 -mall $(srcdir)/Test.tex | less -r
