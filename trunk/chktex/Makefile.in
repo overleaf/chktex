@@ -229,6 +229,9 @@ config.h: stamp-h
 stamp-h: config.h.in config.status
 	./config.status
 
+ChkTeX.tex: ChkTeX.tex.in
+	./config.status ChkTeX.tex
+
 MakeHTML Makefile: Makefile.in config.status
 	./config.status
 
