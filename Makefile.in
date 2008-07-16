@@ -28,7 +28,7 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 bindir=@bindir@
-dataootdir=@datarootdir@
+datarootdir=@datarootdir@
 datadir=@datadir@
 sysconfdir=@sysconfdir@
 srcdir=@srcdir@
@@ -36,6 +36,7 @@ mandir=@mandir@
 INSTALL=@INSTALL@
 INSTALL_PROGRAM=@INSTALL_PROGRAM@
 INSTALL_DATA=@INSTALL_DATA@
+MKDIR_P=@MKDIR_P@
 ELISPDIR=@ELISPDIR@
 CLEAN=@CLEAN@
 
@@ -85,9 +86,9 @@ DISTDIR:=chktex-@PACKAGE_VERSION@
 dist: $(DISTDIR).tar.gz
 $(DISTDIR).tar.gz: $(DISTFILES) html
 	rm -r $(DISTDIR) 2>/dev/null ; true
-	mkdir $(DISTDIR)
+	$(MKDIR_P) $(DISTDIR)
 	cp --parent $(DISTFILES) $(DISTDIR)
-	mkdir $(DISTDIR)/html
+	$(MKDIR_P) $(DISTDIR)/html
 	cp HTML/ChkTeX/*.{html,css} $(DISTDIR)/html
 	rm $(DISTDIR).tar.gz 2>/dev/null ; true
 	tar --owner=0 --group=0 -chzf $@ $(DISTDIR)
@@ -141,15 +142,15 @@ chktex: $(OBJS)
 	$(CC) $(LDFLAGS) -o chktex $(OBJS) $(LIBS)
 
 install: chktex ChkTeX.dvi
-	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(MKDIR_P) $(DESTDIR)$(bindir)
 	for program in chktex $(SCRIPTS); do \
 		$(INSTALL_PROGRAM) $$program  $(DESTDIR)$(bindir); \
 	done
-	$(INSTALL) -d $(DESTDIR)$(sysconfdir)
+	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	$(INSTALL_DATA) $(srcdir)/chktexrc $(DESTDIR)$(sysconfdir)
 	if (eval echo "$(SCRIPTS)") | egrep deweb >/dev/null 2>&1; then \
-		$(INSTALL) -d $(DESTDIR)$(mandir); \
-		$(INSTALL) -d $(DESTDIR)$(mandir)/man1; \
+		$(MKDIR_P) $(DESTDIR)$(mandir); \
+		$(MKDIR_P) $(DESTDIR)$(mandir)/man1; \
                 cp $(srcdir)/deweb.1 $(DESTDIR)$(mandir)/man1; \
 	fi
 	if (eval echo "$(ELISPDIR)") | egrep "/" >/dev/null 2>&1; then \
@@ -164,7 +165,7 @@ uninstall:
 		rm -f $(DESTDIR)$(bindir)/$$script; \
 	done
 	-rm -f $(DESTDIR)$(sysconfdir)/chktexrc
-	# TODO: remove manpages and chktex.el too
+# TODO: remove manpages and chktex.el too
 
 test:
 	chktex -v2 -mall $(srcdir)/Test.tex | less -r
@@ -191,7 +192,7 @@ dvi: ChkTeX.dvi
 ifneq ($(LATEX2HTML),)
 html: ChkTeX.tex MakeHTML
 	-rm -r HTML
-	mkdir HTML
+	$(MKDIR_P) HTML
 	chmod u+x MakeHTML
 	./MakeHTML $< > HTML/ChkTeX.tex
 	cd HTML; $(LATEX2HTML) ChkTeX.tex
@@ -199,7 +200,7 @@ html: ChkTeX.tex MakeHTML
 
 ChkTeX.readme: ChkTeX.tex Readme.header MakeHTML
 	-rm -r rme
-	mkdir rme
+	$(MKDIR_P) rme
 	chmod u+x MakeHTML
 	./MakeHTML $(srcdir)/ChkTeX.tex > rme/ChkTeX.tex
 	cd rme; $(LATEX2HTML) -split 0 ChkTeX.tex

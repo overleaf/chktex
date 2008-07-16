@@ -131,6 +131,7 @@ VL_PROG_CC_WARNINGS()
 dnl Checks for programs.
 AC_PROG_INSTALL
 AC_PROG_LN_S
+AC_PROG_MKDIR_P
 AC_PATH_PROGS(PERL5, perl5 perl, no, $PATH:/usr/bin:/usr/local/bin)
 if test "$PERL5" != no; then
   AC_MSG_CHECKING(whether perl is v5 or higher)
@@ -173,8 +174,6 @@ AC_CHECK_LIB(termcap, tgetent)
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_DIRENT
-AC_CONFIG_HEADER(config.h)
-AC_CONFIG_FILES([stamp-h], [echo timestamp > stamp-h])
 AC_CHECK_HEADERS(limits.h stat.h strings.h stdarg.h dnl
 sys/stat.h termcap.h termlib.h unistd.h)
 
@@ -188,4 +187,6 @@ AC_FUNC_VPRINTF
 AC_CHECK_FUNCS(access closedir fileno isatty opendir readdir stat dnl
 strcasecmp strdup strlwr strtol)
 
+AC_CONFIG_HEADER(config.h)
+AC_CONFIG_FILES([stamp-h], [echo timestamp > stamp-h])
 AC_OUTPUT(Makefile deweb MakeHTML Readme.header ChkTeX.tex)
