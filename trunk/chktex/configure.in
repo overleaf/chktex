@@ -161,4 +161,4 @@ strcasecmp strdup strlwr strtol)
 
 AC_CONFIG_HEADER(config.h)
 AC_CONFIG_FILES([stamp-h], [echo timestamp > stamp-h])
-AC_OUTPUT(Makefile deweb MakeHTML Readme.header ChkTeX.tex)
+AC_OUTPUT(Makefile deweb MakeHTML rmeheader ChkTeX.tex)
