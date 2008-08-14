@@ -148,12 +148,6 @@ Message 10 in Test.tex: Solo `)' found.
 Message 10 in Test.tex: Solo `)' found.
 )}{[])} }}}]]])))  
                 ^
-Message 36 in Test.tex: You should put a space in front of parenthesis.
-{[]} ((([[[{{{}}}]]])))  
-      ^
-Message 36 in Test.tex: You should put a space in front of parenthesis.
-{[]} ((([[[{{{}}}]]])))  
-       ^
 Message 22 in Test.tex: Comment displayed.
 % Envs:  
 ^

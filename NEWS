@@ -1,8 +1,9 @@
-1.6.5 (??)
+1.6.5 (??), released by Jean-Marc Lasgouttes
 
-  - update ChkTeX.tex.in to use proper LaTeX2e markup. 
-
-  - update the build machinery a bit.
+  - Fix bug where chktex generates a warning about missing space before 
+    parenthesis when the parenthesis is at start of line.
+  - Update ChkTeX.tex.in to use proper LaTeX2e markup. 
+  - Update the build machinery a bit.
 
 1.6.4 (2007-10-20), released by Baruch Even
 
