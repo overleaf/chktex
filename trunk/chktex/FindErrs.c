@@ -1173,8 +1173,8 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                 break;
 
             case '(':
-                if (!(!*PrePtr || LATEX_SPACE(*PrePtr) || isdigit(*PrePtr)) ||
-                    strchr("([{`~", *PrePtr))
+                if (*PrePtr && !LATEX_SPACE(*PrePtr) && !isdigit(*PrePtr)
+                    && !strchr("([{`~", *PrePtr))
                 {
                     if (PrePtr[-1] != '\\')     /* Short cmds */
                     {
