@@ -1,7 +1,7 @@
 Development of ChkTeX is now in a maintainance mode. All versions
 after 1.6 are essentially bug fixes.
 
-1.6.5 (??), released by Jean-Marc Lasgouttes
+1.6.5 (??), released by Jean-Marc Lasgouttes <lasgouttes@lyx.org>
 
   * Fix bug where ChkTeX generates a warning about missing space before 
     parenthesis when the parenthesis is at start of line.
