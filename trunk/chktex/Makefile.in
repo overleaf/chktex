@@ -66,11 +66,15 @@ VPATH=$(srcdir)
 
 EXTRA_DIST=configure.in Makefile.in stamp-h.in config.h.in rmeheader.in \
 	MakeHTML.in ChkTeX.tex.in aclocal.m4 NEWS \
-	chktex.el chkweb deweb.in ChkTeX.tex COPYING chktex.1 chkweb.1 deweb.1 \
+	chktex.el chkweb deweb.in COPYING chktex.1 chkweb.1 deweb.1 \
 	Test.tex input.tex Test.out configure install-sh lacheck chktexrc \
 	$(wildcard m4/*.m4)
 
-DOCFILES_GEN=chktex.doc chkweb.doc deweb.doc README ChkTeX.dvi
+# created by configure
+CONFIG_DIST=ChkTeX.tex
+
+# created at make time
+BUILT_DIST=chktex.doc chkweb.doc deweb.doc README ChkTeX.dvi
 
 CSOURCES=ChkTeX.c FindErrs.c OpSys.c Resource.c Utility.c
 
@@ -84,13 +88,13 @@ all: chktex
 
 DISTDIR:=chktex-@PACKAGE_VERSION@
 dist: $(DISTDIR).tar.gz
-$(DISTDIR).tar.gz: $(DISTFILES) $(DOCFILES_GEN) html
+$(DISTDIR).tar.gz: $(DISTFILES) $(CONFIG_DIST) $(BUILT_DIST) html
 	rm -r $(DISTDIR) 2>/dev/null ; true
 	$(MKDIR_P) $(DISTDIR)
 	for f in $(DISTFILES) ; do \
 	  cp $(srcdir)/$$f $(DISTDIR) ; \
 	done
-	cp $(DOCFILES_GEN) $(DISTDIR)
+	cp $(CONFIG_DIST) $(BUILT_DIST) $(DISTDIR)
 	$(MKDIR_P) $(DISTDIR)/html
 	cp HTML/ChkTeX/*.{html,css} $(DISTDIR)/html
 	rm -f $(DISTDIR).tar.gz
@@ -179,16 +183,16 @@ indent:
 mostlyclean: clean
 
 clean:
-	rm -rf $(CLEAN) *.aux *.log *.pdf *.dvi *.ps MakeHTML chktex deweb HTML rme 2> /dev/null
+	rm -rf $(CLEAN) $(BUILT_DIST) *.aux *.log *.pdf *.dvi *.ps \
+	  chktex HTML rme chktest
 
 distclean: clean
-	rm -rf *.cache *.status *.log *.tar.gz 2> /dev/null
+	rm -rf $(CONFIG_DIST) *.cache *.status *.log *.tar.gz MakeHTML \ 
+	  deweb Makefile autom4te.cache config.h
 
-maintainer-clean: clean
-	rm -rf config.h *.rme *.ps $(DOCFILES_GEN) install-sh config.guess \
-	       config.sub Makefile aclocal.m4 autom4te.cache configure missing \
-	       ChkTeX.tex rmeheader stamp-h \
-	       mkinstalldirs tags config.status chktest ChkTeX.dvi 2> /dev/null
+maintainer-clean: distclean
+	rm -rf *.rme install-sh config.guess config.sub aclocal.m4 \ 
+	  configure missing rmeheader stamp-h mkinstalldirs tags
 
 dvi: ChkTeX.dvi
 
