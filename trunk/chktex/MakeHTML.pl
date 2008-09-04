@@ -1,4 +1,4 @@
-#! @PERL5@
+# Remove parts of code enclosed in %latex/%endlatex tags
 
 $latexonly = 0;
 

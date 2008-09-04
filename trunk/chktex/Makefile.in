@@ -65,7 +65,7 @@ VPATH=$(srcdir)
 #####################################################################
 
 EXTRA_DIST=configure.in Makefile.in stamp-h.in config.h.in rmeheader.in \
-	MakeHTML.in ChkTeX.tex.in aclocal.m4 NEWS \
+	MakeHTML.pl ChkTeX.tex.in aclocal.m4 NEWS \
 	chktex.el chkweb deweb.in COPYING chktex.1 chkweb.1 deweb.1 \
 	Test.tex input.tex Test.out configure install-sh lacheck chktexrc \
 	$(wildcard m4/*.m4)
@@ -125,7 +125,7 @@ OBJS= ChkTeX.o FindErrs.o OpSys.o Resource.o Utility.o
 
 MAKETEST= (builddir=`pwd` ; cd $(srcdir) ; $${builddir}/chktex -mall -r -g0 -lchktexrc -v5 Test.tex)
 
-test:
+$(srcdir)/Test.out:
 	-rm -f $(srcdir)/Test.out
 	$(MAKETEST) 1> $(srcdir)/Test.out 
 
@@ -188,7 +188,7 @@ clean:
 	  chktex HTML rme chktest
 
 distclean: clean
-	rm -rf $(CONFIG_DIST) *.cache *.status *.log *.tar.gz MakeHTML \ 
+	rm -rf $(CONFIG_DIST) *.cache *.status *.log *.tar.gz \ 
 	  deweb Makefile autom4te.cache config.h
 
 maintainer-clean: distclean
@@ -198,25 +198,24 @@ maintainer-clean: distclean
 dvi: ChkTeX.dvi
 
 ifneq ($(LATEX2HTML),)
-html: ChkTeX.tex MakeHTML
+html: ChkTeX.tex MakeHTML.pl
 	-rm -r HTML
 	$(MKDIR_P) HTML
-	chmod u+x MakeHTML
-	./MakeHTML $< > HTML/ChkTeX.tex
+	$(PERL5) $(srcdir)/MakeHTML.pl ChkTeX.tex > HTML/ChkTeX.tex
 	cd HTML; $(LATEX2HTML) ChkTeX.tex
 	$(PERL5) -i -pe 's%</code> %</code>%gi;s%\s+([.,?!])%$$1%g;' HTML/ChkTeX/*.html
 
-README: ChkTeX.tex rmeheader MakeHTML
+README: ChkTeX.tex rmeheader MakeHTML.pl
 	rm -rf rme
 	$(MKDIR_P) rme
-	chmod u+x MakeHTML
-	./MakeHTML ChkTeX.tex > rme/ChkTeX.tex
+	$(PERL5) $(srcdir)/MakeHTML.pl ChkTeX.tex > rme/ChkTeX.tex
 	cd rme; $(LATEX2HTML) -split 0 ChkTeX.tex
 	$(PERL5) -i -pe 's%L<SUP><SMALL>A</SMALL></SUP>%La%g;s%T<SMALL>E</SMALL>X%TeX%g;s%<SUB>(.*)</SUB>%$$1%g' rme/ChkTeX/*.html
 	$(PERL5) -i -pe 's%</code> %</code>%gi;s%\s+([.,?!])%$$1%g;' rme/ChkTeX/*.html
 	$(LYNX) -dump rme/ChkTeX/ChkTeX.html > rme/ChkTeX.rme
 	cp rmeheader README
 	$(PERL5) -e 'undef $$/;$$_=<>;($$_)=/(.*INTRODUCTION(.|\n)*?)[ \t]+ABOUT THIS DOCUMENT/i;s/[ \t]+\n/\n/g;s/\n\n\n/\n/g;s/\[\d+\]//g;print;' rme/ChkTeX.rme >> README
+	rm -rf rme
 else
 html README:
 	@echo "latex2html is unavailable on this system, cant create target $@."; exit 1
@@ -240,7 +239,7 @@ stamp-h: config.h.in config.status
 ChkTeX.tex: ChkTeX.tex.in
 	./config.status ChkTeX.tex
 
-MakeHTML Makefile: Makefile.in config.status
+Makefile: Makefile.in config.status
 	./config.status
 
 config.status: configure
