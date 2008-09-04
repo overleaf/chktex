@@ -29,7 +29,7 @@ dnl
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(ChkTeX, 1.6.5svn)
 AC_SUBST(SCRIPTS)
-SCRIPTS=
+AC_SUBST(BUILT_SCRIPTS)
 AC_SUBST(ELISPDIR)
 ELISPDIR=
 AC_SUBST(CLEAN)
@@ -59,10 +59,9 @@ enable_coverage_testing=no)
 
 AC_MSG_CHECKING(whether lacheck replacement should be installed)
 if test "$enable_lacheck_replace" = "yes"; then
-  SCRIPTS="$SCRIPTS \$(srcdir)/lacheck"
+  SCRIPTS="$SCRIPTS lacheck"
   AC_MSG_RESULT(yes)
 else
-  SCRIPTS=
   AC_MSG_RESULT(no)
 fi
 
@@ -116,15 +115,10 @@ if test "$PERL5" != no; then
 fi
 
 if test "$PERL5" != no; then
-    AC_SYS_INTERPRETER
-    if test "$ac_cv_sys_interpreter" = "yes"; then
-	SCRIPTS="$SCRIPTS \$(srcdir)/chkweb deweb"
-    else
-	AC_MSG_WARN(deweb will not be installed since your system does)
-	AC_MSG_WARN(not support the pound-bang notation.)
-    fi
+    BUILT_SCRIPTS="$BUILT_SCRIPTS deweb"
+    SCRIPTS="$SCRIPTS chkweb"
 else
-    AC_MSG_WARN(deweb will not be installed since you do not have perl5.)
+    AC_MSG_WARN(chkweb will not be installed since you do not have perl5.)
 fi
 
 AC_CHECK_PROGS(GROFF, 'groff -man -P-bu -Tlatin1' 'nroff -man', 'nroff -man')

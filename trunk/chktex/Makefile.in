@@ -56,6 +56,7 @@ LYNX=@LYNX@
 GROFF=@GROFF@
 SHELL=/bin/sh
 
+BUILT_SCRIPTS=@BUILT_SCRIPTS@
 SCRIPTS=@SCRIPTS@
 
 USRDEFS=-DSYSCONFDIR=\"$(sysconfdir)\" -D__unix__
@@ -150,12 +151,15 @@ chktex: $(OBJS)
 
 install: chktex ChkTeX.dvi
 	$(MKDIR_P) $(DESTDIR)$(bindir)
-	for program in chktex $(SCRIPTS); do \
-		$(INSTALL_PROGRAM) $$program  $(DESTDIR)$(bindir); \
+	for program in chktex $(BUILT_SCRIPTS); do \
+		$(INSTALL_PROGRAM) $$program $(DESTDIR)$(bindir); \
+	done
+	for program in $(SCRIPTS); do \
+		$(INSTALL_PROGRAM) $(srcdir)/$$program $(DESTDIR)$(bindir); \
 	done
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	$(INSTALL_DATA) $(srcdir)/chktexrc $(DESTDIR)$(sysconfdir)
-	if (eval echo "$(SCRIPTS)") | egrep deweb >/dev/null 2>&1; then \
+	if (eval echo "$(BUILT_SCRIPTS)") | egrep deweb >/dev/null 2>&1; then \
 		$(MKDIR_P) $(DESTDIR)$(mandir)/man1; \
                 cp $(srcdir)/deweb.1 $(DESTDIR)$(mandir)/man1; \
 	fi
@@ -166,7 +170,7 @@ install: chktex ChkTeX.dvi
 
 
 uninstall:
-	for program in chktex $(SCRIPTS); do \
+	for program in chktex $(SCRIPTS) $(BUILT_SCRIPTS); do \
 		rm -f $(DESTDIR)$(bindir)/$$program; \
 	done
 	rm -f $(DESTDIR)$(sysconfdir)/chktexrc  $(DESTDIR)$(mandir)/man1/deweb.1
