@@ -14,7 +14,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 #  Contact the author at:
 #		Jens Berger
@@ -125,9 +125,9 @@ OBJS= ChkTeX.o FindErrs.o OpSys.o Resource.o Utility.o
 
 MAKETEST= (builddir=`pwd` ; cd $(srcdir) ; $${builddir}/chktex -mall -r -g0 -lchktexrc -v5 Test.tex)
 
-Test.out: chktex Test.tex ChkTeX.tex
-	-rm -f Test.out
-	$(MAKETEST) 1> Test.out 
+test:
+	-rm -f $(srcdir)/Test.out
+	$(MAKETEST) 1> $(srcdir)/Test.out 
 
 check: chktex
 	@echo ">>> Testing that checking algorithms work correctly..."
@@ -183,7 +183,8 @@ indent:
 mostlyclean: clean
 
 clean:
-	rm -rf $(CLEAN) $(BUILT_DIST) *.aux *.log *.pdf *.dvi *.ps \
+	rm -rf $(CLEAN) $(BUILT_DIST) $(DISTDIR).tar.gz \
+	  *.aux *.log *.pdf *.dvi *.ps \
 	  chktex HTML rme chktest
 
 distclean: clean
