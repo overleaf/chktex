@@ -218,8 +218,8 @@ static char *GetLTXArg(char *SrcBuf, char *OrigDest, const int Until,
 
         if (Retval && (*OrigDest == '{') && (Until == GET_STRIP_TOKEN))
         {
-            strcpy(OrigDest, OrigDest + 1);
-            OrigDest[strlen(OrigDest) - 1] = 0;
+            int len = strlen(OrigDest+1);
+            memmove(OrigDest, OrigDest + 1, len  + 1);
         }
         break;
     default:
