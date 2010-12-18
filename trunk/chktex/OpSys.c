@@ -204,7 +204,6 @@ int SetupVars(void)
                 tackon(ConfigFile, LOCALRCFILE);
             }
             else
-                *ConfigFile = 0;
 #elif defined(__MSDOS__)
 
             strcpy(ConfigFile, PrgName);
@@ -212,8 +211,8 @@ int SetupVars(void)
                 (Ptr = strchr(ConfigFile, ':')))
                 strcpy(++Ptr, RCBASENAME);
             else
-                *ConfigFile = 0;
 #endif
+                *ConfigFile = 0;
 
             break;
         case liSysDir:         /* System dir for resource files */
