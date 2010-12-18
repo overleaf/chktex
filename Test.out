@@ -151,13 +151,13 @@ Message 10 in Test.tex: Solo `)' found.
 Message 22 in Test.tex: Comment displayed.
 % Envs:  
 ^
-Message 9 in Test.tex: `baz' expected, found `quux'.
+Message 9 in Test.tex: `baz}' expected, found `quux}'.
 \begin{quux} \begin{baz} \end{quux} \end{baz} \end{asoi} \begin{dobedo}  
                          ^^^^
-Message 9 in Test.tex: `quux' expected, found `baz'.
+Message 9 in Test.tex: `quux}' expected, found `baz}'.
 \begin{quux} \begin{baz} \end{quux} \end{baz} \end{asoi} \begin{dobedo}  
                                     ^^^^
-Message 10 in Test.tex: Solo `asoi' found.
+Message 10 in Test.tex: Solo `asoi}' found.
 \begin{quux} \begin{baz} \end{quux} \end{baz} \end{asoi} \begin{dobedo}  
                                               ^^^^
 Message 22 in Test.tex: Comment displayed.
@@ -286,9 +286,9 @@ White           is a beautiful colour.
 Message 22 in Test.tex: Comment displayed.
 % Warning 31  
 ^
-Message 31 in Test.tex: This text may be ignored.
-\end{verbatim} foo bar  
-               ^^^^^^^
+Message 1 in Test.tex: Command terminated with space.
+\this is  
+     ^
 Message 22 in Test.tex: Comment displayed.
 % Warning 32-34  
 ^
@@ -391,9 +391,9 @@ Message 22 in Test.tex: Comment displayed.
 Message 14 in Test.tex: Could not find argument for command.
 \verb#  
 ^^^^^
-Message 31 in Test.tex: This text may be ignored.
-\end{verbatim} FOO  
-               ^^^
+Message 1 in Test.tex: Command terminated with space.
+\this is  
+     ^
 Message 22 in Test.tex: Comment displayed.
 % Warning 16,15  
 ^
