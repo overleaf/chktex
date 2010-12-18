@@ -563,8 +563,8 @@ static void ShowIntStatus(void)
 {
 #ifndef STRIP_DEBUG
     unsigned long Cnt;
-    char *String;
-    char *iuStr = "";
+    const char *String;
+    const char *iuStr = "";
 
     if (DebugLevel & FLG_DbgMsgs)
     {
@@ -995,7 +995,7 @@ static int ParseArgs(int argc, char **argv)
 
 void PrintPrgErr(enum PrgErrNum Error, ...)
 {
-    char *Type;
+    const char *Type;
     va_list MsgArgs;
 
     if (betw(pmMinFault, Error, pmMaxFault))

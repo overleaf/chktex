@@ -105,7 +105,7 @@ void strrep(char *String, const char From, const char To);
 void strxrep(char *Buf, const char *Prot, const char To);
 char *strip(char *String, const enum Strip What);
 void strwrite(char *To, const char *From, unsigned long Len);
-int strinfront(char *Str, char *Cmp);
+int strinfront(const char *Str, const char *Cmp);
 char *strdupx(const char *String, int Extra);
 void strmove(char *a, const char *b);
 
@@ -124,11 +124,11 @@ void *StkPop(struct Stack *Stack);
 void *StkTop(struct Stack *Stack);
 
 FILE *CurStkFile(struct Stack *stack);
-char *CurStkName(struct Stack *stack);
+const char *CurStkName(struct Stack *stack);
 unsigned long CurStkLine(struct Stack *stack);
 char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack);
 int PushFileName(const char *Name, struct Stack *stack);
-int PushFile(char *, FILE *, struct Stack *);
+int PushFile(const char *, FILE *, struct Stack *);
 
 
 void FreeErrInfo(struct ErrInfo *ei);

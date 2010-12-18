@@ -247,7 +247,7 @@ DEBUGBITS(Debug_BIT)
      {
          char *Data;
          const char *LineBuf;
-         char *File;
+         const char *File;
          unsigned long Line, Column, ErrLen;
          enum
          {
@@ -277,11 +277,11 @@ DEBUGBITS(Debug_BIT)
   DEF(int, UsingStdIn,  FALSE) \
   DEF(int, InputFiles,  TRUE) \
   DEF(int, HeadErrOut,  TRUE) \
-  DEF(char *, OutputName, "") \
-  DEF(char *, PseudoInName, NULL) \
+  DEF(const char *, OutputName, "") \
+  DEF(const char *, PseudoInName, NULL) \
   DEF(char *, OutputFormat, VerbNormal) \
   DEF(char *, PipeOutputFormat, NULL) \
-  DEF(char *, Delimit, ":") \
+  DEF(const char *, Delimit, ":") \
   DEF(long,  DebugLevel, 0)
 
 #define STATE_VARS \
@@ -290,7 +290,7 @@ DEBUGBITS(Debug_BIT)
   DEF(int, InHeader, TRUE)  /* Whether we're in the header */ \
   DEF(int, VerbMode, FALSE) /* Whether we're in complete ignore-mode */ \
   DEF(long, MathMode, 0)     /* Whether we're in math mode or not */ \
-  DEF(char *, VerbStr, "")   /* String we'll terminate verbmode upon */ \
+  DEF(const char *, VerbStr, "")   /* String we'll terminate verbmode upon */ \
   DEF(unsigned long, ErrPrint, 0)    /* # errors printed */ \
   DEF(unsigned long, WarnPrint, 0)   /* # warnings printed */ \
   DEF(unsigned long, UserSupp, 0)    /* # user suppressed warnings */

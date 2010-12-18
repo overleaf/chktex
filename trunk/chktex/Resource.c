@@ -34,7 +34,7 @@
 #define LNEMPTY(a) struct WordList a = {0, 1, {0}, {0}};
 #define LIST(a)    struct WordList a = {0, 0, {0}, {0}};
 #define LCASE(a)   LIST(a) LIST(a ## Case)
-#define KEY(a,def) char *a = def;
+#define KEY(a,def) const char *a = def;
 
 RESOURCE_INFO
 #undef KEY
@@ -43,8 +43,8 @@ RESOURCE_INFO
 #undef LIST
     struct KeyWord
 {
-    char *Name;
-    char **String;              /* Keyword = item */
+    const char *Name;
+    const char **String;        /* Keyword = item */
     struct WordList *List,      /* Case-sensitive strings */
      *CaseList;                 /* Case-insensitive strings */
 };
@@ -106,7 +106,7 @@ TOKENBITS(Token_BIT)
 
      int ReadRC(const char *Filename)
 {
-    char *String = NULL;
+    const char *String = NULL;
     int Success = FALSE;
     FILE *fh;
     enum Token Token;

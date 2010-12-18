@@ -363,9 +363,9 @@ static enum DotLevel CheckDots(char *PrePtr, char *PstPtr)
 
 }
 
-static char *Dot2Str(enum DotLevel dl)
+static const char *Dot2Str(enum DotLevel dl)
 {
-    char *Retval = INTERNFAULT;
+    const char *Retval = INTERNFAULT;
     switch (dl)
     {
     case dtUnknown:
@@ -590,8 +590,8 @@ static void PerformBigCmd(char *CmdPtr)
         dotlev = CheckDots(CmdPtr, BufPtr);
         if (dotlev && (dotlev != realdl))
         {
-            TmpPtr = Dot2Str(dotlev);
-            PSERRA(CmdPtr - Buf, CmdLen, emEllipsis, TmpPtr);
+            const char *cTmpPtr = Dot2Str(dotlev);
+            PSERRA(CmdPtr - Buf, CmdLen, emEllipsis, cTmpPtr);
         }
     }
 
@@ -966,9 +966,10 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
             case '.':
                 if ((Char == *BufPtr) && (Char == BufPtr[1]))
                 {
+                    const char *cTmpPtr;
                     dotlev = CheckDots(&PrePtr[1], &BufPtr[2]);
-                    TmpPtr = Dot2Str(dotlev);
-                    HEREA(3, emEllipsis, TmpPtr);
+                    cTmpPtr = Dot2Str(dotlev);
+                    HEREA(3, emEllipsis, cTmpPtr);
                 }
 
                 /* Regexp: "([^A-Z@.])\.[.!?:;]*\s+[a-z]" */
@@ -1231,7 +1232,7 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
  * suffix should be put, e.g. "warning%s". Watch your %'s!
  */
 
-static void Transit(FILE * fh, unsigned long Cnt, char *Str)
+static void Transit(FILE * fh, unsigned long Cnt, const char *Str)
 {
     switch (Cnt)
     {
@@ -1468,7 +1469,7 @@ PrintError(const char *File, const char *String,
 
 static enum ErrNum PerformCommand(const char *Cmd, char *Arg)
 {
-    char *Argument = "";
+    const char *Argument = "";
     enum ErrNum en = emMinFault;
     int TmpC;
 

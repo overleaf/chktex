@@ -367,7 +367,7 @@ int strafter(const char *Str, const char *Cmp)
  *
  */
 
-int strinfront(char *Str, char *Cmp)
+int strinfront(const char *Str, const char *Cmp)
 {
     int CmpLen;
 
@@ -685,7 +685,7 @@ int PushFileName(const char *Name, struct Stack *stack)
 }
 
 
-int PushFile(char *Name, FILE * fh, struct Stack *stack)
+int PushFile(const char *Name, FILE * fh, struct Stack *stack)
 {
     struct FileNode *fn;
 
@@ -735,10 +735,10 @@ char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack)
     return (Retval);
 }
 
-char *CurStkName(struct Stack *stack)
+const char *CurStkName(struct Stack *stack)
 {
     struct FileNode *fn;
-    static char *LastName = "";
+    static const char *LastName = "";
 
     if (PseudoInName && (stack->Used <= 1))
         return (PseudoInName);

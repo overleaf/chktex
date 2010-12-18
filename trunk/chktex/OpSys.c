@@ -110,8 +110,8 @@ static char term_buffer[2048];
 #endif
 
 char ConfigFile[BUFSIZ] = LOCALRCFILE;
-char *ReverseOn;
-char *ReverseOff;
+const char *ReverseOn;
+const char *ReverseOff;
 
 
 static int HasFile(char *Dir, const char *Filename, const char *App);
@@ -256,6 +256,7 @@ void SetupTerm(void)
     char *termtype = getenv("TERM");
     int success;
     char *buffer;
+    static char str_so[3] = "so", str_se[3] = "se";
 
     if (termtype)
     {
@@ -267,8 +268,8 @@ void SetupTerm(void)
             PrintPrgErr(pmNoTermDefd);
 
         buffer = (char *) malloc(sizeof(term_buffer));
-        ReverseOn = tgetstr("so", &buffer);
-        ReverseOff = tgetstr("se", &buffer);
+        ReverseOn = tgetstr(str_so, &buffer);
+        ReverseOff = tgetstr(str_se, &buffer);
 
         if (ReverseOn && ReverseOff)
             return;

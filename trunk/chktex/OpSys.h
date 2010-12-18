@@ -182,8 +182,8 @@ struct WordList;
 * source tree. :-/ 
 */
 
-extern char *ReverseOn;
-extern char *ReverseOff;
+extern const char *ReverseOn;
+extern const char *ReverseOff;
 extern char ConfigFile[BUFSIZ];
 
 char *MatchFileName(char *String);
