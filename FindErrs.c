@@ -266,7 +266,7 @@ static char *PreProcess(void)
 
     while ((TmpPtr = strchr(TmpPtr, '%')))
     {
-        if (TmpPtr[-1] != '\\')
+        if (TmpPtr == Buf || TmpPtr[-1] != '\\')
         {
             PSERR(TmpPtr - Buf, 1, emComment);
             *TmpPtr = 0;
