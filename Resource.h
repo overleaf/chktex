@@ -48,7 +48,7 @@
 #define LIST(a) extern struct WordList a;
 #define LNEMPTY LIST
 #define LCASE(a) LIST(a) LIST(a ## Case)
-#define KEY(a,def) extern char *a;
+#define KEY(a,def) extern const char *a;
 
 RESOURCE_INFO
 #undef KEY

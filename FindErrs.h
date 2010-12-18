@@ -162,7 +162,7 @@ struct ErrMsg
     /* Requirements posed upon environment */
     enum Context Context;
 
-    char *Message;
+    const char *Message;
 };
 
 enum ItState
