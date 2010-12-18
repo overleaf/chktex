@@ -1317,7 +1317,8 @@ void PrintStatus(unsigned long Lines)
  *  %n  - warning Number
  *  %u  - an Underlining line (like the one which appears when using -v1)
  *  %r  - part of line in front of error ('S' - 1)
- *  %s  - part of line which contains error (String) *  %t  - part of line after error ('S' + 1)
+ *  %s  - part of line which contains error (String)
+ *  %t  - part of line after error ('S' + 1)
  */
 
 
