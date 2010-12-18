@@ -718,9 +718,10 @@ char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack)
     {
         do
         {
-            if ((Retval = fgets(Dest, (int) len, fn->fh)))
-            {
-                fn->Line++;
+            Retval = fgets(Dest, (int)len, fn->fh);
+            if (Retval) {
+                if (Retval[strlen(Retval)-1] == '\n')
+                    fn->Line++;
                 break;
             }
 
