@@ -42,36 +42,17 @@
 ;;     to your .emacs file
 ;;
 ;;  It is doubtful whether byte-compiling this file gains anything.
-;; 
+;;
 ;;; Code:
-;; 
+;;
 
-
-
-(require 'tex-site)
-(require 'easymenu)
-
-(setq TeX-command-list 
-      (nconc TeX-command-list 
-             (list (list "ChkTeX" "chktex -v3 %s" 'TeX-run-compile nil t))))
-
-(add-hook 'LaTeX-mode-hook
-	  (function (lambda ()
-(easy-menu-define LaTeX-mode-menu
-    LaTeX-mode-map
-    "Menu used in LaTeX mode."
-  (append '("Command")
-          '(("Command on"
-             [ "Master File" TeX-command-select-master
-               :keys "C-c C-c" :style radio
-               :selected (eq TeX-command-current 'TeX-command-master) ]
-             [ "Buffer" TeX-command-select-buffer
-               :keys "C-c C-b" :style radio
-               :selected (eq TeX-command-current 'TeX-command-buffer) ]
-             [ "Region" TeX-command-select-region
-               :keys "C-c C-r" :style radio
-               :selected (eq TeX-command-current 'TeX-command-region) ]))
-          (let ((file 'TeX-command-on-current))
-            (mapcar 'TeX-command-menu-entry TeX-command-list)))))))
+(eval-after-load 'tex
+  '(progn
+     (add-to-list 'TeX-command-list
+                  '("ChkTeX" "chktex -v3 %s" TeX-run-compile nil t))))
 
 (provide 'chktex)
+
+(provide 'chktex)
+
+;;; chktex.el ends here
