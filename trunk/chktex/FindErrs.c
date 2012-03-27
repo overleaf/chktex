@@ -220,6 +220,8 @@ static char *GetLTXArg(char *SrcBuf, char *OrigDest, const int Until,
         {
             int len = strlen(OrigDest+1);
             memmove(OrigDest, OrigDest + 1, len  + 1);
+            /* Strip the last '}' off */
+            OrigDest[len-1] = 0;
         }
         break;
     default:
