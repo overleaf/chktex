@@ -1,11 +1,17 @@
 Development of ChkTeX is now in a maintainance mode. All versions
 after 1.6 are essentially bug fixes.
 
+1.6.6 (2012-04-07), released by Ivan Andrus <darthandrus@gmail.com>
+
+  * Fixed some memory issues
+  * Do not increase line number when the line was very long
+  * Some fixes for TexLive
+
 1.6.5 (??), released by Jean-Marc Lasgouttes <lasgouttes@lyx.org>
 
-  * Fix bug where ChkTeX generates a warning about missing space before 
+  * Fix bug where ChkTeX generates a warning about missing space before
     parenthesis when the parenthesis is at start of line.
-  * Update ChkTeX.tex.in to use proper LaTeX2e markup. 
+  * Update ChkTeX.tex.in to use proper LaTeX2e markup.
   * Update the build machinery a bit.
 
 1.6.4 (2007-10-20), released by Baruch Even
@@ -69,7 +75,7 @@ Modifications and additions since v1.4:
   * Column positions are finally correct; we now expand tabs
     correctly.
   * ChkTeX will now recursively search for \input'ed
-    files, both in the document and on the commandline. See the 
+    files, both in the document and on the commandline. See the
     chktexrc file for more info.
   * The debug switch is now more intelligent; if you wish to hack
     a bit on ChkTeX for yourself, it is possible to produce
@@ -90,7 +96,7 @@ Modifications and additions since v1.4:
     reset/clear lists.
   * You can now specify how many optional or required arguments
     WIPEARG should wipe; it also behaves somewhat more intelligently
-    when the arguments stretch over multiple lines. 
+    when the arguments stretch over multiple lines.
   * Global files will be read in addition to local ones. The searching
     order has also been reversed in order to make this more
     intelligent.
@@ -115,4 +121,3 @@ Modifications and additions since v1.4:
     message browser of Volker Barthelmann's freely distributable ANSI
     C compiler. The browser itself is available on Aminet as
     dev/c/vbcc.lha.
-
