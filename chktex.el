@@ -53,6 +53,4 @@
 
 (provide 'chktex)
 
-(provide 'chktex)
-
 ;;; chktex.el ends here
