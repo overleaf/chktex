@@ -182,7 +182,8 @@ enum Quote Quote;
 char VerbNormal[] = "%k %n in %f line %l: %m\n" "%r%s%t\n" "%u\n";
 
 #define DEF(type, name, value)  type name = value;
-OPTION_DEFAULTS STATE_VARS;
+OPTION_DEFAULTS;
+STATE_VARS;
 #undef DEF
 FILE *OutputFile = NULL;
 
@@ -412,8 +413,7 @@ int main(int argc, char **argv)
                         Brackets[Count] = 0L;
 
 #define DEF(type, name, value) name = value;
-
-                    STATE_VARS
+                    STATE_VARS;
 #undef DEF
                         if (UsingStdIn)
                     {
@@ -556,7 +556,7 @@ static void ShowWL(const char *Name, const struct WordList *wl)
 
 
 /*
- * Prints some of the internal flags; mainly for debugging purposes 
+ * Prints some of the internal flags; mainly for debugging purposes
  */
 
 static void ShowIntStatus(void)
