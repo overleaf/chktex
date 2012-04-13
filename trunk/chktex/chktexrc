@@ -121,7 +121,7 @@
 #   MathEnvir   - Environments which turn on math mode.
 #   MathRoman   - Mathematical   operators   with  LaTeX  replacement
 #                 defined.
-#   NoCharNext  - Insists on that certain commands aren't followed by 
+#   NoCharNext  - Insists on that certain commands aren't followed by
 #                 certain characters.
 #   NonItalic   - Commands immediately turning off italic mode.
 #   NotPreSpaced- Commands  which should not have a space in front of
@@ -394,7 +394,7 @@ WipeArg
 {
     \label:{} \ref:{} \vref:{} \pageref:{} \index:{} \cite:[]{}
     \input:{} \verbatiminput:[]{} \listinginput:[]{}{}
-    \verbatimtabinput:[]{} \include:{} \includeonly:{} 
+    \verbatimtabinput:[]{} \include:{} \includeonly:{}
     \bibitem:[]{}
 }
 
@@ -423,6 +423,7 @@ MathEnvir
 VerbEnvir
 {
     verbatim comment listing verbatimtab rawhtml errexam picture texdraw
+    pgfpicture tikzpicture
 }
 
 #####################################################################
@@ -640,11 +641,11 @@ Primitives
 #
 # Format: \command:characters
 #
-# We'll emit a warning if any of characters are found after the 
+# We'll emit a warning if any of characters are found after the
 # command.
 #
 
-NoCharNext 
+NoCharNext
 {
    \left:{}$ \right:{}$
 }
@@ -675,4 +676,3 @@ VerbClear = "|"
 # All for now - have fun.
 #
 #####################################################################
-
