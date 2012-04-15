@@ -351,7 +351,7 @@ int main(int argc, char **argv)
         }
 
         if (!Quiet || LicenseOnly)
-            fprintf(stderr, Banner);
+            fprintf(stderr, "%s", Banner);
 
         if (CurArg == argc)
             UsingStdIn = TRUE;
@@ -369,7 +369,7 @@ int main(int argc, char **argv)
 
         if ((UsingStdIn && StdInTTY && !Quiet) || LicenseOnly)
         {
-            fprintf(stderr, BigBanner);
+            fprintf(stderr, "%s", BigBanner);
         }
 
         if (!StdOutTTY && PipeOutputFormat)
@@ -377,7 +377,7 @@ int main(int argc, char **argv)
 
         if (LicenseOnly)
         {
-            fprintf(stderr, Distrib);
+            fprintf(stderr, "%s", Distrib);
         }
         else
         {
@@ -953,7 +953,7 @@ static int ParseArgs(int argc, char **argv)
                 nextc = ParseBoolArg(&HeadErrOut, &optarg);
                 break;
             case 'W':
-                printf(Banner);
+                printf("%s", Banner);
                 exit(EXIT_SUCCESS);
             case '?':
             default:
