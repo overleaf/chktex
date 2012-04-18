@@ -96,10 +96,10 @@
 \section{Introduction}
 
 This program has been written in frustration because some constructs in
-\LaTeX\ are sometimes non-intuitive, and easy to forget. It is 
+\LaTeX\ are sometimes non-intuitive, and easy to forget. It is
 \emph{not} a replacement for the built-in checker in \LaTeX\@; however it
 catches some typographic errors \LaTeX\ oversees. In other words, it
-is Lint for \LaTeX. Filters are also provided for checking the 
+is Lint for \LaTeX. Filters are also provided for checking the
 \LaTeX\ parts of CWEB documents.
 
 It is written in ANSI C and compiles silently under GCC using
@@ -109,7 +109,7 @@ Full source included.
 
 The program also supports output formats suitable for further
 processing by editors or other programs, making errors easy to cycle through.
-Software is provided for beautifully interfacing against the 
+Software is provided for beautifully interfacing against the
 AUC-\TeX\ Emacs mode, CygnusED, GoldEd and various Amiga message browsers.
 
 The program itself does not have any machine requirements; However compiling
@@ -237,7 +237,7 @@ A few words on installation on various platforms:
   \Cmd{make~install}. To make sure everything proceeded correctly,
   type \Cmd{make~check}.  If you don't have superuser privileges and thus
   access to the default system areas, you should type
-  \Cmd{configure~--help} to help you set up correct paths.
+  \Cmd{configure~-{}-help} to help you set up correct paths.
 
   If you haven't installed any software like this before, that is
   distributed in source form, here are some guidelines to help you
@@ -260,13 +260,13 @@ A few words on installation on various platforms:
   \item Now, we can configure the program.  There are some
     configuration options you should know about:
     \begin{description}
-    \item[\Cmd{--enable-emacs-hack}:] Install a small file which
+    \item[\Cmd{-{}-enable-emacs-hack}:] Install a small file which
       adds \chktex\ to the command menu of AUC-\TeX. This is to be
       considered as a hack, and may break in future versions of
       AUC-\TeX. It works fine under AUC-\TeX\ v2.9, though.
 
       This option needs the path of your elisp directory as argument,
-      e.g. \Cmd{--enable-emacs-hack=/home/myself/elisp} or similar.
+      e.g. \Cmd{-{}-enable-emacs-hack=/home/myself/elisp} or similar.
 
       You'll also have to add the following line to your \Cmd{.emacs}
       file:
@@ -276,7 +276,7 @@ A few words on installation on various platforms:
       You can now access \chktex\ from the \Cmd{Command} menu in
       AUC-\TeX. To cycle through the messages, type \verb#C-x `#.
 
-    \item[\Cmd{--enable-lacheck-replace}] This enables a quick
+    \item[\Cmd{-{}-enable-lacheck-replace}] This enables a quick
       hack for making the AUC-\TeX\ Emacs mode use \chktex\ instead of
       lacheck. This is done by installing a stub script which
       ``overrides'' the original lacheck executable.
@@ -285,10 +285,10 @@ A few words on installation on various platforms:
       significantly less elegant --- in computing terms, this is the
       ``brute force'' approach.
 
-    \item[\Cmd{--enable-debug-info}] \chktex\ has an ability to spit
+    \item[\Cmd{-{}-enable-debug-info}] \chktex\ has an ability to spit
       out various diagnostic messages using the \Cmd{-d} flag. This
       behaviour is on by default. By adding the flag
-      \Cmd{--disable-debug-info} to the commandline, this will not be
+      \Cmd{-{}-disable-debug-info} to the commandline, this will not be
       compiled in.
 
       This may be useful if you're running short of disk space (the
@@ -345,7 +345,7 @@ A few words on installation on various platforms:
   file, and edit it appropiately, for more
   comfort.  This should not be necessary, though, at least not the
   first time.
-  
+
   Finally, you may now compile and link all \verb@.c@ files.  Do not
   forget to define \Cmd{HAVE\_CONFIG\_H} to 1 (on the command-line,
   for instance).  If the \Cmd{config.h} you wish to use has another
@@ -412,17 +412,17 @@ options:
 \item[Misc.\ options:] General options which aren't related to some
   specific subpart of \chktex.
   \begin{description}
-  \item[\texttt{-h [--help]}] Gives you a command summary.
-  \item[\texttt{-i [--license]}] Shows distribution information.
-  \item[\texttt{-l [--localrc]}] Reads a resource-file formatted
+  \item[\texttt{-h [-{}-help]}] Gives you a command summary.
+  \item[\texttt{-i [-{}-license]}] Shows distribution information.
+  \item[\texttt{-l [-{}-localrc]}] Reads a resource-file formatted
     as the global resource-file \rsrc, in addition to the global
     resource-file. This option needs the name of the resource-file
     as a parameter. See also \texttt{-g}.
-  \item[\texttt{-r [--reset]}] This will reset all settings to their
+  \item[\texttt{-r [-{}-reset]}] This will reset all settings to their
     defaults. This may be useful if you use the \texttt{CMDLINE}
     directive in your \rsrc\ file, and wish to do something
     unusual.
-  \item[\texttt{-d [--debug]}] Needs a numeric argument; a bitmask
+  \item[\texttt{-d [-{}-debug]}] Needs a numeric argument; a bitmask
     telling what to output.  The values below may be added in order
     to output multiple debugging info.
 
@@ -439,27 +439,27 @@ options:
 
     It is possible to install versions of \chktex\ that ignore this
     flag; this means that it is not certain that this flag works.
-  \item[\texttt{-W [--version]}] Displays version information, and exits.
+  \item[\texttt{-W [-{}-version]}] Displays version information, and exits.
   \end{description}
 \item[Muting warning messages:] Controls whether and in what form
   error messages will appear. Usually they accept a specific warning
   number (e.g.\ \Cmd{-w2}), but you may also say \Cmd{all} (e.g.\
   \Cmd{-wall}) which does the operation on \emph{all} warnings.
   \begin{description}
-  \item[\texttt{-w [--warnon]}] Makes the message number passed as
+  \item[\texttt{-w [-{}-warnon]}] Makes the message number passed as
     parameter a warning and turns it on.
-  \item[\texttt{-e [--erroron]}] Makes the message number passed as
+  \item[\texttt{-e [-{}-erroron]}] Makes the message number passed as
     parameter an error and turns it on.
-  \item[\texttt{-m [--msgon]}] Makes the message number passed as
+  \item[\texttt{-m [-{}-msgon]}] Makes the message number passed as
     parameter a message and turns it on. Messages are not counted.
-  \item[\texttt{-n [--nowarn]}] Turns the warning/error number passed
+  \item[\texttt{-n [-{}-nowarn]}] Turns the warning/error number passed
     as a parameter off.
   \end{description}
 \item[Output control flags:] Determines the appearance and
   destination of the error reports.
   \begin{description}
-  \item[\texttt{-q [--quiet]}] Shuts up about copyright information.
-  \item[\texttt{-o [--output]}] Normally, all errors are piped to \texttt{stdout}.
+  \item[\texttt{-q [-{}-quiet]}] Shuts up about copyright information.
+  \item[\texttt{-o [-{}-output]}] Normally, all errors are piped to \texttt{stdout}.
     Using this option with a parameter, errors will be sent to the
     named file instead. Only information relative to the \LaTeX\ file
     will be sent to that file. Memory problems and similar will as as
@@ -468,7 +468,7 @@ options:
     (\Cmd{foobar.\$cl} under MS-DOS), \Cmd{foobar} being the name of
     the file.  See also \Cmd{-b}.
 
-  \item[\texttt{-v [--verbosity]}] Specifies how much and how you
+  \item[\texttt{-v [-{}-verbosity]}] Specifies how much and how you
     wish the error reports to be displayed. This is specified in the
     \rsrc\ file; we'll list the default values below. If you wish,
     you may thus edit the \rsrc\ file to add or modify new formats.
@@ -514,7 +514,7 @@ File:Line:Column:Warning number:Warning message
       longer time to parse, but much more informative in use.
     \end{description}
 
-  \item[\texttt{-f [--format]}] Specifies the format of the output.
+  \item[\texttt{-f [-{}-format]}] Specifies the format of the output.
     This is done using a format similar to \Cmd{printf()}, where we
     support the specifiers listed below.
 
@@ -554,7 +554,7 @@ File:Line:Column:Warning number:Warning message
     file; read that for seeing how each format is implemented. If
     you find yourself using a particular format often by using the
     -f switch, consider putting it in the \rsrc\ file instead.
-  \item[\texttt{-V [--pipeverb]}] Which entry we'll use in the \rsrc\
+  \item[\texttt{-V [-{}-pipeverb]}] Which entry we'll use in the \rsrc\
     file whenever \texttt{stdout} isn't a terminal.
 
     The default is to use the same mode as specified with the
@@ -569,7 +569,7 @@ File:Line:Column:Warning number:Warning message
 setenv LESS -r
 \end{verbatim}
 
-  \item[\texttt{-p [--pseudoname]}] With this switch, you can provide
+  \item[\texttt{-p [-{}-pseudoname]}] With this switch, you can provide
     the filename which will be used when we report the errors. This
     may be useful in scripts, especially when doing pipes. It is in
     other words similar to C's \verb@#line@ directive.
@@ -578,7 +578,7 @@ setenv LESS -r
     this one in turn \verb@\@\verb@input@ are presented under their original
     names. This seems most logical to me.
 
-  \item[\texttt{-s [--splitchar]}] String to use instead of the
+  \item[\texttt{-s [-{}-splitchar]}] String to use instead of the
     colons when doing \texttt{-v0}; e.g.\ this string will be output
     between the fields.
 
@@ -590,23 +590,23 @@ setenv LESS -r
   any parameter.
 
   \begin{description}
-  \item[\texttt{-b [--backup]}] If you use the \texttt{-o} switch, and the
+  \item[\texttt{-b [-{}-backup]}] If you use the \texttt{-o} switch, and the
     named outputfile exists, it will be renamed to \texttt{filename.bak}.
-  \item[\texttt{-I [--inputfiles]}] Execute \verb@\@\verb@input@
+  \item[\texttt{-I [-{}-inputfiles]}] Execute \verb@\@\verb@input@
     statements; e.g.\ include the file in the input. Our input parsing
     does of course nest; we use an input-stack to keep track of this.
-  \item[\texttt{-H [--headererr]}] Show errors found in front of the
+  \item[\texttt{-H [-{}-headererr]}] Show errors found in front of the
     \verb@\begin{document}@ line. Some people keep \emph{lots} of
     pure \TeX\ code there, which errors can't be detected reliably
     (in other words, we will in most cases just produce a lot of
     garbage).
-  \item[\texttt{-g [--globalrc]}] Read in the global resource file.  This
+  \item[\texttt{-g [-{}-globalrc]}] Read in the global resource file.  This
     switch may be useful together with the \texttt{-l} option.
-  \item[\texttt{-t [--tictoc]}] Display a twirling baton, to show that
+  \item[\texttt{-t [-{}-tictoc]}] Display a twirling baton, to show that
     we're working. \texttt{-v0} does an \texttt{-t0}, too, as it assumes
     that the user then uses the program non-interactively.  This is
     now a no-op.
-  \item[\texttt{-x [--wipeverb]}] Ignore the ``\verb@\verb@'' command
+  \item[\texttt{-x [-{}-wipeverb]}] Ignore the ``\verb@\verb@'' command
     found within the \LaTeX\ file and its argument is completely by
     the checking routines.  This is done by simply overwriting them.
     If you somehow don't like that (for instance, you would like to
@@ -651,7 +651,7 @@ keyword by simply reading the file. The method for \emph{finding it},
 however, has grown rather complex. An outline is given below.
 
 If \chktex\ finds multiple files when searching, each and everyone
-will be read in the order specified below. The \Cmd{Keyword = \{ item
+will be read in the order specified below. The \Cmd{Keyword = \{ item
   item \dots \}} may thus be necessary to reset previously defined
 lists.
 
@@ -661,7 +661,7 @@ In this list, \Cmd{\$foo} is assumed to be the environment variable
 \begin{enumerate}
 \item First, we'll take a look at the directory which was specified as
   \Cmd{DATADIR} during compilation. On UNIX boxes, this usually
-  evaluates to something similar to 
+  evaluates to something similar to
   \Cmd{/usr/local/share/chktexrc}, under MS-DOS it is set
   to \Cmd{\BS{}emtex\BS{}data\BS{}chktexrc}.
 
@@ -715,7 +715,7 @@ favourite hint, feel free to send it to me!
   of your \LaTeX\ file:
 \begin{verbatim}
 % ChkTeX will ignore material within this environment
-\newenvironment{ignore}{}{} 
+\newenvironment{ignore}{}{}
 \end{verbatim}
   In addition, you should add the item \Cmd{ignore} to the \Cmd{VerbEnvir}
   entry in the \rsrc\ file.
@@ -753,7 +753,7 @@ chkweb [options] file1 file2 ...
 As you may see from the script, it is only a trivial interface towards
 \texttt{deweb} and \chktex.  It does not support any individual options
 on the command line --- all options found will be passed onto \chktex.
-If \Cmd{--} or a filename is found, the remaining parameters will be
+If \Cmd{-{}-} or a filename is found, the remaining parameters will be
 ignored.
 The  only  real  intelligence  it  features  is  that it will try to append
 \verb@.w@ to filenames it can't find.
@@ -939,7 +939,7 @@ keyword in the \rsrc\ file which controls the discussed warning.
 
   \begin{errexam}
     \verb@It wasn't anything @\underline{\tt-}\verb@ just a 2@\underline
-    {\tt---}\verb@3 star@\underline{\tt--}\verb@shots.@ \\*
+    {\tt-{}-{}-}\verb@3 star@\underline{\tt-{}-}\verb@shots.@ \\*
     It wasn't anything - just a 2---3 star--shots. \\*
     \smallskip
     \verb@It wasn't anything --- just a 2--3 star-shots@ \\*
@@ -1687,4 +1687,3 @@ Since the original author is unreachable, the maintainer these days is:
 Have fun.
 
 \end{document}
-
