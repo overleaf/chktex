@@ -109,8 +109,8 @@ Full source included.
 
 The program also supports output formats suitable for further
 processing by editors or other programs, making errors easy to cycle through.
-Software is provided for beautifully interfacing against the
-AUC-\TeX\ Emacs mode, CygnusED, GoldEd and various Amiga message browsers.
+Software is provided for beautifully interfacing with the
+AUC\TeX\ Emacs mode.
 
 The program itself does not have any machine requirements; However compiling
 for other platforms has not been done for a long time now so the code has been
@@ -182,7 +182,7 @@ and configurations.
 \item Flexible output handling. Has some predefined formats and lets
   the user specify his own format.  Uses a \Cmd{printf()} similar
   syntax. \Cmd{lacheck} compatible mode included for interfacing with
-  the AUC-\TeX\ Emacs mode.
+  the AUC\TeX\ Emacs mode.
 \item Written in ANSI C\@. \Cmd{configure} script included for easy
   setup and installation on UNIX systems.
 \end{itemize}
@@ -225,8 +225,8 @@ along   with  this  program;  if  not,  write  to:
 
 \section{Availability}
 
-This program will be uploaded to CTAN\@; thus it can be
-found at any mirrors of those.
+This program is on CTAN\@; thus it can be found at any mirrors of those.
+It is also part of TeX Live 2011.
 
 \section{Installation}
 
@@ -261,9 +261,9 @@ A few words on installation on various platforms:
     configuration options you should know about:
     \begin{description}
     \item[\Cmd{-{}-enable-emacs-hack}:] Install a small file which
-      adds \chktex\ to the command menu of AUC-\TeX. This is to be
+      adds \chktex\ to the command menu of AUC\TeX. This is to be
       considered as a hack, and may break in future versions of
-      AUC-\TeX. It works fine under AUC-\TeX\ v2.9, though.
+      AUC\TeX. It works fine under AUC\TeX\ v2.9, though.
 
       This option needs the path of your elisp directory as argument,
       e.g. \Cmd{-{}-enable-emacs-hack=/home/myself/elisp} or similar.
@@ -274,10 +274,10 @@ A few words on installation on various platforms:
 (require 'chktex)
 \end{verbatim}
       You can now access \chktex\ from the \Cmd{Command} menu in
-      AUC-\TeX. To cycle through the messages, type \verb#C-x `#.
+      AUC\TeX. To cycle through the messages, type \verb#C-x `#.
 
     \item[\Cmd{-{}-enable-lacheck-replace}] This enables a quick
-      hack for making the AUC-\TeX\ Emacs mode use \chktex\ instead of
+      hack for making the AUC\TeX\ Emacs mode use \chktex\ instead of
       lacheck. This is done by installing a stub script which
       ``overrides'' the original lacheck executable.
 
@@ -627,16 +627,15 @@ following keycombinations:
 \end{tabular}
 \smallskip
 
-By default, we're using the 1994 version of GNU's \Cmd{getopt()}
-routine.
+By default, we use GNU's \Cmd{getopt()} routine.
 
 \begin{itemize}
 \item Options may be given in any order; the names of the \LaTeX-files
   do not have to be the last arguments. This behaviour may be turned
   off by creating an environment variable named \Cmd{POSIXLY\_CORRECT}.
-\item The special argument \Cmd{--} forces an end of
+\item The special argument \Cmd{-{}-} forces an end of
   option-scanning.
-\item Long-named options begin with \Cmd{--} instead of \Cmd{-}.
+\item Long-named options begin with \Cmd{-{}-} instead of \Cmd{-}.
   Their names may be abbreviated as long as the abbreviation is unique
   or is an exact match for some defined option. If they have an
   argument, it follows the option name in the argument, separated from
@@ -699,7 +698,8 @@ I've tried to collect some advice that may be useful --- if you have a
 favourite hint, feel free to send it to me!
 
 \begin{itemize}
-\item If you use \Cmd{german.sty}; it may be wise to put \Cmd{-n18} in
+\item If you use \Cmd{german.sty} or several of \Cmd{babel} languages
+  which use \verb+"+ as an active character; it may be wise to put \Cmd{-n18} in
   the \Cmd{CmdLine} entry in the \rsrc\ file. This will probably reduce
   the amount of false warnings significantly.
 \item Put \Cmd{-v} in the \Cmd{CmdLine} entry of the \rsrc\ file; this
@@ -1475,25 +1475,7 @@ I would like to receive. The following ideas are given:
   appreciated (and included). Look at the \verb@deweb@ script to see
   what I mean.
 
-\item Arexx interfaces for other editors are also welcomed; these
-  should be rather fast to write.  They should to the following:
-  \begin{enumerate}
-  \item Get the filename of the active file.
-  \item If possible, save the file to disk if there has been any
-    changes.
-  \item Call the program \Cmd{ChkTeX.rexx} with the filename as the
-    only parameter.
-  \end{enumerate}
-
-\item If somebody out there actually possesses (and uses) GoldED, it
-  would be nice if they checked whether the ARexx script included
-  actually work.  If not, please send me a fixed copy; perhaps also
-  one which supports point 2 above, too. If it does work, then please
-  tell me so, so I can remove this item.
-
-  I don't have GoldEd in my possession; the script was just modelled
-  after Juergen Zeschky's, (\texttt{<juergen@sokrates.nbg.de>})
-  $\mbox{PGP}\leftrightarrow\mbox{GoldED}$ interface.
+\item Interfaces for other editors are also welcomed.
 
 \item If you update the \rsrc\ file in anyway that is not strictly
   local, I would appreciate to receive your updated version.
@@ -1507,11 +1489,6 @@ Of course, people doing any of this will be mentioned in this document, and
 thus receive eternal glory and appreciation.
 
 \subsection{Caps and stuff}
-
-This program uses the \Cmd{getopt()} routine, as supplied from GNU\@.
-The source included in this distribution has been modified slightly.
-To make the use of C2LOCAL easier, portions which were
-\verb@#ifdef@'ed out, have now been commented out.
 
 Where trademarks have been used, the author is aware of that they
 belong to someone, and has tried to stick to the original caps.
@@ -1599,6 +1576,9 @@ The author wishes to thank the following people (in alphabetical order):
   ready-to-yank code patches. The original port didn't respect all
   the peculiarities of the MS-DOS file-system, unfortunately.
 
+  \Name{Baruch Even}{chktex@ev-en.org}
+  Maintainer of \chktex\ for about a decade.
+
   \Name{Lars Frellesen}{frelle@math-tech.dk} Sent a few bug reports
   regarding the filtering of messages. He has also helped me to
   expand the \Cmd{SILENT} keyword in the \rsrc\ file.
@@ -1676,8 +1656,8 @@ Since the original author is unreachable, the maintainer these days is:
 \begin{samepage}
 %endlatex
   \begin{quote}
-    Baruch Even     \\
-    E-mail: \texttt{<chktex@ev-en.org>}
+    Ivan Andrus     \\
+    E-mail: \texttt{<darthandrus@gmail.com>}
   \end{quote}
 %latex
 \end{samepage}
