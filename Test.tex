@@ -119,7 +119,7 @@ Do you understand?
 \input input.tex
 \input input
 
-% Warning 29 
+% Warning 29
 The program opens a screen sized 640x200 pixels
 The program opens a screen sized $640\times200$ pixels
 
@@ -145,7 +145,7 @@ $\sin^2 + \cos^2 = 1$
 
 % Warning 36-37
 
-This( an example( Nuff said )), illustrates( ``my'' )point. 
+This( an example( Nuff said )), illustrates( ``my'' )point.
 This (an example (Nuff said)), illustrates (``my'') point.
 
 % Warning 38
@@ -169,6 +169,14 @@ foo \above qux
 This is a footnote \footnote{foo}.
 This is a footnote\footnote{foo}.
 
+% Warning 43
+Here is a mistake $\left{x\right}$.
+This one triggers warning 22 $\left\{x\right\}$.
+Here \chktex\ doesn't complain $\left\lbrace x\right\rbrace$.
+
+% Warning 44 -- user regex
+For every $p\not|n$ you have an ugly prime which doesn't divide $n$.
+For every $p\nmid n$ you have a cute prime which doesn't divide $n$.
 
 % Verb check
 
@@ -182,5 +190,3 @@ This is a footnote\footnote{foo}.
 % Warning 16,15
 
 $$(
-
-

@@ -223,7 +223,7 @@ Is this an "example", or is it an ´example´.
 Message 22 in Test.tex: Comment displayed.
 % Warning 20  
 ^
-Message 20 in Test.tex: User-specified pattern found.
+Message 20 in Test.tex: User-specified pattern found: \unknown.
 That bug is \unknown\ to me.  
             ^^^^^^^^
 Message 22 in Test.tex: Comment displayed.
@@ -272,7 +272,7 @@ Message 11 in input.tex: You should use \ldots to achieve an ellipsis.
 \this is a test of whether the file is actually inputted...  
                                                         ^^^
 Message 22 in Test.tex: Comment displayed.
-% Warning 29   
+% Warning 29  
 ^
 Message 29 in Test.tex: $\times$ may look prettier here.
 The program opens a screen sized 640x200 pixels  
@@ -323,31 +323,31 @@ Message 22 in Test.tex: Comment displayed.
 % Warning 36-37  
 ^
 Message 36 in Test.tex: You should put a space in front of parenthesis.
-This( an example( Nuff said )), illustrates( ``my'' )point.   
+This( an example( Nuff said )), illustrates( ``my'' )point.  
     ^
 Message 37 in Test.tex: You should avoid spaces after parenthesis.
-This( an example( Nuff said )), illustrates( ``my'' )point.   
+This( an example( Nuff said )), illustrates( ``my'' )point.  
      ^
 Message 36 in Test.tex: You should put a space in front of parenthesis.
-This( an example( Nuff said )), illustrates( ``my'' )point.   
+This( an example( Nuff said )), illustrates( ``my'' )point.  
                 ^
 Message 37 in Test.tex: You should avoid spaces after parenthesis.
-This( an example( Nuff said )), illustrates( ``my'' )point.   
+This( an example( Nuff said )), illustrates( ``my'' )point.  
                  ^
 Message 37 in Test.tex: You should avoid spaces in front of parenthesis.
-This( an example( Nuff said )), illustrates( ``my'' )point.   
+This( an example( Nuff said )), illustrates( ``my'' )point.  
                             ^
 Message 36 in Test.tex: You should put a space in front of parenthesis.
-This( an example( Nuff said )), illustrates( ``my'' )point.   
+This( an example( Nuff said )), illustrates( ``my'' )point.  
                                            ^
 Message 37 in Test.tex: You should avoid spaces after parenthesis.
-This( an example( Nuff said )), illustrates( ``my'' )point.   
+This( an example( Nuff said )), illustrates( ``my'' )point.  
                                             ^
 Message 37 in Test.tex: You should avoid spaces in front of parenthesis.
-This( an example( Nuff said )), illustrates( ``my'' )point.   
+This( an example( Nuff said )), illustrates( ``my'' )point.  
                                                     ^
 Message 36 in Test.tex: You should put a space after parenthesis.
-This( an example( Nuff said )), illustrates( ``my'' )point.   
+This( an example( Nuff said )), illustrates( ``my'' )point.  
                                                      ^
 Message 22 in Test.tex: Comment displayed.
 % Warning 38  
@@ -385,6 +385,27 @@ Message 22 in Test.tex: Comment displayed.
 Message 42 in Test.tex: You should remove spaces in front of `\footnote'
 This is a footnote \footnote{foo}.  
                   ^
+Message 22 in Test.tex: Comment displayed.
+% Warning 43  
+^
+Message 43 in Test.tex: `\left' is normally not followed by `{'.
+Here is a mistake $\left{x\right}$.  
+                   ^^^^^
+Message 43 in Test.tex: `\right' is normally not followed by `}'.
+Here is a mistake $\left{x\right}$.  
+                          ^^^^^^
+Message 21 in Test.tex: This command might not be intended.
+This one triggers warning 22 $\left\{x\right\}$.  
+                                   ^^
+Message 21 in Test.tex: This command might not be intended.
+This one triggers warning 22 $\left\{x\right\}$.  
+                                            ^^
+Message 22 in Test.tex: Comment displayed.
+% Warning 44 -- user regex  
+^
+Message 44 in Test.tex: User-specified regex found: \not|.
+For every $p\not|n$ you have an ugly prime which doesn't divide $n$.  
+            ^^^^^
 Message 22 in Test.tex: Comment displayed.
 % Verb check  
 ^
