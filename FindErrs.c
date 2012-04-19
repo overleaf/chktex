@@ -1196,26 +1196,6 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                 break;
             case '"':
                 HERE(1, emUseQuoteLiga);
-#if 0
-                /* Some babel languages use " as an active
-                 * character to type accents easier. */
-
-                /* They all seem to be exactly 2 long. */
-                /* Actually, that's a lie.  */
-                strncpy(TmpBuffer, BufPtr-1, 2);
-                TmpBuffer[2] = '\0';
-                /* printf("Checking against: %s\n", TmpBuffer); */
-                if ((TmpPtr = HasWord(TmpBuffer, &BabelActiveQuote)))
-                {
-                    /* printf("Here I am: %p\nAdvancing by %d\n", TmpPtr, strlen(TmpBuffer)-1); */
-                    BufPtr += strlen(TmpBuffer)-1;
-                }
-                else
-                {
-                    /* printf("Nope I'm here %p\n", TmpPtr); */
-                    HERE(1, emUseQuoteLiga);
-                }
-#endif
                 break;
 
                 /* One of these are unnecessary, but what the heck... */
