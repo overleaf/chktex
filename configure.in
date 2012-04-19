@@ -35,6 +35,11 @@ ELISPDIR=
 AC_SUBST(CLEAN)
 CLEAN=
 
+AC_ARG_ENABLE(pcre,[
+    --enable-pcre:             Use PCRE to allow regular expressions in
+                               user warnings.  (Default:  yes).],,
+enable_pcre=yes)
+
 AC_ARG_ENABLE(lacheck-replace,[
     --enable-lacheck-replace:  Installs  a lacheck replacement for the
                                AUC-TeX interface.  (Default:  no).],,
@@ -92,6 +97,26 @@ if test "$enable_coverage_testing" = "yes"; then
   CLEAN="${CLEAN} \$(wildcard *.bb *.bbg *.da *.gcov)"
 else
   AC_MSG_RESULT(no)
+fi
+
+dnl Check for PCRE regular expression support
+AC_MSG_CHECKING(whether PCRE regular expressions are enabled)
+AC_MSG_RESULT($enable_pcre)
+if test "$enable_pcre" = "yes"; then
+  AC_CHECK_PROG(WITH_PCRE, pcre-config, yes, no)
+  if test "$WITH_PCRE" = "yes"; then
+    AC_DEFINE(HAVE_PCRE, 1, "Whether PCRE can be used for user warnings.")
+    CFLAGS="${CFLAGS} $(pcre-config --cflags)"
+    LDFLAGS="${LDFLAGS} $(pcre-config --libs)"
+  else
+    AC_DEFINE(HAVE_PCRE, 0, "Whether PCRE can be used for user warnings.")
+    warn_pcre="PCRE library not found.  This will result in user regular expression tests being ignored."
+    AC_MSG_WARN($warn_pcre)
+  fi
+else
+    AC_DEFINE(HAVE_PCRE, 0, "Whether PCRE can be used for user warnings.")
+    warn_pcre="PCRE regular expressions not enabled.  This will result in user regular expression tests being ignored."
+    AC_MSG_WARN($warn_pcre)
 fi
 
 dnl Check compiler and flags

@@ -42,7 +42,7 @@
   LIST(WordDash)   LIST(CenterDots) LIST(LowDots)  LIST(OutFormat)\
   LIST(Primitives) LIST(NotPreSpaced) LIST(NonItalic) LIST(NoCharNext)\
   LNEMPTY(CmdLine) LNEMPTY(TeXInputs)\
-  LCASE(Abbrev)    LCASE(UserWarn)\
+  LCASE(Abbrev)    LCASE(UserWarn)  LIST(UserWarnRegex)\
   KEY(VerbClear, "|") KEY(QuoteStyle, "Traditional")  KEY(TabSize, "8")
 
 #define LIST(a) extern struct WordList a;
