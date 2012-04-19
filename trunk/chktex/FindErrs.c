@@ -33,6 +33,18 @@
 #include "Utility.h"
 #include "Resource.h"
 
+#if HAVE_PCRE
+
+#include <pcre.h>
+
+/* 3*(max_capturing_groups+1) */
+#define OVECCOUNT 3*(9+1)
+
+pcre** RegexArray = NULL;
+int NumRegexes = 0;
+
+#endif
+
 /***************************** ERROR MESSAGES ***************************/
 
 #undef MSG
@@ -646,6 +658,93 @@ static void CheckRest(void)
 
     /* Search for user-specified warnings */
 
+#if ! HAVE_PCRE
+
+    if (INUSE(emUserWarnRegex) && UserWarnRegex.Stack.Used > 0)
+    {
+        PrintPrgErr(pmNoRegExp);
+        ClearWord( &UserWarnRegex );
+    }
+
+#else
+
+    if (INUSE(emUserWarnRegex) && UserWarnRegex.Stack.Used > 0)
+    {
+        const char *error;
+        int ErrOffset;
+        int len = strlen(TmpBuffer);
+        static int ovector[OVECCOUNT];
+
+        /* Compile all regular expressions if not already compiled. */
+        if ( !RegexArray && UserWarnRegex.Stack.Used > 0 )
+        {
+            RegexArray = (pcre**)malloc( sizeof(pcre*) * UserWarnRegex.Stack.Used );
+            if (!RegexArray)
+            {
+                /* Allocation failed. */
+                PrintPrgErr(pmNoRegexMem);
+                ClearWord(&UserWarnRegex);
+                NumRegexes = 0;
+
+            }
+            else
+            {
+                NumRegexes = 0;
+                FORWL(Count, UserWarnRegex)
+                {
+                    char *pattern = UserWarnRegex.Stack.Data[Count];
+                    RegexArray[NumRegexes] = pcre_compile( pattern, 0, &error, &ErrOffset, NULL);
+
+                    /* Compilation failed: print the error message */
+                    if (RegexArray[NumRegexes] == NULL)
+                    {
+                        /* TODO: decide whether a non-compiling regex should completely stop, or just be ignored */
+                        PrintPrgErr(pmRegexCompileFailed, pattern, ErrOffset, error);
+                    }
+                    else
+                    {
+                        ++NumRegexes;
+                    }
+                }
+            }
+        }
+
+        for (Count = 0; Count < NumRegexes; ++Count)
+        {
+            int offset = 0;
+            while (offset < len)
+            {
+
+                const int rc = pcre_exec( RegexArray[Count], NULL, TmpBuffer, len,
+                                          offset, 0, ovector, OVECCOUNT );
+
+                /* Matching failed: handle error cases */
+                if (rc < 0)
+                {
+                    switch(rc)
+                    {
+                        case PCRE_ERROR_NOMATCH:
+                            /* no match, no problem */
+                            break;
+                        default:
+                            PrintPrgErr(pmRegexMatchingError, rc);
+                            break;
+                    }
+                    offset = len; /* break out of loop */
+                }
+                else
+                {
+                    PSERR2(ovector[0], ovector[1]-ovector[0], emUserWarnRegex,
+                           ovector[1]-ovector[0], TmpBuffer+ovector[0]);
+                    offset = ovector[1];
+                }
+            }
+        }
+    }
+
+#endif
+
+
     if (INUSE(emUserWarn))
     {
         strcpy(TmpBuffer, Buf);
@@ -656,10 +755,9 @@ static void CheckRest(void)
                  UsrPtr++)
             {
                 CmdLen = strlen(UserWarn.Stack.Data[Count]);
-                PSERR(UsrPtr - TmpBuffer, CmdLen, emUserWarn);
+                PSERRA(UsrPtr - TmpBuffer, CmdLen, emUserWarn, UserWarn.Stack.Data[Count]);
             }
         }
-
 
         strlwr(TmpBuffer);
 
@@ -670,7 +768,7 @@ static void CheckRest(void)
                  UsrPtr++)
             {
                 CmdLen = strlen(UserWarnCase.Stack.Data[Count]);
-                PSERR(UsrPtr - TmpBuffer, CmdLen, emUserWarn);
+                PSERRA(UsrPtr - TmpBuffer, CmdLen, emUserWarn, UserWarnCase.Stack.Data[Count]);
             }
         }
     }
@@ -748,6 +846,8 @@ static void HandleBracket(int Char)
         {
             if ((ei = PopErr(&CharStack)))
             {
+                /* TODO: I think this is where I would have to add
+                 * support for ensuremath */
                 Match = MatchBracket(*(ei->Data));
                 if (ei->Flags & efNoItal)
                 {
@@ -842,6 +942,11 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
         BufPtr = PreProcess();
 
         BufPtr = SkipVerb();
+
+        if (!VerbMode)
+        {
+            CheckRest();
+        }
 
         while (BufPtr && *BufPtr)
         {
@@ -1091,6 +1196,26 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                 break;
             case '"':
                 HERE(1, emUseQuoteLiga);
+#if 0
+                /* Some babel languages use " as an active
+                 * character to type accents easier. */
+
+                /* They all seem to be exactly 2 long. */
+                /* Actually, that's a lie.  */
+                strncpy(TmpBuffer, BufPtr-1, 2);
+                TmpBuffer[2] = '\0';
+                /* printf("Checking against: %s\n", TmpBuffer); */
+                if ((TmpPtr = HasWord(TmpBuffer, &BabelActiveQuote)))
+                {
+                    /* printf("Here I am: %p\nAdvancing by %d\n", TmpPtr, strlen(TmpBuffer)-1); */
+                    BufPtr += strlen(TmpBuffer)-1;
+                }
+                else
+                {
+                    /* printf("Nope I'm here %p\n", TmpPtr); */
+                    HERE(1, emUseQuoteLiga);
+                }
+#endif
                 break;
 
                 /* One of these are unnecessary, but what the heck... */
@@ -1220,10 +1345,6 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
             }
         }
 
-        if (!VerbMode)
-        {
-            CheckRest();
-        }
     }
 
     return (TRUE);

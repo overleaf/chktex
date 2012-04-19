@@ -214,6 +214,40 @@ UserWarn
 
 ]
 
+
+###
+#
+# These patterns will be searched for, no matter whether they appear
+# as normal text, commands or arguments.  For example they will match
+# in verbatim environments.
+#
+# Remember that you have to escape (with a !) the following
+# characters: "#!= as well as spaces and {}[] if they are proceeded by
+# a space.
+#
+# Since these are PCRE regular expressions, you can use (?i) to make
+# the expression case insensitive.  See the man pages (man pcresyntax)
+# or the nicely formatted http://perldoc.perl.org/perlre.html for
+# documentation on the regular expression syntax.  Note however that
+# some the features of perl regular expression are not available such
+# as running code (callouts), and replacing.
+#
+###
+UserWarnRegex
+{
+
+  # Always use \nmid
+  \\not! *(\||\\mid)
+
+  # capitalize section when saying Section 6.
+  \b(chapter|(sub)?section|theorem|lemma|proposition|corollary|appendix)~\\ref
+
+  # spell it out.
+  (?i)\bintro\b
+
+}
+
+
 #####################################################################
 #
 # Here you can list the path of where ChkTeX should look for files it

@@ -232,7 +232,14 @@ DEBUGBITS(Debug_BIT)
  MSG(pmNoOpenDir,  etWarn, TRUE, 0, \
      "Could not open the directory `%s'.") \
  MSG(pmNoDebugFlag, etWarn, TRUE, 0, \
-     "This version of doesn't support the -d flag. Please recompile.")
+     "This version of doesn't support the -d flag. Please recompile.")\
+ MSG(pmNoRegexMem,  etErr,  TRUE, 0,\
+     "Unable to allocate regular expressions - no memory?\n")\
+ MSG(pmRegexCompileFailed,  etWarn,  TRUE, 0,\
+     "Compilation of regular expression %s failed at offset %d with error %s.\n")\
+ MSG(pmRegexMatchingError,  etErr,  TRUE, 0,\
+     "PCRE matching error %d.\n")
+
 #undef MSG
 #define MSG(num, type, inuse, ctxt, text) num,
      enum PrgErrNum

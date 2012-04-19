@@ -260,6 +260,17 @@ A few words on installation on various platforms:
   \item Now, we can configure the program.  There are some
     configuration options you should know about:
     \begin{description}
+    \item[\Cmd{-{}-enable-pcre}:] Allows using PCRE (perl compatible
+      regular expressions) for use defined warnings.  The default is
+      to use PCRE if it is installed on your system as determined by
+      \Cmd{pcre-config}.  You can use \Cmd{-{}-disable-pcre} if you
+      plan to distribute this for systems in which you cannot ensure
+      PCRE will be installed.
+
+      User defined regular expressions are defined using
+      \texttt{UserWarnRegex} in the \rsrc\ file.  See warning~44 for
+      more information.
+
     \item[\Cmd{-{}-enable-emacs-hack}:] Install a small file which
       adds \chktex\ to the command menu of AUC\TeX. This is to be
       considered as a hack, and may break in future versions of
@@ -1082,10 +1093,13 @@ keyword in the \rsrc\ file which controls the discussed warning.
   \end{errexam}
 \end{errdesc}
 
-\Keyword{Userwarn}
+\Keyword{UserWarn}
 \begin{errdesc}{User-specified pattern found.}
-  A substring  you've specified using \texttt{USERWARN} in the \rsrc\ file,
-  has been found.
+  \label{warn:userregex}
+  A substring you've specified using \texttt{UserWarn} in the \rsrc\ file,
+  has been found.  See also warning~44 which allows using regular expressions.
+  % Normally I would use a ref here, but if the numbers change that would be
+  % hugely backwards incompatible.  Also it would require adding special label code.
 \end{errdesc}
 
 \begin{errdesc*}{This command might not be intended.}
@@ -1106,8 +1120,8 @@ keyword in the \rsrc\ file which controls the discussed warning.
   \chktex\ dumps all comments it finds, which in some cases is useful.
   I usually keep all my notes in the comments, and like to review them
   before I ship the final version. For commenting out parts of the
-  document, the \Cmd{comment} environment is better suited.
-
+  document, the \Cmd{comment} environment is better suited. Setting
+  this warning allows you to see notes you have left in comments.
 \end{errdesc*}
 
 
@@ -1396,6 +1410,14 @@ keyword in the \rsrc\ file which controls the discussed warning.
   this and similar errors.
 \end{errdesc}
 
+\Keyword{UserRegexWarn}
+\begin{errdesc}{User-specified regex found: \%s'.}
+  \label{warn:userregex}
+  A pattern you've specified using \texttt{UserWarnRegex} in the \rsrc\ file,
+  has been found.  See also warning~20 which allows specification of simple
+  string matching.
+\end{errdesc}
+
 \section{Future plans}
 
 In a somewhat prioritized sequence, this is what I'd like to put into the
@@ -1405,10 +1427,6 @@ program --- if I have the time.
 \item Do a final fix for maths mode. Currently, \chktex\ doesn't
   recognize constructions like
   \verb@$$a+b\text{for $a \leq 0$}$$@, i.e.\ embedded math mode.
-
-\item Support for regular expressions as user patterns. I'll do it at
-  once I get the GNU \Cmd{rx} package up and running (it doesn't
-  produce correct include files).
 
 \item De-linearize the checker. Currently, it works on a line-by-line
   basis, in most respects, at least. I hope to be able to remove this
