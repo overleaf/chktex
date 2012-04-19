@@ -218,8 +218,8 @@ UserWarn
 ###
 #
 # These patterns will be searched for, no matter whether they appear
-# as normal text, commands or arguments.  For example they will match
-# in verbatim environments.
+# as normal text, commands or arguments.  However, they will _not_
+# match in verbatim environments.
 #
 # Remember that you have to escape (with a !) the following
 # characters: "#!= as well as spaces and {}[] if they are proceeded by
