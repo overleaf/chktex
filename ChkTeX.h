@@ -242,38 +242,38 @@ DEBUGBITS(Debug_BIT)
 
 #undef MSG
 #define MSG(num, type, inuse, ctxt, text) num,
-     enum PrgErrNum
-     {
-         PRGMSGS pmMaxFault
-     };
+enum PrgErrNum
+{
+    PRGMSGS pmMaxFault
+};
 #undef MSG
 
-     extern struct ErrMsg PrgMsgs[pmMaxFault + 1];
+extern struct ErrMsg PrgMsgs[pmMaxFault + 1];
 
-     struct ErrInfo
-     {
-         char *Data;
-         const char *LineBuf;
-         const char *File;
-         unsigned long Line, Column, ErrLen;
-         enum
-         {
-             efNone = 0x00,
-             efNoItal = 0x01,
-             efItal = 0x02
-         } Flags;
-     };
+struct ErrInfo
+{
+    char *Data;
+    const char *LineBuf;
+    const char *File;
+    unsigned long Line, Column, ErrLen;
+    enum
+    {
+        efNone = 0x00,
+        efNoItal = 0x01,
+        efItal = 0x02
+    } Flags;
+};
 
-     extern char *ReadBuffer;
-     extern char *CmdBuffer;
-     extern char *TmpBuffer;
+extern char *ReadBuffer;
+extern char *CmdBuffer;
+extern char *TmpBuffer;
 
-     extern const char BrOrder[NUMBRACKETS + 1];
+extern const char BrOrder[NUMBRACKETS + 1];
 
-     extern unsigned long Brackets[NUMBRACKETS];
+extern unsigned long Brackets[NUMBRACKETS];
 
 
-     extern FILE *OutputFile, *InputFile;
+extern FILE *OutputFile, *InputFile;
 
 #define OPTION_DEFAULTS \
   DEF(int, GlobalRC,    TRUE) \
@@ -303,23 +303,23 @@ DEBUGBITS(Debug_BIT)
   DEF(unsigned long, UserSupp, 0)    /* # user suppressed warnings */
 
 #define DEF(type, name, value) extern type name;
-     OPTION_DEFAULTS STATE_VARS
+OPTION_DEFAULTS STATE_VARS
 #undef DEF
-     extern struct Stack CharStack, InputStack, EnvStack;
+extern struct Stack CharStack, InputStack, EnvStack;
 
-     enum Quote
-     {
-         quLogic,
-         quTrad
-     };
+enum Quote
+{
+    quLogic,
+    quTrad
+};
 
-     extern enum Quote Quote;
-     extern int StdInTTY, StdOutTTY, UsingStdIn;
+extern enum Quote Quote;
+extern int StdInTTY, StdOutTTY, UsingStdIn;
 
-     int main(int argc, char **argv);
-     void PrintPrgErr(enum PrgErrNum, ...);
-     void ErrPrintf(const char *fmt, ...);
+int main(int argc, char **argv);
+void PrintPrgErr(enum PrgErrNum, ...);
+void ErrPrintf(const char *fmt, ...);
 
-     extern char *PrgName;
+extern char *PrgName;
 
 #endif /* CHKTEX_H */
