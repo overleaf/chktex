@@ -407,6 +407,18 @@ Message 44 in Test.tex: User-specified regex found: \not|.
 For every $p\not|n$ you have an ugly prime which doesn't divide $n$.  
             ^^^^^
 Message 22 in Test.tex: Comment displayed.
+% Math mode check  
+^
+Message 35 in Test.tex: You should perhaps use `\sin' instead.
+\ensuremath{sin x\text{is not the same as sin x, but is the same as $sin x$}}  
+            ^^^
+Message 35 in Test.tex: You should perhaps use `\sin' instead.
+\ensuremath{sin x\text{is not the same as sin x, but is the same as $sin x$}}  
+                                                                     ^^^
+Message 36 in Test.tex: You should put a space in front of parenthesis.
+Also, $x(3)\text{ is not x(3) but it is $x(3)$}$  
+                          ^
+Message 22 in Test.tex: Comment displayed.
 % Verb check  
 ^
 Message 14 in Test.tex: Could not find argument for command.
