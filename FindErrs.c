@@ -118,6 +118,7 @@ static char *LineCpy;
 static char *BufPtr;
 
 static int ItFlag = efNone;
+static int MathFlag = efNone;
 
 NEWBUF(Buf, BUFSIZ);
 NEWBUF(CmdBuffer, BUFSIZ);
@@ -846,9 +847,8 @@ static void HandleBracket(int Char)
         {
             if ((ei = PopErr(&CharStack)))
             {
-                /* TODO: I think this is where I would have to add
-                 * support for ensuremath */
                 Match = MatchBracket(*(ei->Data));
+                /* Return italics to proper state */
                 if (ei->Flags & efNoItal)
                 {
                     if (ItState == itOn)
@@ -864,6 +864,17 @@ static void HandleBracket(int Char)
                 }
                 else if (ei->Flags & efItal)
                     ItState = TRUE;
+
+                /* Same for math mode */
+                if (ei->Flags & efMath)
+                {
+                    MathMode = 1;
+                }
+                else if (ei->Flags & efNoMath)
+                {
+                    MathMode = 0;
+                }
+
                 FreeErrInfo(ei);
             }
             else
@@ -893,11 +904,21 @@ static void HandleBracket(int Char)
                     switch (ItFlag)
                     {
                     default:
-                        ei->Flags = ItFlag;
+                        ei->Flags |= ItFlag;
                         ItFlag = efNone;
                         break;
                     case efNone:
                         ei->Flags |= ItState ? efItal : efNoItal;
+                    }
+
+                    switch (MathFlag)
+                    {
+                    default:
+                        ei->Flags |= MathFlag;
+                        MathFlag = efNone;
+                        break;
+                    case efNone:
+                        ei->Flags |= MathMode ? efMath : efNoMath;
                     }
                 }
             }
@@ -1581,8 +1602,7 @@ static enum ErrNum PerformCommand(const char *Cmd, char *Arg)
         AtLetter = TRUE;
     else if (!strcmp(Cmd, "\\makeatother"))
         AtLetter = FALSE;
-    else if (InputFiles &&
-             !(strcmp(Cmd, "\\input") && strcmp(Cmd, "\\include")))
+    else if (InputFiles && !(strcmp(Cmd, "\\input") && strcmp(Cmd, "\\include")))
     {
         SKIP_AHEAD(Arg, TmpC, LATEX_SPACE(TmpC));
         if (*Arg == '{')        /* } */
@@ -1598,6 +1618,24 @@ static enum ErrNum PerformCommand(const char *Cmd, char *Arg)
     }
     else if (HasWord(Cmd, &Primitives))
         en = emTeXPrim;
+    else if (HasWord(Cmd, &MathCmd))
+    {
+        SKIP_AHEAD(Arg, TmpC, LATEX_SPACE(TmpC));
+        if (*Arg == '{')
+        {
+            MathFlag = MathMode ? efMath : efNoMath;
+            MathMode = 1;
+        }
+    }
+    else if (HasWord(Cmd, &TextCmd))
+    {
+        SKIP_AHEAD(Arg, TmpC, LATEX_SPACE(TmpC));
+        if (*Arg == '{')
+        {
+            MathFlag = MathMode ? efMath : efNoMath;
+            MathMode = 0;
+        }
+    }
     else if (*Cmd == '\\')
     {
         /* Quicker check of single lettered commands. */

@@ -41,7 +41,7 @@ RESOURCE_INFO
 #undef LCASE
 #undef LNEMPTY
 #undef LIST
-    struct KeyWord
+struct KeyWord
 {
     const char *Name;
     const char **String;        /* Keyword = item */

@@ -119,6 +119,8 @@
 #   LowDots     - Commands/characters  which  should  have  \ldots in
 #                 between.
 #   MathEnvir   - Environments which turn on math mode.
+#   MathCmd     - Comamnds which turn on math mode.
+#   TextCmd     - Comamnds which turn off math mode.
 #   MathRoman   - Mathematical   operators   with  LaTeX  replacement
 #                 defined.
 #   NoCharNext  - Insists on that certain commands aren't followed by
@@ -434,7 +436,7 @@ WipeArg
 
 #####################################################################
 #
-# These  environments  contains  material  which  will  be typeset as
+# These environments contain material which will be typeset as
 # mathematics by LaTeX.  This turns on/off some warnings.
 #
 # We will automagically append a * to each keyword.
@@ -444,6 +446,31 @@ MathEnvir
 {
     displaymath math eqnarray array equation
     align alignat gather flalign multline
+}
+
+#####################################################################
+#
+# These commands contain material which will be typeset as mathematics
+# by LaTeX.  The commands are assumed to have one mandatory argument
+# which is in math mode.  This turns on/off some warnings.
+#
+
+MathCmd
+{
+    \ensuremath
+}
+
+#####################################################################
+#
+# These commands contain material which will _not_ be typeset as
+# mathematics by LaTeX even if it would otherwise be in mathmode.  The
+# commands are assumed to have one mandatory argument which is in text
+# mode.  This turns on/off some warnings.
+#
+
+TextCmd
+{
+    \text \intertext \shortintertext \mbox
 }
 
 #####################################################################
@@ -478,7 +505,6 @@ VerbEnvir
 # necessary  to catch the remaining automatically) have been provided
 # by Russ Bubley, <russ@scs.leeds.ac.uk>.
 #
-
 
 Abbrev
 {
