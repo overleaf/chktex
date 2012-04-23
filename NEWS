@@ -1,5 +1,10 @@
-Development of ChkTeX is now in a maintainance mode. All versions
-after 1.6 are essentially bug fixes.
+Development of ChkTeX is now in a maintainance mode.  All versions
+1.6.x are essentially bug fixes.  Version 1.7 added some new features.
+
+1.7.0 (2012-04-07), released by Ivan Andrus <darthandrus@gmail.com>
+
+  * Added support for user defined regular expression based warnings
+  * Added support for macros like \ensuremath and \text
 
 1.6.6 (2012-04-07), released by Ivan Andrus <darthandrus@gmail.com>
 
