@@ -38,8 +38,9 @@
 #define RESOURCE_INFO \
   LIST(Silent)     LIST(Linker)     LIST(IJAccent) LIST(Italic)\
   LIST(ItalCmd)    LIST(PostLink)   LIST(WipeArg)  LIST(VerbEnvir)\
-  LIST(MathEnvir)  LIST(MathRoman)  LIST(HyphDash) LIST(NumDash)\
-  LIST(WordDash)   LIST(CenterDots) LIST(LowDots)  LIST(OutFormat)\
+  LIST(MathEnvir)  LIST(MathCmd)    LIST(TextCmd)  LIST(MathRoman)\
+  LIST(HyphDash)   LIST(NumDash)    LIST(WordDash)\
+  LIST(CenterDots) LIST(LowDots)    LIST(OutFormat)\
   LIST(Primitives) LIST(NotPreSpaced) LIST(NonItalic) LIST(NoCharNext)\
   LNEMPTY(CmdLine) LNEMPTY(TeXInputs)\
   LCASE(Abbrev)    LCASE(UserWarn)  LIST(UserWarnRegex)\

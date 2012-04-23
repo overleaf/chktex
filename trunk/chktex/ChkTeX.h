@@ -258,9 +258,11 @@ struct ErrInfo
     unsigned long Line, Column, ErrLen;
     enum
     {
-        efNone = 0x00,
+        efNone   = 0x00,
         efNoItal = 0x01,
-        efItal = 0x02
+        efItal   = 0x02,
+        efNoMath = 0x04,
+        efMath   = 0x08
     } Flags;
 };
 
