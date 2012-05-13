@@ -114,7 +114,7 @@ static const char *HelpText =
     "\n"
     "\n"
     "                         Usage of ChkTeX v" PACKAGE_VERSION "\n"
-    "                         ~~~~~~~~~~~~~~~~~~~~\n"
+    "                         ~~~~~~~~~~~~~~~~~~~~~~\n"
     "\n"
     "                               Template\n"
     "                               ~~~~~~~~\n"
@@ -129,7 +129,7 @@ static const char *HelpText =
     "~~~~~~~~~~~~~\n"
     "    -h  --help      : This text.\n"
     "    -i  --license   : Show distribution information\n"
-    "    -l  --localrc   : Read local .chktexrc formatted  file.\n"
+    "    -l  --localrc   : Read local .chktexrc formatted file.\n"
     "    -d  --debug     : Debug information. Give it a number.\n"
     "    -r  --reset     : Reset settings to default.\n"
     "\n"
@@ -167,7 +167,7 @@ static const char *HelpText =
     "----------------------------------------------------------------------\n"
     "If no LaTeX files are specified on the command line, we will read from\n"
     "stdin.   For explanation of warning/error messages, please consult the\n"
-    "main document ChkTeX.dvi or ChkTeX.ps.\n";
+    "main documentation ChkTeX.dvi, ChkTeX.ps or ChkTeX.pdf.\n";
 
 
 
