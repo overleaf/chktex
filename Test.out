@@ -419,6 +419,12 @@ Message 36 in Test.tex: You should put a space in front of parenthesis.
 Also, $x(3)\text{ is not x(3) but it is $x(3)$}$  
                           ^
 Message 22 in Test.tex: Comment displayed.
+This is\\% a comment. Nothing here should be checked(right)?  
+         ^
+Message 36 in Test.tex: You should put a space in front of parenthesis.
+But this is not a \% comment, so we should find this error(right)?  
+                                                          ^
+Message 22 in Test.tex: Comment displayed.
 % Verb check  
 ^
 Message 14 in Test.tex: Could not find argument for command.

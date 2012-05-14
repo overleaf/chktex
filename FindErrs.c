@@ -281,7 +281,16 @@ static char *PreProcess(void)
 
     while ((TmpPtr = strchr(TmpPtr, '%')))
     {
-        if (TmpPtr == Buf || TmpPtr[-1] != '\\')
+        char *EscapePtr = TmpPtr;
+        int NumBackSlashes = 0;
+        while (EscapePtr != Buf && EscapePtr[-1] == '\\')
+        {
+            ++NumBackSlashes;
+            --EscapePtr;
+        }
+
+        /* If there is an even number of backslashes, then it's a comment. */
+        if ((NumBackSlashes % 2) == 0)
         {
             PSERR(TmpPtr - Buf, 1, emComment);
             *TmpPtr = 0;
