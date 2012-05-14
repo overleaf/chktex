@@ -204,6 +204,8 @@ maintainer-clean: distclean
 
 dvi: ChkTeX.dvi
 
+pdf: ChkTeX.pdf
+
 ifneq ($(LATEX2HTML),)
 html: ChkTeX.tex MakeHTML.pl
 	-rm -r HTML
