@@ -348,7 +348,7 @@ Silent
 
     \textwidth \textheight \hsize \vsize
 
-    \if \fi
+    \if \fi \else
 
     \csname \endcsname
 
@@ -363,6 +363,8 @@ Silent
     \vrefwarning \upshape \headheight \headsep \hoffset \voffset
     \cdot \qquad
     \left \right
+
+    \xspace
 }
 
 #####################################################################
@@ -428,10 +430,11 @@ WordDash
 
 WipeArg
 {
-    \label:{} \ref:{} \vref:{} \pageref:{} \index:{} \cite:[]{}
+    \label:{} \ref:{} \eqref:{} \vref:{} \pageref:{} \index:{} \cite:[]{}
     \input:{} \verbatiminput:[]{} \listinginput:[]{}{}
     \verbatimtabinput:[]{} \include:{} \includeonly:{}
     \bibitem:[]{}
+    \cline:{}
 }
 
 #####################################################################
@@ -484,7 +487,7 @@ TextCmd
 VerbEnvir
 {
     verbatim comment listing verbatimtab rawhtml errexam picture texdraw
-    pgfpicture tikzpicture
+    filecontents pgfpicture tikzpicture
 }
 
 #####################################################################
@@ -599,10 +602,10 @@ NonItalic
 
 #####################################################################
 #
-# Commands   which puts their argument into italic (and thus possibly
+# Commands which  put their argument  into italic (and  thus possibly
 # needs italic correction in the end).
 #
-# This is currently empty, since \textit, \textsl and \emph do that
+# This is currently  empty, since \textit, \textsl and  \emph do that
 # automatically.
 #
 
