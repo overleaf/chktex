@@ -61,7 +61,10 @@ static int my_##func(int c) \
    return(func(c)); \
 }
 
-#define INUSE(c)        (LaTeXMsgs[(enum ErrNum) c].InUse == iuOK)
+#define SUPPRESSED_ON_LINE(c)  (LineSuppressions & (1LL<<c))
+
+#define INUSE(c) \
+    ((LaTeXMsgs[(enum ErrNum) c].InUse == iuOK) && !SUPPRESSED_ON_LINE(c))
 
 #define PSERR2(pos,len,err,a,b) \
     PrintError(CurStkName(&InputStack), RealBuf, pos, len, Line, err, a, b)
@@ -110,6 +113,18 @@ static const char LTX_GenPunc[] = { ',', ';', 0 };
  */
 static const char LTX_SmallPunc[] = { '.', ',', 0 };
 
+/*
+ * String used to delimit a line suppression.  This string must be
+ * followed immediately by the number of the warning to be suppressed.
+ * If more than one warning is to be suppressed, then multiple copies
+ * of LineSuppDelim+number must be used.
+ */
+const char* LineSuppDelim = "chktex ";
+
+/*
+ * A bit field used to hold the suppressions for the current line.
+ */
+static unsigned long long LineSuppressions;
 
 static unsigned long Line;
 
@@ -271,7 +286,11 @@ static char *MakeCpy(void)
 
 static char *PreProcess(void)
 {
-    /* First, kill comments. */
+    /* Reset any line suppressions  */
+
+    LineSuppressions = 0LL;
+
+    /* Kill comments. */
 
     char *TmpPtr;
 
@@ -294,6 +313,16 @@ static char *PreProcess(void)
         {
             PSERR(TmpPtr - Buf, 1, emComment);
             *TmpPtr = 0;
+            /* Check for line suppressions */
+            if (!NoLineSupp)
+            {
+                ++TmpPtr;       /* move past NUL terminator */
+                while ((TmpPtr = strcasestr(TmpPtr, LineSuppDelim))) {
+                    TmpPtr += STRLEN(LineSuppDelim);
+                    int error = atoi(TmpPtr);
+                    LineSuppressions |= (1LL<<error);
+                }
+            }
             break;
         }
         TmpPtr++;
@@ -1428,7 +1457,8 @@ void PrintStatus(unsigned long Lines)
     {
         Transit(stderr, ErrPrint, "error%s printed; ");
         Transit(stderr, WarnPrint, "warning%s printed; ");
-        Transit(stderr, UserSupp, "user suppressed warning%s printed.\n");
+        Transit(stderr, UserSupp, "user suppressed warning%s; ");
+        Transit(stderr, LineSupp, "line suppressed warning%s.\n");
     }
 }
 
@@ -1475,7 +1505,11 @@ PrintError(const char *File, const char *String,
         switch (LaTeXMsgs[Error].InUse)
         {
         case iuOK:
-            do
+            if (SUPPRESSED_ON_LINE(Error))
+            {
+                LineSupp++;
+            }
+            else
             {
                 Context = LaTeXMsgs[Error].Context;
 
@@ -1584,7 +1618,6 @@ PrintError(const char *File, const char *String,
                 }
                 fputs(LastNorm, OutputFile);
             }
-            while (FALSE);
             break;
         case iuNotUser:
             UserSupp++;

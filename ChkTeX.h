@@ -291,7 +291,8 @@ extern FILE *OutputFile, *InputFile;
   DEF(char *, OutputFormat, VerbNormal) \
   DEF(char *, PipeOutputFormat, NULL) \
   DEF(const char *, Delimit, ":") \
-  DEF(long,  DebugLevel, 0)
+  DEF(long,  DebugLevel, 0) \
+  DEF(int,  NoLineSupp, FALSE)
 
 #define STATE_VARS \
   DEF(enum ItState, ItState, itOff) /* Are we doing italics? */ \
@@ -302,7 +303,8 @@ extern FILE *OutputFile, *InputFile;
   DEF(const char *, VerbStr, "")   /* String we'll terminate verbmode upon */ \
   DEF(unsigned long, ErrPrint, 0)    /* # errors printed */ \
   DEF(unsigned long, WarnPrint, 0)   /* # warnings printed */ \
-  DEF(unsigned long, UserSupp, 0)    /* # user suppressed warnings */
+  DEF(unsigned long, UserSupp, 0)    /* # user suppressed warnings */ \
+  DEF(unsigned long, LineSupp, 0)    /* # warnings suppressed on a single line */
 
 #define DEF(type, name, value) extern type name;
 OPTION_DEFAULTS STATE_VARS

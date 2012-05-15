@@ -139,6 +139,7 @@ static const char *HelpText =
     "    -e  --erroron   : Makes msg # given an error and turns it on.\n"
     "    -m  --msgon     : Makes msg # given a message and turns it on.\n"
     "    -n  --nowarn    : Mutes msg # given.\n"
+    "    -L  --nolinesupp: Disables per-line suppressions.\n"
     "\n"
     "Output control flags:\n"
     "~~~~~~~~~~~~~~~~~~~~~\n"
@@ -638,6 +639,7 @@ static void ShowIntStatus(void)
         BOOLSTAT("Use stdin", UsingStdIn);
         BOOLSTAT("\\input files", InputFiles);
         BOOLSTAT("Output header errors", HeadErrOut);
+        BOOLSTAT("No line suppressions", NoLineSupp);
     }
 #endif
 }
@@ -748,6 +750,7 @@ static int ParseArgs(int argc, char **argv)
         {"erroron", required_argument, 0L, 'e'},
         {"msgon", required_argument, 0L, 'm'},
         {"nowarn", required_argument, 0L, 'n'},
+        {"nolinesupp", no_argument, 0L, 'L'},
         {"verbosity", optional_argument, 0L, 'v'},
         {"pipeverb", optional_argument, 0L, 'V'},
         {"debug", required_argument, 0L, 'd'},
@@ -788,7 +791,7 @@ static int ParseArgs(int argc, char **argv)
 
     while (!ArgErr &&
            ((c = getopt_long((int) argc, argv,
-                             "b::d:e:f:g::hH::I::il:m:n:o:p:qrs:t::v::V::w:Wx::",
+                             "b::d:e:f:g::hH::I::il:m:n:Lo:p:qrs:t::v::V::w:Wx::",
                              long_options, &option_index)) != EOF))
     {
         while (c)
@@ -825,6 +828,11 @@ static int ParseArgs(int argc, char **argv)
                 break;
             case 'i':
                 LicenseOnly = TRUE;
+
+                nextc = ShiftArg(&optarg);
+                break;
+            case 'L':
+                NoLineSupp = TRUE;
 
                 nextc = ShiftArg(&optarg);
                 break;
