@@ -425,6 +425,18 @@ Message 36 in Test.tex: You should put a space in front of parenthesis.
 But this is not a \% comment, so we should find this error(right)?  
                                                           ^
 Message 22 in Test.tex: Comment displayed.
+Here(on this line only)is a warning $sin(x)$ suppressed. % chktex 36 chktex 35  
+                                                         ^
+Message 22 in Test.tex: Comment displayed.
+Here(on this line only)is a warning $sin(x)$ suppressed. % CHKTEX 35 36  
+                                                         ^
+Message 36 in Test.tex: You should put a space in front of parenthesis.
+Here(on this line only)is a warning $sin(x)$ suppressed. % CHKTEX 35 36  
+    ^
+Message 36 in Test.tex: You should put a space after parenthesis.
+Here(on this line only)is a warning $sin(x)$ suppressed. % CHKTEX 35 36  
+                       ^
+Message 22 in Test.tex: Comment displayed.
 % Verb check  
 ^
 Message 14 in Test.tex: Could not find argument for command.
