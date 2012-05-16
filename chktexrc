@@ -277,7 +277,7 @@ TeXInputs
 # it simply indexes  into this list.  Remember to use ! instead of \,
 # though.
 #
-# For explanation of how % fields expand; look at ChkTeX.{dvi,ps}.
+# For explanation of how % fields expand; look at ChkTeX.{dvi,ps,pdf}.
 #
 # We will by default select entry number _two_ in this list (we count
 # from 0), and -v without any parameter selects entry number _three_.
@@ -303,6 +303,9 @@ OutFormat
 
 # -v5; no line number, ease auto-test
 "%k %n in %f: %m!n%r%s%t!n%u!n"
+
+# -v6; emacs compilation mode
+"!"%f!", line %l.%c:(#%n) %m!n"
 
 }
 
