@@ -124,7 +124,7 @@
  MSG(emNoCharMean, etWarn, iuOK, ctNone,\
      "`%s' is normally not followed by `%c'.")\
  MSG(emUserWarnRegex, etWarn, iuOK, ctNone,\
-     "User-specified regex found: %.*s.")
+     "User Regex: %.*s.")
 
 #undef MSG
 #define MSG(num, type, inuse, ctxt, text) num,
