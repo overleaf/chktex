@@ -234,18 +234,20 @@ UserWarn
 # some the features of perl regular expression are not available such
 # as running code (callouts), and replacing.
 #
+# An initial PCRE comment (?# ... ) can be used change what is
+# displayed, thereby reminding yourself how to fix the problem.
+#
 ###
 UserWarnRegex
 {
 
-  # Always use \nmid
-  \\not! *(\||\\mid)
+  (?!#Always! use! \nmid)\\not! *(\||\\mid)
 
   # capitalize section when saying Section 6.
-  \b(chapter|(sub)?section|theorem|lemma|proposition|corollary|appendix)~\\ref
+  (?!#Capitalize! before! references)\b(chapter|(sub)?section|theorem|lemma|proposition|corollary|appendix)~\\ref
 
   # spell it out.
-  (?i)\bintro\b
+  (?i)\bintro\b(?!#Spell! it! out.! This! comment! is! not! used.)
 
 }
 
