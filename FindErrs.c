@@ -119,7 +119,7 @@ static const char LTX_SmallPunc[] = { '.', ',', 0 };
  * If more than one warning is to be suppressed, then multiple copies
  * of LineSuppDelim+number must be used.
  */
-const char* LineSuppDelim = "chktex ";
+const char *LineSuppDelim = "chktex ";
 
 /*
  * A bit field used to hold the suppressions for the current line.
@@ -724,7 +724,6 @@ static void CheckRest(void)
                 PrintPrgErr(pmNoRegexMem);
                 ClearWord(&UserWarnRegex);
                 NumRegexes = 0;
-
             }
             else
             {
@@ -743,6 +742,18 @@ static void CheckRest(void)
                     else
                     {
                         ++NumRegexes;
+                        /* Only use the comment if it's at the very beginning. */
+                        if ( strncmp(pattern,"(?#",3) == 0 )
+                        {
+                            char *CommentEnd = strchr(pattern, ')');
+                            *CommentEnd = '\0';
+                            /* We're leaking a little here, but this was never freed until exit anyway... */
+                            UserWarnRegex.Stack.Data[Count] = pattern+3;
+                        }
+                        else
+                        {
+                            ((char*)UserWarnRegex.Stack.Data[Count])[0] = '\0';
+                        }
                     }
                 }
             }
@@ -773,8 +784,19 @@ static void CheckRest(void)
                 }
                 else
                 {
-                    PSERR2(ovector[0], ovector[1]-ovector[0], emUserWarnRegex,
-                           ovector[1]-ovector[0], TmpBuffer+ovector[0]);
+                    char *ErrMessage = UserWarnRegex.Stack.Data[Count];
+                    if ( strlen(ErrMessage) > 0 )
+                    {
+                        /* User specified error message */
+                        PSERR2(ovector[0], ovector[1]-ovector[0], emUserWarnRegex,
+                               strlen(ErrMessage), ErrMessage);
+                    }
+                    else
+                    {
+                        /* Default -- show the match */
+                        PSERR2(ovector[0], ovector[1]-ovector[0], emUserWarnRegex,
+                               ovector[1]-ovector[0], TmpBuffer+ovector[0]);
+                    }
                     offset = ovector[1];
                 }
             }
