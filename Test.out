@@ -401,9 +401,15 @@ Message 21 in Test.tex: This command might not be intended.
 This one triggers warning 22 $\left\{x\right\}$.  
                                             ^^
 Message 22 in Test.tex: Comment displayed.
-% Warning 44 -- user regex  
+% Warning 44 -- user regex -- default message  
 ^
-Message 44 in Test.tex: User-specified regex found: \not|.
+Message 44 in Test.tex: User Regex: intro.
+You should always write a good intro.  
+                               ^^^^^
+Message 22 in Test.tex: Comment displayed.
+% Warning 44 -- user regex -- user message  
+^
+Message 44 in Test.tex: User Regex: Always use \nmid.
 For every $p\not|n$ you have an ugly prime which doesn't divide $n$.  
             ^^^^^
 Message 22 in Test.tex: Comment displayed.
