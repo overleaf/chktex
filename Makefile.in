@@ -145,7 +145,7 @@ check: chktex $(srcdir)/Test.out
 		echo "Problems when checking compilation. This may or may not"; \
 		echo "be a problem; anyway, I'm giving you a diff from what the"; \
 		echo "results were *supposed* to be..."; \
-		diff -u chktest $(srcdir)/Test.out; \
+		diff -u $(srcdir)/Test.out chktest; \
 	fi
 
 
