@@ -5,6 +5,7 @@ Development of ChkTeX is now in a maintainance mode.  All versions
 
   * Added support for user defined regular expression based warnings
   * Added support for macros like \ensuremath and \text
+  * Added support for suppressing messages on a single line
 
 1.6.6 (2012-04-07), released by Ivan Andrus <darthandrus@gmail.com>
 
