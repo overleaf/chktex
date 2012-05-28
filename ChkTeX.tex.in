@@ -1150,8 +1150,7 @@ keyword in the \rsrc\ file which controls the discussed warning.
 \end{errdesc}
 
 \Keyword{UserWarn}
-\begin{errdesc}{User-specified pattern found.}
-  \label{warn:userregex}
+\begin{errdesc}{User-specified pattern found: \%s.}
   A substring you've specified using \texttt{UserWarn} in the \rsrc\ file,
   has been found.  See also warning~44 which allows using regular expressions.
   % Normally I would use a ref here, but if the numbers change that would be
@@ -1203,9 +1202,8 @@ keyword in the \rsrc\ file which controls the discussed warning.
   \rsrc\ file).  Sometimes, this space may cause that the word and the
   index happens on separate pages, if a pagebreak happens just there.
 
-  You might also use this warning to warn you about spaces in front of
-  footnotes; however, the warning text may not be entirely correct
-  then.
+  Warning~42 is similar in that it warns about spaces in front of footnotes.
+  The difference is that the warning text makes more sense for that case.
 
   \begin{errexam}
     \verb@Indexing text@\underline{\tt\ }\verb@\index{text} is fun!@ \\*
@@ -1217,7 +1215,7 @@ keyword in the \rsrc\ file which controls the discussed warning.
 \begin{errdesc}{You might wish to put this between a pair of `\{\}'}
 
   This warning is given whenever \chktex\ finds a \Cmd{\^{ }}' or a
-  \Cmd{\_} followed by either two or more numberic digits or two or
+  \Cmd{\_} followed by either two or more numeric digits or two or
   more alphabetic characters.  In most situations, this means that
   you've forgotten some \{\}'s.
 
@@ -1248,7 +1246,7 @@ keyword in the \rsrc\ file which controls the discussed warning.
 
   Some \LaTeX\ commands will be interpreted by \chktex; however, some
   of them are sensible to errors in the \LaTeX\ source. Most notably,
-  the \verb@\@\verb@input@ command relies on that the input file exists\dots
+  the \verb@\@\verb@input@ command requires that the input file exist\dots
 
 \end{errdesc}
 
@@ -1467,11 +1465,29 @@ keyword in the \rsrc\ file which controls the discussed warning.
 \end{errdesc}
 
 \Keyword{UserRegexWarn}
-\begin{errdesc}{User-specified regex found: \%s'.}
-  \label{warn:userregex}
+\begin{errdesc}{User Regex:\ \%s.}
   A pattern you've specified using \texttt{UserWarnRegex} in the \rsrc\ file,
   has been found.  See also warning~20 which allows specification of simple
   string matching.
+
+  By default the matching portion of the line is printed to help distinguish
+  between user specified regular expressions.  However, if the regular
+  expression begins with a PCRE comment (which has a syntax of
+  \verb+(?#+~\dots~\verb+)+), then that comment will be printed instead.
+  This can be used to remind yourself why you were searching for the problem
+  or how to fix it.  Remember that you have to escape (with~\verb+!+)
+  spaces and \verb+#+ as well as a few other characters.
+
+  An example, included in the \rsrc\ file, is given below.  One should always
+  use \verb+\nmid+ instead of \verb+\not\mid+ because the results are much
+  better.
+  \begin{errexam}
+    \verb+\\not! *(\||\\mid)+\\*
+    \verb+User Regex: \not\mid.+\\*
+    instead of \\*
+    \verb+(?!#Always! use! \nmid)\\not! *(\||\\mid)+\\*
+    \verb+User Regex: Always use \nmid.+
+  \end{errexam}
 \end{errdesc}
 
 \section{Future plans}
