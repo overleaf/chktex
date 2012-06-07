@@ -125,6 +125,11 @@ const char *LineSuppDelim = "chktex ";
  * A bit field used to hold the suppressions for the current line.
  */
 static unsigned long long LineSuppressions;
+/*
+ * A bit field used to hold the suppressions of numbered user warnings
+ * for the current line.
+ */
+static unsigned long long UserLineSuppressions;
 
 static unsigned long Line;
 
@@ -289,6 +294,7 @@ static char *PreProcess(void)
     /* Reset any line suppressions  */
 
     LineSuppressions = 0LL;
+    UserLineSuppressions = 0LL;
 
     /* Kill comments. */
 
@@ -320,7 +326,21 @@ static char *PreProcess(void)
                 while ((TmpPtr = strcasestr(TmpPtr, LineSuppDelim))) {
                     TmpPtr += STRLEN(LineSuppDelim);
                     int error = atoi(TmpPtr);
-                    LineSuppressions |= (1LL<<error);
+
+                    const int MaxSuppressionBits = sizeof(unsigned long long)*8-1;
+                    if (abs(error) > MaxSuppressionBits)
+                    {
+                        PrintPrgErr(pmSuppTooHigh, error, MaxSuppressionBits);
+                    }
+
+                    if (error > 0)
+                    {
+                        LineSuppressions |= (1LL << error);
+                    }
+                    else
+                    {
+                        UserLineSuppressions |= (1LL << (-error));
+                    }
                 }
             }
             break;
@@ -762,8 +782,21 @@ static void CheckRest(void)
         for (Count = 0; Count < NumRegexes; ++Count)
         {
             int offset = 0;
+            char *ErrMessage = UserWarnRegex.Stack.Data[Count];
+            const int NamedWarning = strlen(ErrMessage) > 0;
+
             while (offset < len)
             {
+                /* Check if this warning should be suppressed. */
+                if (UserLineSuppressions != 0LL && NamedWarning)
+                {
+                    /* The warning can be named with positive or negative numbers. */
+                    int UserWarningNumber = abs(atoi(ErrMessage));
+                    if (UserLineSuppressions & (1LL << UserWarningNumber))
+                    {
+                        break;
+                    }
+                }
 
                 const int rc = pcre_exec( RegexArray[Count], NULL, TmpBuffer, len,
                                           offset, 0, ovector, OVECCOUNT );
@@ -784,8 +817,7 @@ static void CheckRest(void)
                 }
                 else
                 {
-                    char *ErrMessage = UserWarnRegex.Stack.Data[Count];
-                    if ( strlen(ErrMessage) > 0 )
+                    if ( NamedWarning )
                     {
                         /* User specified error message */
                         PSERR2(ovector[0], ovector[1]-ovector[0], emUserWarnRegex,

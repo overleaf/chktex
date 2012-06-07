@@ -244,7 +244,7 @@ UserWarnRegex
   (?!#Always! use! \nmid)\\not! *(\||\\mid)
 
   # capitalize section when saying Section 6.
-  (?!#Capitalize! before! references)\b(chapter|(sub)?section|theorem|lemma|proposition|corollary|appendix)~\\ref
+  (?!#-1:Capitalize! before! references)\b(chapter|(sub)?section|theorem|lemma|proposition|corollary|appendix)~\\ref
 
   # spell it out.
   (?i)\bintro\b(?!#Spell! it! out.! This! comment! is! not! used.)
@@ -418,7 +418,7 @@ WordDash
 
 #####################################################################
 #
-# This  keyword  indicates commands  which argument isn't LaTeX code,
+# This  keyword  indicates commands  whose argument isn't LaTeX code,
 # and thus should be ignored.
 #
 # After the  command,  you  may place arguments  that  you  wish that

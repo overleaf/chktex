@@ -442,6 +442,12 @@ Here(on this line only)is a warning $sin(x)$ suppressed. % CHKTEX 35 36
 Message 36 in Test.tex: You should put a space after parenthesis.
 Here(on this line only)is a warning $sin(x)$ suppressed. % CHKTEX 35 36  
                        ^
+Message 44 in Test.tex: User Regex: -1:Capitalize before references.
+In section~\ref{sec:3} we have a warning.  
+   ^^^^^^^^^^^^
+Message 22 in Test.tex: Comment displayed.
+In section~\ref{sec:4} it is suppressed. % chktex -1  
+                                         ^
 Message 22 in Test.tex: Comment displayed.
 % Verb check  
 ^
