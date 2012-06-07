@@ -238,7 +238,9 @@ DEBUGBITS(Debug_BIT)
  MSG(pmRegexCompileFailed,  etWarn,  TRUE, 0,\
      "Compilation of regular expression %s failed at offset %d with error %s.\n")\
  MSG(pmRegexMatchingError,  etErr,  TRUE, 0,\
-     "PCRE matching error %d.\n")
+     "PCRE matching error %d.\n") \
+ MSG(pmSuppTooHigh,  etWarn,  TRUE, 0,\
+     "Warning %d is numbered too high (max %d) and won't be suppressed.\n")
 
 #undef MSG
 #define MSG(num, type, inuse, ctxt, text) num,
