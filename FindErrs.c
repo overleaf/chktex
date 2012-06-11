@@ -291,15 +291,14 @@ static char *MakeCpy(void)
 
 static char *PreProcess(void)
 {
+    char *TmpPtr;
+
     /* Reset any line suppressions  */
 
     LineSuppressions = 0LL;
     UserLineSuppressions = 0LL;
 
     /* Kill comments. */
-
-    char *TmpPtr;
-
     strcpy(Buf, RealBuf);
 
     TmpPtr = Buf;
@@ -322,12 +321,21 @@ static char *PreProcess(void)
             /* Check for line suppressions */
             if (!NoLineSupp)
             {
-                ++TmpPtr;       /* move past NUL terminator */
-                while ((TmpPtr = strcasestr(TmpPtr, LineSuppDelim))) {
-                    TmpPtr += STRLEN(LineSuppDelim);
-                    int error = atoi(TmpPtr);
+                /* Convert to lowercase to compare with LineSuppDelim */
+                EscapePtr = ++TmpPtr; /* move past NUL terminator */
+                while ( *EscapePtr )
+                {
+                    *EscapePtr = tolower(*EscapePtr);
+                    ++EscapePtr;
+                }
 
+                while ((TmpPtr = strstr(TmpPtr, LineSuppDelim))) {
+                    int error;
                     const int MaxSuppressionBits = sizeof(unsigned long long)*8-1;
+
+                    TmpPtr += STRLEN(LineSuppDelim);
+                    error= atoi(TmpPtr);
+
                     if (abs(error) > MaxSuppressionBits)
                     {
                         PrintPrgErr(pmSuppTooHigh, error, MaxSuppressionBits);
@@ -783,6 +791,7 @@ static void CheckRest(void)
         {
             int offset = 0;
             char *ErrMessage = UserWarnRegex.Stack.Data[Count];
+            int rc;
             const int NamedWarning = strlen(ErrMessage) > 0;
 
             while (offset < len)
@@ -798,7 +807,7 @@ static void CheckRest(void)
                     }
                 }
 
-                const int rc = pcre_exec( RegexArray[Count], NULL, TmpBuffer, len,
+                rc = pcre_exec( RegexArray[Count], NULL, TmpBuffer, len,
                                           offset, 0, ovector, OVECCOUNT );
 
                 /* Matching failed: handle error cases */
