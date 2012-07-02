@@ -435,7 +435,7 @@ WordDash
 
 WipeArg
 {
-    \label:{} \ref:{} \eqref:{} \vref:{} \pageref:{} \index:{} \cite:[]{}
+    \label:{} \ref:{} \eqref:{} \vref:{} \pageref:{} \index:[]{} \cite:[]{}
     \input:{} \verbatiminput:[]{} \listinginput:[]{}{}
     \verbatimtabinput:[]{} \include:{} \includeonly:{}
     \bibitem:[]{}
