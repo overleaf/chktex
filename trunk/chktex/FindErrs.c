@@ -35,12 +35,14 @@
 
 #if HAVE_PCRE
 
-#include <pcre.h>
+#include <pcreposix.h>
+/* #include <regex.h> */
 
-/* 3*(max_capturing_groups+1) */
-#define OVECCOUNT 3*(9+1)
+#define REGEX_FLAGS REG_EXTENDED
+#define NUM_MATCHES 10
+#define ERROR_STRING_SIZE 100
 
-pcre** RegexArray = NULL;
+regex_t* RegexArray = NULL;
 int NumRegexes = 0;
 
 #endif
@@ -737,15 +739,15 @@ static void CheckRest(void)
 
     if (INUSE(emUserWarnRegex) && UserWarnRegex.Stack.Used > 0)
     {
-        const char *error;
-        int ErrOffset;
+        static char error[ERROR_STRING_SIZE];
+        static regmatch_t MatchVector[NUM_MATCHES];
+        int rc;
         int len = strlen(TmpBuffer);
-        static int ovector[OVECCOUNT];
 
         /* Compile all regular expressions if not already compiled. */
         if ( !RegexArray && UserWarnRegex.Stack.Used > 0 )
         {
-            RegexArray = (pcre**)malloc( sizeof(pcre*) * UserWarnRegex.Stack.Used );
+            RegexArray = (regex_t*)malloc( sizeof(regex_t) * UserWarnRegex.Stack.Used );
             if (!RegexArray)
             {
                 /* Allocation failed. */
@@ -759,29 +761,41 @@ static void CheckRest(void)
                 FORWL(Count, UserWarnRegex)
                 {
                     char *pattern = UserWarnRegex.Stack.Data[Count];
-                    RegexArray[NumRegexes] = pcre_compile( pattern, 0, &error, &ErrOffset, NULL);
+
+                    /* See if it's got a special name that it goes by.
+                       Only use the comment if it's at the very beginning. */
+                    if ( strncmp(pattern,"(?#",3) == 0 )
+                    {
+                        /* TODO: check for PCRE/POSIX only regexes */
+                        char *CommentEnd = strchr(pattern, ')');
+                        *CommentEnd = '\0';
+                        /* We're leaking a little here, but this was never freed until exit anyway... */
+                        UserWarnRegex.Stack.Data[Count] = pattern+3;
+
+                        /* Compile past the end of the comment so that it works with POSIX too. */
+                        pattern = CommentEnd + 1;
+                        rc = regcomp((regex_t*)(&RegexArray[NumRegexes]),
+                                     pattern, REGEX_FLAGS);
+                    }
+                    else
+                    {
+                        /* We have to compile it here, before we "zero out" the regex */
+                        rc = regcomp((regex_t*)(&RegexArray[NumRegexes]),
+                                     pattern, REGEX_FLAGS);
+                        ((char*)UserWarnRegex.Stack.Data[Count])[0] = '\0';
+                    }
 
                     /* Compilation failed: print the error message */
-                    if (RegexArray[NumRegexes] == NULL)
+                    if (rc != 0)
                     {
                         /* TODO: decide whether a non-compiling regex should completely stop, or just be ignored */
-                        PrintPrgErr(pmRegexCompileFailed, pattern, ErrOffset, error);
+                        regerror(rc,(regex_t*)(&RegexArray[NumRegexes]),
+                                 error, ERROR_STRING_SIZE);
+                        PrintPrgErr(pmRegexCompileFailed, pattern, 0, error);
                     }
                     else
                     {
                         ++NumRegexes;
-                        /* Only use the comment if it's at the very beginning. */
-                        if ( strncmp(pattern,"(?#",3) == 0 )
-                        {
-                            char *CommentEnd = strchr(pattern, ')');
-                            *CommentEnd = '\0';
-                            /* We're leaking a little here, but this was never freed until exit anyway... */
-                            UserWarnRegex.Stack.Data[Count] = pattern+3;
-                        }
-                        else
-                        {
-                            ((char*)UserWarnRegex.Stack.Data[Count])[0] = '\0';
-                        }
                     }
                 }
             }
@@ -791,7 +805,6 @@ static void CheckRest(void)
         {
             int offset = 0;
             char *ErrMessage = UserWarnRegex.Stack.Data[Count];
-            int rc;
             const int NamedWarning = strlen(ErrMessage) > 0;
 
             while (offset < len)
@@ -807,38 +820,44 @@ static void CheckRest(void)
                     }
                 }
 
-                rc = pcre_exec( RegexArray[Count], NULL, TmpBuffer, len,
-                                          offset, 0, ovector, OVECCOUNT );
-
+                rc = regexec( (regex_t*)(&RegexArray[Count]), TmpBuffer+offset,
+                              NUM_MATCHES, MatchVector, 0);
                 /* Matching failed: handle error cases */
-                if (rc < 0)
+                if (rc != 0)
                 {
                     switch(rc)
                     {
-                        case PCRE_ERROR_NOMATCH:
+                        case REG_NOMATCH:
                             /* no match, no problem */
                             break;
                         default:
-                            PrintPrgErr(pmRegexMatchingError, rc);
+                            regerror(rc, (regex_t*)(&RegexArray[Count]),
+                                     error, ERROR_STRING_SIZE);
                             break;
                     }
+
                     offset = len; /* break out of loop */
                 }
                 else
                 {
+#define MATCH (MatchVector[0])
                     if ( NamedWarning )
                     {
                         /* User specified error message */
-                        PSERR2(ovector[0], ovector[1]-ovector[0], emUserWarnRegex,
+                        PSERR2(offset + MATCH.rm_so, MATCH.rm_eo - MATCH.rm_so,
+                               emUserWarnRegex,
                                strlen(ErrMessage), ErrMessage);
                     }
                     else
                     {
                         /* Default -- show the match */
-                        PSERR2(ovector[0], ovector[1]-ovector[0], emUserWarnRegex,
-                               ovector[1]-ovector[0], TmpBuffer+ovector[0]);
+                        PSERR2(offset + MATCH.rm_so, MATCH.rm_eo - MATCH.rm_so,
+                               emUserWarnRegex,
+                               MATCH.rm_eo - MATCH.rm_so,
+                               TmpBuffer + offset + MATCH.rm_so);
                     }
-                    offset = ovector[1];
+                    offset += MATCH.rm_eo;
+#undef MATCH
                 }
             }
         }

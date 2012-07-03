@@ -106,8 +106,8 @@ if test "$enable_pcre" = "yes"; then
   AC_CHECK_PROG(WITH_PCRE, pcre-config, yes, no)
   if test "$WITH_PCRE" = "yes"; then
     AC_DEFINE(HAVE_PCRE, 1, "Whether PCRE can be used for user warnings.")
-    CFLAGS="${CFLAGS} $(pcre-config --cflags)"
-    LDFLAGS="${LDFLAGS} $(pcre-config --libs)"
+    CFLAGS="${CFLAGS} $(pcre-config --cflags-posix)"
+    LDFLAGS="${LDFLAGS} $(pcre-config --libs-posix)"
   else
     AC_DEFINE(HAVE_PCRE, 0, "Whether PCRE can be used for user warnings.")
     warn_pcre="PCRE library not found.  This will result in user regular expression tests being ignored."
