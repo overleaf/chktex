@@ -1470,23 +1470,65 @@ keyword in the \rsrc\ file which controls the discussed warning.
   has been found.  See also warning~20 which allows specification of simple
   string matching.
 
+  Depending on how \chktex\ was configured, you can use either PCRE regular
+  expressions, POSIX extended regular expressions, or none at all.
+  A warning will be issued if \chktex\ was built without regular expression
+  support, but you try to use one.
+
   By default the matching portion of the line is printed to help distinguish
   between user specified regular expressions.  However, if the regular
   expression begins with a PCRE comment (which has a syntax of
   \verb+(?#+~\dots~\verb+)+), then that comment will be printed instead.
   This can be used to remind yourself why you were searching for the problem
-  or how to fix it.  Remember that you have to escape (with~\verb+!+)
-  spaces and \verb+#+ as well as a few other characters.
+  or how to fix it.  This applies even if POSIX regular expressions are used
+  since \chktex\ itself parses a single initial PCRE-style comment.
 
-  An example, included in the \rsrc\ file, is given below.  One should always
-  use \verb+\nmid+ instead of \verb+\not\mid+ because the results are much
-  better.
+  \emph{Note:} If a regular expression (not a comment) starts with
+  \texttt{PCRE:} or \texttt{POSIX:} it will be used only if support for that
+  regular expression engine has been compiled in.  It is primarily meant to
+  make testing easier but, can be used to allow better regular expressions
+  if PCRE is available.  If you want a regular expression that starts with
+  \texttt{PCRE:} or \texttt{POSIX:} then you can enclose one of the
+  characters in brackets like \texttt{[P]CRE:}.
+
+  An example, included in the \rsrc\ file, is given below.  Remember that you
+  have to escape (with~\verb+!+) spaces and \verb+#+ as well as a few other
+  characters.  One should always use \verb+\nmid+ instead of \verb+\not\mid+
+  because the results are much better.
   \begin{errexam}
     \verb+\\not! *(\||\\mid)+\\*
     \verb+User Regex: \not\mid.+\\*
-    instead of \\*
+  \end{errexam}
+  or with an initial comment
+  \begin{errexam}
     \verb+(?!#Always! use! \nmid)\\not! *(\||\\mid)+\\*
     \verb+User Regex: Always use \nmid.+
+  \end{errexam}
+
+  You can use \verb+% chktex 44+ to suppress user regular expression
+  warnings on a given line, but this is often undesirable since all such
+  warnings are suppressed this way.  For this reason you can ``name'' user
+  regular expression warnings with negative numbers.  For example
+  \verb+% chktex 4+ will suppress the system warning number 4, but
+  \verb+% chktex -4+ will suppress the user regular expression warning
+  number 4.  Since one might wish to add, remove, or rearrange user warnings
+  in the \rsrc\ file, you must explicitly name particular warnings rather
+  than relying on position in that file.
+
+  In order to name one, include an initial PCRE-style comment with the first
+  characters being a number (positive or negative---the absolute value will
+  be used).  The numbers are limited by the number of bits in a \texttt{long},
+  usually giving 1--63 as possible names.  You can give more than one regular
+  expression the same name, and suppressing that name will suppress all
+  regular expressions with that name.
+
+  Using the example from before, all of the following will be suppressed with
+  \verb+% chktex -4+.  Note that the name \emph{will} be printed as written
+  so that you know which number to suppress.
+  \begin{errexam}
+    \verb+(?!#4:Always! use! \nmid)\\not! *(\||\\mid)+\\*
+    \verb+(?!#-4Always! use! \nmid)\\not! *(\||\\mid)+\\*
+    \verb+(?!#-4! Always! use! \nmid)\\not! *(\||\\mid)+\\*
   \end{errexam}
 \end{errdesc}
 
