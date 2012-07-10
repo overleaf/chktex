@@ -236,7 +236,7 @@ DEBUGBITS(Debug_BIT)
  MSG(pmNoRegexMem,  etErr,  TRUE, 0,\
      "Unable to allocate regular expressions - no memory?\n")\
  MSG(pmRegexCompileFailed,  etWarn,  TRUE, 0,\
-     "Compilation of regular expression %s failed at offset %d with error %s.\n")\
+     "Compilation of regular expression %s failed with error %s.\n")\
  MSG(pmRegexMatchingError,  etErr,  TRUE, 0,\
      "PCRE matching error %d.\n") \
  MSG(pmSuppTooHigh,  etWarn,  TRUE, 0,\
