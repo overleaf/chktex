@@ -774,11 +774,31 @@ static void CheckRest(void)
                         /* TODO: check for PCRE/POSIX only regexes */
                         *CommentEnd = '\0';
                         /* We're leaking a little here, but this was never freed until exit anyway... */
-                        UserWarnRegex.Stack.Data[Count] = pattern+3;
+                        UserWarnRegex.Stack.Data[NumRegexes] = pattern+3;
 
                         /* Compile past the end of the comment so that it works with POSIX too. */
                         pattern = CommentEnd + 1;
                     }
+
+                    /* Ignore PCRE and POSIX specific regexes.
+                     * This is mostly to make testing easier. */
+                    if ( strncmp(pattern,"PCRE:",5) == 0 )
+                    {
+                        #if HAVE_PCRE
+                        pattern += 5;
+                        #else
+                        continue;
+                        #endif
+                    }
+                    if ( strncmp(pattern,"POSIX:",6) == 0 )
+                    {
+                        #if HAVE_POSIX_ERE
+                        pattern += 6;
+                        #else
+                        continue;
+                        #endif
+                    }
+
                     rc = regcomp((regex_t*)(&RegexArray[NumRegexes]),
                                  pattern, REGEX_FLAGS);
 
@@ -792,11 +812,11 @@ static void CheckRest(void)
                     }
                     else
                     {
-                        ++NumRegexes;
                         if ( !CommentEnd )
                         {
-                            ((char*)UserWarnRegex.Stack.Data[Count])[0] = '\0';
+                            ((char*)UserWarnRegex.Stack.Data[NumRegexes])[0] = '\0';
                         }
+                        ++NumRegexes;
                     }
                 }
             }
