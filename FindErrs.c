@@ -33,10 +33,13 @@
 #include "Utility.h"
 #include "Resource.h"
 
-#if HAVE_PCRE
+#if HAVE_PCRE || HAVE_POSIX_ERE
 
+#if HAVE_PCRE
 #include <pcreposix.h>
-/* #include <regex.h> */
+#else
+#include <regex.h>
+#endif
 
 #define REGEX_FLAGS REG_EXTENDED
 #define NUM_MATCHES 10
@@ -727,7 +730,7 @@ static void CheckRest(void)
 
     /* Search for user-specified warnings */
 
-#if ! HAVE_PCRE
+#if ! (HAVE_PCRE || HAVE_POSIX_ERE)
 
     if (INUSE(emUserWarnRegex) && UserWarnRegex.Stack.Used > 0)
     {
@@ -761,29 +764,23 @@ static void CheckRest(void)
                 FORWL(Count, UserWarnRegex)
                 {
                     char *pattern = UserWarnRegex.Stack.Data[Count];
+                    char *CommentEnd = NULL;
 
                     /* See if it's got a special name that it goes by.
                        Only use the comment if it's at the very beginning. */
                     if ( strncmp(pattern,"(?#",3) == 0 )
                     {
+                        CommentEnd = strchr(pattern, ')');
                         /* TODO: check for PCRE/POSIX only regexes */
-                        char *CommentEnd = strchr(pattern, ')');
                         *CommentEnd = '\0';
                         /* We're leaking a little here, but this was never freed until exit anyway... */
                         UserWarnRegex.Stack.Data[Count] = pattern+3;
 
                         /* Compile past the end of the comment so that it works with POSIX too. */
                         pattern = CommentEnd + 1;
-                        rc = regcomp((regex_t*)(&RegexArray[NumRegexes]),
-                                     pattern, REGEX_FLAGS);
                     }
-                    else
-                    {
-                        /* We have to compile it here, before we "zero out" the regex */
-                        rc = regcomp((regex_t*)(&RegexArray[NumRegexes]),
-                                     pattern, REGEX_FLAGS);
-                        ((char*)UserWarnRegex.Stack.Data[Count])[0] = '\0';
-                    }
+                    rc = regcomp((regex_t*)(&RegexArray[NumRegexes]),
+                                 pattern, REGEX_FLAGS);
 
                     /* Compilation failed: print the error message */
                     if (rc != 0)
@@ -791,11 +788,15 @@ static void CheckRest(void)
                         /* TODO: decide whether a non-compiling regex should completely stop, or just be ignored */
                         regerror(rc,(regex_t*)(&RegexArray[NumRegexes]),
                                  error, ERROR_STRING_SIZE);
-                        PrintPrgErr(pmRegexCompileFailed, pattern, 0, error);
+                        PrintPrgErr(pmRegexCompileFailed, pattern, error);
                     }
                     else
                     {
                         ++NumRegexes;
+                        if ( !CommentEnd )
+                        {
+                            ((char*)UserWarnRegex.Stack.Data[Count])[0] = '\0';
+                        }
                     }
                 }
             }

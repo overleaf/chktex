@@ -73,9 +73,18 @@ NEWBUF(ReadBuffer, BUFSIZ);
 static const char *Banner =
     "ChkTeX v" PACKAGE_VERSION " - Copyright 1995-96 Jens T. Berger Thielemann.\n"
 #ifdef __OS2__
-    "OS/2 port generated with emx compiler, by Wolfgang Fritsch, <fritsch@hmi.de>"
+    "OS/2 port generated with emx compiler, by Wolfgang Fritsch, <fritsch@hmi.de>\n"
 #elif defined(__MSDOS__)
-    "MS-DOS port by Bj\\o rn Ove Thue, <bjort@ifi.uio.no>"
+    "MS-DOS port by Bj\\o rn Ove Thue, <bjort@ifi.uio.no>\n"
+#endif
+#if HAVE_PCRE
+    "Compiled with PCRE regex support."
+#else
+#if HAVE_POSIX_ERE
+    "Compiled with POSIX extended regex support."
+#else
+    "Compiled with no regex support."
+#endif
 #endif
     "\n";
 
