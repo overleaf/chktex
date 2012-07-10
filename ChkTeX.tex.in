@@ -1538,10 +1538,6 @@ In a somewhat prioritized sequence, this is what I'd like to put into the
 program --- if I have the time.
 
 \begin{itemize}
-\item Do a final fix for maths mode. Currently, \chktex\ doesn't
-  recognize constructions like
-  \verb@$$a+b\text{for $a \leq 0$}$$@, i.e.\ embedded math mode.
-
 \item De-linearize the checker. Currently, it works on a line-by-line
   basis, in most respects, at least. I hope to be able to remove this
   barrier; as this will reduce the amount of false warnings
