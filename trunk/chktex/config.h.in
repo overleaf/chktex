@@ -43,6 +43,9 @@
 /* "Whether PCRE can be used for user warnings." */
 #undef HAVE_PCRE
 
+/* "Whether PCRE can be used for user warnings." */
+#undef HAVE_POSIX_ERE
+
 /* Define to 1 if you have the `readdir' function. */
 #undef HAVE_READDIR
 
