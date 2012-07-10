@@ -244,10 +244,12 @@ UserWarnRegex
   (?!#Always! use! \nmid)\\not! *(\||\\mid)
 
   # capitalize section when saying Section 6.
-  (?!#-1:Capitalize! before! references)\b(chapter|(sub)?section|theorem|lemma|proposition|corollary|appendix)~\\ref
+  (?!#-1:Capitalize! before! references)PCRE:\b(chapter|(sub)?section|theorem|lemma|proposition|corollary|appendix)~\\ref
+  (?!#-1:Capitalize! before! references)POSIX:([^[:alnum:]]|^)(chapter|(sub)?section|theorem|lemma|proposition|corollary|appendix)~\\ref
 
   # spell it out.
-  (?i)\bintro\b(?!#Spell! it! out.! This! comment! is! not! used.)
+  PCRE:(?i)\bintro\b(?!#Spell! it! out.! This! comment! is! not! used.)
+  POSIX:([^[:alnum:]]|^)intro([^[:alnum:]]|$)
 
 }
 
