@@ -1464,7 +1464,7 @@ keyword in the \rsrc\ file which controls the discussed warning.
   this and similar errors.
 \end{errdesc}
 
-\Keyword{UserRegexWarn}
+\Keyword{UserWarnRegex}
 \begin{errdesc}{User Regex:\ \%s.}
   A pattern you've specified using \texttt{UserWarnRegex} in the \rsrc\ file,
   has been found.  See also warning~20 which allows specification of simple
