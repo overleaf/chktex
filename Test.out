@@ -227,6 +227,9 @@ Message 20 in Test.tex: User-specified pattern found: \unknown.
 That bug is \unknown\ to me.  
             ^^^^^^^^
 Message 22 in Test.tex: Comment displayed.
+% That bug is \unknown\ to me.  
+^
+Message 22 in Test.tex: Comment displayed.
 % Warning 21  
 ^
 Message 21 in Test.tex: This command might not be intended.
@@ -448,6 +451,9 @@ In section~\ref{sec:3} we have a warning.
 Message 22 in Test.tex: Comment displayed.
 In section~\ref{sec:4} it is suppressed. % chktex -1  
                                          ^
+Message 22 in Test.tex: Comment displayed.
+% In section~\ref{sec:5} we don't have a warning.  
+^
 Message 22 in Test.tex: Comment displayed.
 % Verb check  
 ^

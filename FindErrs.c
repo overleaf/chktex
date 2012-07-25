@@ -737,11 +737,16 @@ static void CheckRest(void)
         PrintPrgErr(pmNoRegExp);
         ClearWord( &UserWarnRegex );
     }
+    else if (INUSE(emUserWarn))
+    {
+        strcpy(TmpBuffer, Buf);
+    }
 
 #else
 
     if (INUSE(emUserWarnRegex) && UserWarnRegex.Stack.Used > 0)
     {
+        strcpy(TmpBuffer, Buf);
         static char error[ERROR_STRING_SIZE];
         static regmatch_t MatchVector[NUM_MATCHES];
         int rc;
@@ -883,13 +888,16 @@ static void CheckRest(void)
             }
         }
     }
+    else if (INUSE(emUserWarn))
+    {
+        strcpy(TmpBuffer, Buf);
+    }
 
 #endif
 
 
     if (INUSE(emUserWarn))
     {
-        strcpy(TmpBuffer, Buf);
         FORWL(Count, UserWarn)
         {
             for (UsrPtr = TmpBuffer;
