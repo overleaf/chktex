@@ -1005,7 +1005,13 @@ static void HandleBracket(int Char)
                         TmpPtr = BufPtr;
                         SKIP_AHEAD(TmpPtr, TmpC, TmpC == '}');
 
-                        if (!strchr(LTX_SmallPunc, *TmpPtr))
+                        /* If the next character is a period or comma,
+                         * or the last character is, then it's not an
+                         * error. */
+                        /* Checking 2 characters back seems dangerous,
+                         * but it's already done in CheckDash. */
+                        if ( !strchr(LTX_SmallPunc, *TmpPtr) &&
+                             !strchr(LTX_SmallPunc, *(TmpPtr-2)) )
                             HERE(1, emNoItFound);
                     }
 
