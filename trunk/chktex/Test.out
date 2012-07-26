@@ -182,14 +182,26 @@ Message 22 in Test.tex: Comment displayed.
 % Warning 12  
 ^
 Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
-1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar  
+1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
     ^
 Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
-1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar  
+1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
                     ^
 Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
-1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar  
+1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
                                     ^
+Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
+1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
+                                                           ^
+Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
+1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
+                                                                 ^
+Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
+1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
+                                                                         ^
+Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
+1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
+                                                                                 ^
 Message 22 in Test.tex: Comment displayed.
 % Warning 13  
 ^
