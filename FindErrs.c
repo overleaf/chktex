@@ -1255,10 +1255,10 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                     HEREA(3, emEllipsis, cTmpPtr);
                 }
 
-                /* Regexp: "([^A-Z@.])\.[.!?:;]*\s+[a-z]" */
+                /* Regexp: "([^A-Z@.])\.[.!?:]*\s+[a-z]" */
 
                 TmpPtr = BufPtr;
-                SKIP_AHEAD(TmpPtr, TmpC, strchr(LTX_GenPunc, TmpC));
+                SKIP_AHEAD(TmpPtr, TmpC, strchr(LTX_EosPunc, TmpC));
                 if (LATEX_SPACE(*TmpPtr))
                 {
                     if (!isupper((unsigned char)*PrePtr) && (*PrePtr != '@') &&
