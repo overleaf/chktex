@@ -425,7 +425,7 @@ int main(int argc, char **argv)
 #define DEF(type, name, value) name = value;
                     STATE_VARS;
 #undef DEF
-                        if (UsingStdIn)
+                    if (UsingStdIn)
                     {
                         if (StdInUse)
                             break;
@@ -684,9 +684,9 @@ static void ResetSettings(void)
 {
 
 #define DEF(type, name, value)  name = value;
-    OPTION_DEFAULTS
+    OPTION_DEFAULTS;
 #undef DEF
-        if (OutputFile != stdout)
+    if (OutputFile != stdout)
     {
         fclose(OutputFile);
         OutputFile = stdout;
