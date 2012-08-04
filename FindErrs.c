@@ -550,9 +550,9 @@ static void WipeArgument(const char *Cmd, char *CmdPtr)
         }
 
         if (TmpPtr)
-            strwrite(CmdPtr, VerbClear, TmpPtr - CmdPtr);
+            strwrite(CmdPtr+CmdLen, VerbClear, TmpPtr - CmdPtr - CmdLen);
         else
-            strxrep(CmdPtr, "()[]{}", *VerbClear);
+            strxrep(CmdPtr+CmdLen, "()[]{}", *VerbClear);
     }
 }
 
@@ -1156,11 +1156,6 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
 
         BufPtr = SkipVerb();
 
-        if (!VerbMode)
-        {
-            CheckRest();
-        }
-
         while (BufPtr && *BufPtr)
         {
             PrePtr = BufPtr - 1;
@@ -1536,6 +1531,11 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
 
                 break;
             }
+        }
+
+        if (!VerbMode)
+        {
+            CheckRest();
         }
 
     }
