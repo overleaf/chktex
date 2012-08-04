@@ -240,7 +240,9 @@ DEBUGBITS(Debug_BIT)
  MSG(pmRegexMatchingError,  etErr,  TRUE, 0,\
      "PCRE matching error %d.\n") \
  MSG(pmSuppTooHigh,  etWarn,  TRUE, 0,\
-     "Warning %d is numbered too high (max %d) and won't be suppressed.\n")
+     "Warning %d is numbered too high (max %d) and won't be suppressed.\n") \
+MSG(pmLongLines,  etWarn,  TRUE, 0,\
+     "ChkTeX does not handle lines over %d bytes correctly.  Some errors and line numbers may be wrong in this file.")
 
 #undef MSG
 #define MSG(num, type, inuse, ctxt, text) num,
