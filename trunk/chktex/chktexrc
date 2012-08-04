@@ -372,6 +372,10 @@ Silent
     \left \right
 
     \xspace
+
+    \addlinespace \cr \fill \frontmatter
+    \toprule \midrule \bottomrule
+
 }
 
 #####################################################################
@@ -423,10 +427,12 @@ WordDash
 # This  keyword  indicates commands  whose argument isn't LaTeX code,
 # and thus should be ignored.
 #
-# After the  command,  you  may place arguments  that  you  wish that
-# should be  wiped in the process;  use [] for optional arguments, {}
-# for required  ones and *  if the  command  supports  an alternative
-# variant. These should be separated from the command with a colon.
+# After  the command,  you may  place  arguments that  you wish  that
+# should be wiped  in the process; use [] for  optional arguments, {}
+# for  required ones  and *  if the  command supports  an alternative
+# variant.  These should be separated  from the command with a colon.
+# Some  commands (e.g.  \cmidrule)  use ()  to  delimit and  optional
+# argument and so this syntax is supported as well.
 #
 # For  instance,  if  you would like to wipe the \newcommand command,
 # you would declare it as \newcommand:*[][]{}
@@ -437,11 +443,19 @@ WordDash
 
 WipeArg
 {
-    \label:{} \ref:{} \eqref:{} \vref:{} \pageref:{} \index:[]{} \cite:[]{}
+    \label:{} \ref:{} \eqref:{} \vref:{} \pageref:{} \index:[]{}
+    \cite:[]{} \nocite:{}
     \input:{} \verbatiminput:[]{} \listinginput:[]{}{}
     \verbatimtabinput:[]{} \include:{} \includeonly:{}
     \bibitem:[]{}
-    \cline:{}
+    \cline:{} \cmidrule:[](){}
+    # Cleveref -- there are many others that could be here as well...
+    \cref:*{} \cpageref:*{} \crefrange:*{}{} \cpagerefrange:*{}{}
+    \Cref:*{} \Cpageref:*{} \Crefrange:*{}{} \Cpagerefrange:*{}{}
+    # natbib
+    \citet:*[][]{} \citep:*[][]{} \citealt:*{} \citealp:*[]{} \citeauthor:*{}
+    \Citet:*[][]{} \Citep:*[][]{} \Citealt:*{} \Citealp:*[]{} \Citeauthor:{}
+    \citetext:{} \citeyear:*{} \citeyearpar:{}
 }
 
 #####################################################################
