@@ -124,7 +124,15 @@ static const char LTX_SmallPunc[] = { '.', ',', 0 };
  * If more than one warning is to be suppressed, then multiple copies
  * of LineSuppDelim+number must be used.
  */
-const char *LineSuppDelim = "chktex ";
+const char LineSuppDelim[] = "chktex ";
+
+/*
+ * String used to delimit a file suppression.  This string must be
+ * followed immediately by the number of the warning to be suppressed.
+ * If more than one warning is to be suppressed, then multiple copies
+ * of FileSuppDelim+number must be used.
+ */
+const char FileSuppDelim[] = "chktex-file ";
 
 /*
  * A bit field used to hold the suppressions for the current line.
@@ -300,8 +308,8 @@ static char *PreProcess(void)
 
     /* Reset any line suppressions  */
 
-    LineSuppressions = 0LL;
-    UserLineSuppressions = 0LL;
+    LineSuppressions = FileSuppressions;
+    UserLineSuppressions = UserFileSuppressions;
 
     /* Kill comments. */
     strcpy(Buf, RealBuf);
@@ -326,6 +334,9 @@ static char *PreProcess(void)
             /* Check for line suppressions */
             if (!NoLineSupp)
             {
+                int error;
+                const int MaxSuppressionBits = sizeof(unsigned long long)*8-1;
+
                 /* Convert to lowercase to compare with LineSuppDelim */
                 EscapePtr = ++TmpPtr; /* move past NUL terminator */
                 while ( *EscapePtr )
@@ -334,12 +345,32 @@ static char *PreProcess(void)
                     ++EscapePtr;
                 }
 
+                EscapePtr = TmpPtr; /* Save it for later */
+                while ((TmpPtr = strstr(TmpPtr, FileSuppDelim))) {
+                    TmpPtr += STRLEN(FileSuppDelim);
+                    error = atoi(TmpPtr);
+
+                    if (abs(error) > MaxSuppressionBits)
+                    {
+                        PrintPrgErr(pmSuppTooHigh, error, MaxSuppressionBits);
+                    }
+                    if (error > 0)
+                    {
+                        FileSuppressions |= (1LL << error);
+                        LineSuppressions |= (1LL << error);
+                    }
+                    else
+                    {
+                        UserFileSuppressions |= (1LL << (-error));
+                        UserLineSuppressions |= (1LL << (-error));
+                    }
+                }
+                TmpPtr = EscapePtr;
+
                 while ((TmpPtr = strstr(TmpPtr, LineSuppDelim))) {
-                    int error;
-                    const int MaxSuppressionBits = sizeof(unsigned long long)*8-1;
 
                     TmpPtr += STRLEN(LineSuppDelim);
-                    error= atoi(TmpPtr);
+                    error = atoi(TmpPtr);
 
                     if (abs(error) > MaxSuppressionBits)
                     {
@@ -746,11 +777,11 @@ static void CheckRest(void)
 
     if (INUSE(emUserWarnRegex) && UserWarnRegex.Stack.Used > 0)
     {
-        strcpy(TmpBuffer, Buf);
         static char error[ERROR_STRING_SIZE];
         static regmatch_t MatchVector[NUM_MATCHES];
         int rc;
         int len = strlen(TmpBuffer);
+        strcpy(TmpBuffer, Buf);
 
         /* Compile all regular expressions if not already compiled. */
         if ( !RegexArray && UserWarnRegex.Stack.Used > 0 )
