@@ -531,11 +531,17 @@ static void WipeArgument(const char *Cmd, char *CmdPtr)
                 if (*TmpPtr == '[')
                     TmpPtr = GetLTXArg(TmpPtr, ArgBuffer, ']', NULL);
                 break;
+            case '(':
+                SKIP_AHEAD(TmpPtr, TmpC, LATEX_SPACE(TmpC));
+                if (*TmpPtr == '(')
+                    TmpPtr = GetLTXArg(TmpPtr, ArgBuffer, ')', NULL);
+                break;
             case '{':
                 SKIP_AHEAD(TmpPtr, TmpC, LATEX_SPACE(TmpC));
                 TmpPtr = GetLTXArg(TmpPtr, ArgBuffer, GET_TOKEN, NULL);
             case '}':
             case ']':
+            case ')':
                 break;
             default:
                 PrintPrgErr(pmWrongWipeTemp, &Cmd[strlen(Cmd) + 1]);
