@@ -301,12 +301,14 @@ extern FILE *OutputFile, *InputFile;
   DEF(int, AtLetter, FALSE) /* Whether `@' is a letter or not. */ \
   DEF(int, InHeader, TRUE)  /* Whether we're in the header */ \
   DEF(int, VerbMode, FALSE) /* Whether we're in complete ignore-mode */ \
-  DEF(long, MathMode, 0)     /* Whether we're in math mode or not */ \
-  DEF(const char *, VerbStr, "")   /* String we'll terminate verbmode upon */ \
+  DEF(long, MathMode, 0)    /* Whether we're in math mode or not */ \
+  DEF(const char *, VerbStr, "")     /* String we'll terminate verbmode upon */ \
   DEF(unsigned long, ErrPrint, 0)    /* # errors printed */ \
   DEF(unsigned long, WarnPrint, 0)   /* # warnings printed */ \
   DEF(unsigned long, UserSupp, 0)    /* # user suppressed warnings */ \
-  DEF(unsigned long, LineSupp, 0)    /* # warnings suppressed on a single line */
+  DEF(unsigned long, LineSupp, 0)    /* # warnings suppressed on a single line */ \
+  DEF(unsigned long long, FileSuppressions, 0)     /* # warnings suppressed in a file */ \
+  DEF(unsigned long long, UserFileSuppressions, 0) /* # User warnings suppressed in a file */
 
 #define DEF(type, name, value) extern type name;
 OPTION_DEFAULTS STATE_VARS
