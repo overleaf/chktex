@@ -187,6 +187,7 @@ extern struct ErrMsg LaTeXMsgs[emMaxFault + 1];
 
 extern char *OutputFormat;
 
+int CheckSilentRegex(void);
 int FindErr(const char *, const unsigned long);
 void PrintError(const char *, const char *, const long, const long,
                 const long, const enum ErrNum, ...);
