@@ -363,13 +363,14 @@ Silent
 
     \dots \ldots \input \endinput \nextline \leavevmode \cdots
     \appendix \listfiles \and \quad
-    \vfill \vfil \hfill \hfil \topmargin \oddsidemargin
+    \hskip \vfill \vfil \hfill \hfil \topmargin \oddsidemargin
     \frenchspacing \nonfrenchspacing
     \begingroup \endgroup \par
 
     \vrefwarning \upshape \headheight \headsep \hoffset \voffset
     \cdot \qquad
     \left \right
+    \qedhere
 
     \xspace
 
@@ -449,6 +450,7 @@ WipeArg
     \verbatimtabinput:[]{} \include:{} \includeonly:{}
     \bibitem:[]{}
     \cline:{} \cmidrule:[](){}
+    \href:{}{}
     # Cleveref -- there are many others that could be here as well...
     \cref:*{} \cpageref:*{} \crefrange:*{}{} \cpagerefrange:*{}{}
     \Cref:*{} \Cpageref:*{} \Crefrange:*{}{} \Cpagerefrange:*{}{}
@@ -667,7 +669,7 @@ NotPreSpaced
 
 Linker
 {
-    \ref \vref \pageref \cite
+    \ref \vref \pageref \eqref \cite
 }
 
 #####################################################################
