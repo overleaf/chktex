@@ -36,7 +36,7 @@
 #define CMNT    '#'             /* Char used as comment                         */
 
 #define RESOURCE_INFO \
-  LIST(Silent)     LIST(Linker)     LIST(IJAccent) LIST(Italic)\
+  LCASE(Silent)    LIST(Linker)     LIST(IJAccent) LIST(Italic)\
   LIST(ItalCmd)    LIST(PostLink)   LIST(WipeArg)  LIST(VerbEnvir)\
   LIST(MathEnvir)  LIST(MathCmd)    LIST(TextCmd)  LIST(MathRoman)\
   LIST(HyphDash)   LIST(NumDash)    LIST(WordDash)\

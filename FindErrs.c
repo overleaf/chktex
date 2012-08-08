@@ -46,6 +46,7 @@
 #define ERROR_STRING_SIZE 100
 
 regex_t* RegexArray = NULL;
+regex_t* SilentRegex = NULL;
 int NumRegexes = 0;
 
 #endif
@@ -896,6 +897,7 @@ static void CheckRest(void)
                         default:
                             regerror(rc, (regex_t*)(&RegexArray[Count]),
                                      error, ERROR_STRING_SIZE);
+                            PrintPrgErr(pmRegexMatchingError, error);
                             break;
                     }
 
@@ -1122,6 +1124,95 @@ static void HandleBracket(int Char)
 }
 
 
+/*
+ * Checks to see if CmdBuffer matches any of the words in Silent, or
+ * any of the regular expressions in SilentCase.
+ *
+ */
+
+int CheckSilentRegex(void)
+{
+
+#if ! (HAVE_PCRE || HAVE_POSIX_ERE)
+
+    return HasWord(CmdBuffer, &Silent);
+
+#else
+
+    static char error[ERROR_STRING_SIZE];
+    char *pattern;
+    char *tmp;
+    int i;
+    int rc;
+    int len = 4;                /* Enough for the (?:) */
+
+    /* Initialize regular expression */
+    if (INUSE(emSpaceTerm) && SilentCase.Stack.Used > 0)
+    {
+        /* Find the total length we need */
+        /* There is 1 for | and the final for null terminator */
+        FORWL(i, SilentCase)
+        {
+            len += strlen( SilentCase.Stack.Data[i] ) + 1;
+        }
+
+        /* (A|B|...) */
+        tmp = (pattern = (char*)malloc( sizeof(char) * len ));
+
+        #if HAVE_PCRE
+        tmp = stpcpy(tmp,"(?:");
+        #else
+        tmp = stpcpy(tmp,"(");
+        #endif
+
+        FORWL(i, SilentCase)
+        {
+            tmp = stpcpy(tmp, SilentCase.Stack.Data[i]);
+            *tmp++ = '|';
+        }
+        tmp = stpcpy(--tmp, ")");
+
+        SilentRegex = malloc( sizeof(regex_t) );
+        rc = regcomp(SilentRegex, pattern, REGEX_FLAGS);
+
+        /* Compilation failed: print the error message */
+        if (rc != 0)
+        {
+            regerror(rc, SilentRegex, error, ERROR_STRING_SIZE);
+            PrintPrgErr(pmRegexCompileFailed, pattern, error);
+            SilentRegex = NULL;
+        }
+        /* Ensure we won't initialize it again */
+        SilentCase.Stack.Used = 0;
+        free(pattern);
+    }
+
+    /* Check against the normal */
+    if ( HasWord(CmdBuffer, &Silent) )
+        return 1;
+    if (!SilentRegex)
+        return 0;
+
+    /* Check against the regexes */
+    rc = regexec(SilentRegex, CmdBuffer, 0, NULL, 0);
+    if (rc == 0)
+        return 1;
+
+    /* Matching failed: handle error cases */
+    switch(rc)
+    {
+        case REG_NOMATCH:
+            return 0;
+            break;
+        default:
+            regerror(rc, SilentRegex, error, ERROR_STRING_SIZE);
+            PrintPrgErr(pmRegexMatchingError, error);
+            break;
+    }
+    return 0;
+
+#endif
+}
 
 /*
  * Searches the `Buf' for possible errors, and prints the errors. `Line'
@@ -1474,7 +1565,7 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                 }
 
                 if (LATEX_SPACE(*BufPtr) && !MathMode &&
-                    (!HasWord(CmdBuffer, &Silent)) &&
+                    !CheckSilentRegex() &&
                     (strlen(CmdBuffer) != 2))
                 {
                     PSERR(BufPtr - Buf, 1, emSpaceTerm);

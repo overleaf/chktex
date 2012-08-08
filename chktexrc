@@ -377,7 +377,13 @@ Silent
     \addlinespace \cr \fill \frontmatter
     \toprule \midrule \bottomrule
 
-}
+}[
+# Here you can put regular expressions to match Silent macros.  It was
+# designed for  the case where you  have many custom macros  sharing a
+# common prefix, but can of course be used for other things.
+
+# \\my.*
+]
 
 #####################################################################
 #
