@@ -466,6 +466,12 @@ In section~\ref{sec:4} it is suppressed. % chktex -1
 Message 22 in Test.tex: Comment displayed.
 % In section~\ref{sec:5} we don't have a warning.  
 ^
+Message 44 in Test.tex: User Regex: -2:Vertical rules in tables are ugly.
+\begin{tabular*}{1.0\linewidth}[h]{|c|cc|}  
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Message 44 in Test.tex: User Regex: -2:Use \toprule, midrule, or \bottomrule from booktabs.
+  \hline  
+  ^^^^^^
 Message 22 in Test.tex: Comment displayed.
 % Verb check  
 ^
