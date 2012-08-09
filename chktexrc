@@ -251,6 +251,13 @@ UserWarnRegex
   PCRE:(?i)\bintro\b(?!#Spell! it! out.! This! comment! is! not! used.)
   POSIX:([^[:alnum:]]|^)intro([^[:alnum:]]|$)
 
+  # Pretty tables--see http://texdoc.net/texmf-dist/doc/latex/booktabs/booktabs.pdf
+  (?!#-2:Use! \toprule,! midrule,! or! \bottomrule! from! booktabs)\\hline
+  # This relies on it being on a single line, and not having anything
+  # else on that line.  With PCRE we could match balanced [] and {},
+  # but I wonder if it's worth the complexity...
+  (?!#-2:Vertical! rules! in! tables! are! ugly)\\begin\{(array|tabularx?\*?)\}(\[.*\])?\{.*\|.*\}
+
 }
 
 
