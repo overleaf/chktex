@@ -688,7 +688,7 @@ int PushFile(const char *Name, FILE * fh, struct Stack *stack)
             if ((fn->Name = strdup(Name)))
             {
                 fn->fh = fh;
-                fn->Line = 1L;
+                fn->Line = 0L;
                 if (StkPush(fn, stack))
                     return (TRUE);
                 free(fn->Name);
@@ -704,7 +704,6 @@ int PushFile(const char *Name, FILE * fh, struct Stack *stack)
 char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack)
 {
     static short HasSeenLong = 0;
-    static short FinishedALine = 0;
     struct FileNode *fn;
     char *Retval = NULL;
 
@@ -714,17 +713,10 @@ char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack)
         {
             Retval = fgets(Dest, (int)len, fn->fh);
             if (Retval) {
-                /* Update the line number if we finished one last
-                 * time, and check this time.  We do it this way since
-                 * one line in a file is broken up into BUFSIZ-long
-                 * chunks, and we need the first chunks to have the
-                 * right line number.  See bug #37013. */
-                if (FinishedALine)
+                if (Retval[strlen(Retval)-1] == '\n')
                     fn->Line++;
-                FinishedALine = (Retval[strlen(Retval)-1] == '\n');
-
                 /* We only want the long lines warning once per file */
-                if (!FinishedALine && !HasSeenLong)
+                else if (!HasSeenLong)
                 {
                     PrintPrgErr(pmLongLines, BUFSIZ);
                     HasSeenLong = 1;
@@ -736,7 +728,6 @@ char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack)
             fclose(fn->fh);
             free(fn);
             HasSeenLong = 0;
-            FinishedALine = 0;
         }
         while (!Retval && (fn = StkTop(stack)));
     }
