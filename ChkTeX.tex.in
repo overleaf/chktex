@@ -661,10 +661,12 @@ By default, we use GNU's \Cmd{getopt()} routine.
 
 You should also take a look at the \rsrc\ file. As it is
 self-documenting, you should be able to get the meaning of each
-keyword by simply reading the file. The method for \emph{finding it},
-however, has grown rather complex. An outline is given below.
+keyword by simply reading the file. In fact, since not all options
+are described in this documentation it is necessary that you read
+the \rsrc\ file in order to understand them all. The method for
+\emph{finding it} has grown rather complex. An outline is given below.
 
-If \chktex\ finds multiple files when searching, each and everyone
+If \chktex\ finds multiple files when searching, each and every one
 will be read in the order specified below. The \Cmd{Keyword = \{ item
   item \dots \}} may thus be necessary to reset previously defined
 lists.
@@ -707,7 +709,7 @@ If you for some reason wish to undo what the previous files may have
 done, you may say \Cmd{CmdLine \{ -g0 -r \}} somewhere in the \rsrc\
 file; this will reset all previous settings.
 
-\subsubsection{Per Line Suppressions}
+\subsubsection{Per Line and File Suppressions}
 
 There are many cases in which \chktex{} will give a warning about a
 construct which, although it usually indicates a mistake, is
@@ -749,6 +751,13 @@ disallow line based suppressions once just before the document is finished.
 At that point you should go back over all the warnings and decide if they
 should be fixed.
 
+In addition to line-specific suppressions, you can create a suppression which will be in effect for the remainder of the file.
+This can be used, for example, to turn off warning 18 (about \verb+"+) in a file which uses a package (like \Cmd{babel}) where \verb+"+ is an active character.
+The syntax is nearly the same, namely
+\begin{center}
+  \verb+% checktex-file ##+
+\end{center}
+
 \subsubsection{Hints}
 I've tried to collect some advice that may be useful --- if you have a
 favourite hint, feel free to send it to me!
@@ -757,7 +766,9 @@ favourite hint, feel free to send it to me!
 \item If you use \Cmd{german.sty} or several of \Cmd{babel} languages
   which use \verb+"+ as an active character; it may be wise to put \Cmd{-n18} in
   the \Cmd{CmdLine} entry in the \rsrc\ file. This will probably reduce
-  the amount of false warnings significantly.
+  the amount of false warnings significantly. Alternately, you can put
+  \verb+% checktex-file 18+ in your files which use one of these packages so
+  that other files will still have these checks performed.
 \item Put \Cmd{-v} in the \Cmd{CmdLine} entry of the \rsrc\ file; this
   makes the fancy printing the default.
 \item If you're working on a large project, it may pay off to make a
@@ -793,6 +804,12 @@ also means that \Cmd{WIPEARG} entries in the \rsrc\ file will only
 have the first half of their argument wiped if the argument stretches
 over two lines. We will, however, take care not to wipe parenthesis
 in such cases, in order to avoid false warnings.
+
+Long lines are broken up into chunks and handled separately.  The exact
+length is platform dependent, though is guaranteed to be at least 256 bytes.
+The first portions of the line will have line numbers that are 1 less than
+they should be.  Some errors can be missed and some can be added erroneously.
+A warning will be issued if lines are too long.
 
 Before submitting a bug report, please first see whether the problem can be
 solved by editing the \rsrc\ file appropriately.
@@ -873,6 +890,11 @@ keyword in the \rsrc\ file which controls the discussed warning.
   You tried to terminate a command with a blank space.  Usually, this
   is an error as these are ignored by \LaTeX. In most cases, you would
   like to have a real space there.
+
+  You can also specify regular expressions to match commands which can
+  safely be terminated with a space.  They are specified in in the
+  \rsrc\ file in \texttt{[]}, which in some other cases is used to
+  indicate case-insensitive matching.
 
   \begin{errexam}
     \verb@\LaTeX@\underline{\tt }\verb@is a typesetter.@ \\*
@@ -1054,6 +1076,9 @@ keyword in the \rsrc\ file which controls the discussed warning.
   previously said \verb@\frenchspacing@, you'll have incorrect
   spacing, which one should avoid if possible.
 
+  You can also specify case-insensitive abbreviations in \texttt{[]}, though
+  only the first letter is actually case-insensitive.
+
   \begin{errexam}
     \verb@This is an example, i.e.@\underline{\tt\ }\verb@an demonstration.@ \\*
     This is an example, i.e. an demonstration.        \\*
@@ -1152,7 +1177,9 @@ keyword in the \rsrc\ file which controls the discussed warning.
 \Keyword{UserWarn}
 \begin{errdesc}{User-specified pattern found: \%s.}
   A substring you've specified using \texttt{UserWarn} in the \rsrc\ file,
-  has been found.  See also warning~44 which allows using regular expressions.
+  has been found.  See also warning~44 which allows using regular
+  expressions.  You can also specify case-insensitive versions in
+  \texttt{[]}.
   % Normally I would use a ref here, but if the numbers change that would be
   % hugely backwards incompatible.  Also it would require adding special label code.
 \end{errdesc}
@@ -1693,7 +1720,7 @@ The author wishes to thank the following people (in alphabetical order):
   In addition, he sent me a huge list of 238 common English
   abbreviations, for inclusion in the \rsrc\ file! Together with the
   enhanced abbreviation recognizer, I do now believe most
-  abbreviations should be catched\dots
+  abbreviations should be caught\dots
 
   Finally, he has also given me valuable hints for improving the
   program's outputting routine, and given me lots of suggestions for
@@ -1703,6 +1730,11 @@ The author wishes to thank the following people (in alphabetical order):
   Improved and bug-fixed the MS-DOS port of \chktex\ v1.4, sending me
   ready-to-yank code patches. The original port didn't respect all
   the peculiarities of the MS-DOS file-system, unfortunately.
+
+  \Name{Antonio DiCesare}{dicesare@vodafone.it}
+  He provided many feature requests and bug reports for the 1.7.1
+  version making it a much better release than it would have otherwise
+  been.  He also helped expand several keywords in the \rsrc\ file.
 
   \Name{Baruch Even}{chktex@ev-en.org}
   Maintainer of \chktex\ for about a decade.
@@ -1795,3 +1827,10 @@ Since the original author is unreachable, the maintainer these days is:
 Have fun.
 
 \end{document}
+
+% Rudimentary support for AUCTeX.
+% The "Make" target is my own.
+% Local Variables:
+% TeX-command-default: "Make"
+% TeX-master: "ChkTeX.tex"
+% End:

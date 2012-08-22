@@ -324,8 +324,10 @@ OutFormat
 
 #####################################################################
 #
-# These  commands  should be ignored when detecting whether a command
-# is ended by a space.
+# These commands should  be ignored when detecting  whether a command
+# is ended by a space.  You can specify regular expressions in the []
+# section in  case you  have many  custom macros  that can  be safely
+# terminated with a space.
 #
 
 Silent
