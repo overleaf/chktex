@@ -892,7 +892,7 @@ keyword in the \rsrc\ file which controls the discussed warning.
   like to have a real space there.
 
   You can also specify regular expressions to match commands which can
-  safely be terminated with a space.  They are specified in in the
+  safely be terminated with a space.  They are specified in the
   \rsrc\ file in \texttt{[]}, which in some other cases is used to
   indicate case-insensitive matching.
 
