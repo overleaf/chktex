@@ -162,7 +162,7 @@ AC_TYPE_SIZE_T
 dnl Checks for library functions.
 AC_FUNC_VPRINTF
 AC_CHECK_FUNCS(access closedir fileno isatty opendir readdir stat dnl
-strcasecmp strdup strlwr strtol)
+strcasecmp strdup strlwr strtol stpcpy)
 
 
 dnl Check for PCRE regular expression support
