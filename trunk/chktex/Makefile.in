@@ -68,7 +68,8 @@ VPATH=$(srcdir)
 EXTRA_DIST=configure.in Makefile.in stamp-h.in config.h.in rmeheader.in \
 	MakeHTML.pl ChkTeX.tex.in aclocal.m4 NEWS \
 	chktex.el chkweb deweb.in COPYING chktex.1 chkweb.1 deweb.1 \
-	Test.tex input.tex Test.out configure install-sh lacheck chktexrc \
+	input.tex Test.tex Test.pcre.out Test.posix-ere.out Test.nore.out configure \
+	install-sh lacheck chktexrc \
 	$(wildcard m4/*.m4)
 
 # created by configure
@@ -126,18 +127,25 @@ OBJS= ChkTeX.o FindErrs.o OpSys.o Resource.o Utility.o
 
 MAKETEST= (builddir=`pwd` ; cd $(srcdir) ; $${builddir}/chktex -mall -r -g0 -lchktexrc -v5 Test.tex)
 
-$(srcdir)/Test.out: $(srcdir)/Test.tex
-	-rm -f $(srcdir)/Test.out
+# We can't grep the output of chtex because it might not be built yet
+TestOutFile := $(shell sed -n 's/.*HAVE_\(.*RE\) 1.*/\1/p' config.h | tr "A-Z_" "a-z-")
+ifeq ($(TestOutFile),)
+TestOutFile := Test.nore.out
+else
+TestOutFile := Test.$(TestOutFile).out
+endif
+$(srcdir)/$(TestOutFile): $(srcdir)/Test.tex
+	-rm -f $(srcdir)/$(TestOutFile)
 	@echo ""
-	@echo "***Warning: creating Test.out***"
+	@echo "***Warning: creating $(TestOutFile)***"
 	@echo ""
-	$(MAKETEST) 1> $(srcdir)/Test.out
+	$(MAKETEST) 1> $(srcdir)/$(TestOutFile)
 
-check: chktex $(srcdir)/Test.out
+check: chktex $(srcdir)/$(TestOutFile)
 	@echo ">>> Testing that checking algorithms work correctly..."
 	@-rm -f chktest
 	$(MAKETEST) 1> chktest
-	@if cmp -s chktest $(srcdir)/Test.out; then \
+	@if cmp -s chktest $(srcdir)/$(TestOutFile); then \
 		echo ">>> OK!"; \
 		rm -f chktest; \
 	else \
@@ -145,7 +153,7 @@ check: chktex $(srcdir)/Test.out
 		echo "Problems when checking compilation. This may or may not"; \
 		echo "be a problem; anyway, I'm giving you a diff from what the"; \
 		echo "results were *supposed* to be..."; \
-		diff -u $(srcdir)/Test.out chktest; \
+		diff -u $(srcdir)/$(TestOutFile) chktest; \
 	fi
 
 
