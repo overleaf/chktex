@@ -40,10 +40,10 @@
 /* Define to 1 if you have the `opendir' function. */
 #undef HAVE_OPENDIR
 
-/* "Whether PCRE can be used for user warnings." */
+/* Whether PCRE can be used for user warnings. */
 #undef HAVE_PCRE
 
-/* "Whether PCRE can be used for user warnings." */
+/* Whether POSIX ERE can be used for user warnings. */
 #undef HAVE_POSIX_ERE
 
 /* Define to 1 if you have the `readdir' function. */
@@ -63,6 +63,9 @@
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the `stpcpy' function. */
+#undef HAVE_STPCPY
 
 /* Define to 1 if you have the `strcasecmp' function. */
 #undef HAVE_STRCASECMP
@@ -126,7 +129,7 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
-/* "Strip debug info" */
+/* Strip debug info */
 #undef STRIP_DEBUG
 
 /* Define to empty if `const' does not conform to ANSI C. */
