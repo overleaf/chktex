@@ -1135,7 +1135,7 @@ int CheckSilentRegex(void)
 
 #if ! (HAVE_PCRE || HAVE_POSIX_ERE)
 
-    return HasWord(CmdBuffer, &Silent);
+    return HasWord(CmdBuffer, &Silent) != NULL;
 
 #else
 
@@ -1795,6 +1795,8 @@ PrintError(const char *File, const char *String,
                         fputs(Delimit, OutputFile);
                         break;
                     case 'c':
+                        /* TODO: need to add the offset of the column
+                         * here when long lines are broken. */
                         fprintf(OutputFile, "%ld", Position + 1);
                         break;
                     case 'd':
