@@ -27,8 +27,12 @@
  */
 
 
-#include "getopt.h"
 #include "ChkTeX.h"
+#ifdef KPATHSEA
+#include <kpathsea/getopt.h>
+#else
+#include <getopt.h>
+#endif
 #include "OpSys.h"
 #include "Utility.h"
 #include "FindErrs.h"
