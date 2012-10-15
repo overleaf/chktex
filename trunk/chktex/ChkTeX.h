@@ -38,6 +38,11 @@
 #  include CONFIG_H_NAME
 #endif
 
+/* For TeX Live */
+#ifdef KPATHSEA
+#include <kpathsea/config.h>
+#endif
+
 #include <ctype.h>
 #include <math.h>
 #include <stdio.h>
