@@ -195,7 +195,7 @@ enum Quote Quote;
 
 char VerbNormal[] = "%k %n in %f line %l: %m\n" "%r%s%t\n" "%u\n";
 
-#define DEF(type, name, value)  type name = value;
+#define DEF(type, name, value)  type name = value
 OPTION_DEFAULTS;
 STATE_VARS;
 #undef DEF
@@ -345,7 +345,7 @@ int main(int argc, char **argv)
 #define LIST(a)
 #define LNEMPTY(a) InsertWord("", &a);
 
-    RESOURCE_INFO;
+    RESOURCE_INFO
 
     while (SetupVars())
         ReadRC(ConfigFile);
@@ -426,7 +426,7 @@ int main(int argc, char **argv)
                     for (Count = 0; Count < NUMBRACKETS; Count++)
                         Brackets[Count] = 0L;
 
-#define DEF(type, name, value) name = value;
+#define DEF(type, name, value) name = value
                     STATE_VARS;
 #undef DEF
                     if (UsingStdIn)
@@ -635,7 +635,7 @@ static void ShowIntStatus(void)
 
     if (DebugLevel & (FLG_DbgListInfo | FLG_DbgListCont))
     {
-        RESOURCE_INFO;
+        RESOURCE_INFO
     }
 
     if (DebugLevel & FLG_DbgOtherInfo)
@@ -674,8 +674,7 @@ static void ShowIntStatus(void)
 
 static void ResetStacks(void)
 {
-    RESOURCE_INFO;
-
+    RESOURCE_INFO
 }
 
 /*
@@ -687,7 +686,7 @@ static void ResetStacks(void)
 static void ResetSettings(void)
 {
 
-#define DEF(type, name, value)  name = value;
+#define DEF(type, name, value)  name = value
     OPTION_DEFAULTS;
 #undef DEF
     if (OutputFile != stdout)
