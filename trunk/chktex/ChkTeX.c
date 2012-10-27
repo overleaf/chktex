@@ -866,11 +866,13 @@ static int ParseArgs(int argc, char **argv)
                 nextc = ShiftArg(&optarg);
                 break;
 
-            LOOP(warntype, case 'w':
-            ErrType = etWarn; InUse = iuOK; LAST(warntype); case 'e':
-            ErrType = etErr; InUse = iuOK; LAST(warntype); case 'm':
-            ErrType = etMsg; InUse = iuOK; LAST(warntype); case 'n':
-            ErrType = etMsg; InUse = iuNotUser; LAST(warntype);) if (isdigit((unsigned char)*optarg))
+            LOOP(warntype,
+            case 'w': ErrType = etWarn; InUse = iuOK; LAST(warntype);
+            case 'e': ErrType = etErr; InUse = iuOK; LAST(warntype);
+            case 'm': ErrType = etMsg; InUse = iuOK; LAST(warntype);
+            case 'n': ErrType = etMsg; InUse = iuNotUser; LAST(warntype);
+                )
+                if (isdigit((unsigned char)*optarg))
                 {
                     nextc = ParseNumArg(&Err, -1, &optarg);
                     if (betw(emMinFault, Err, emMaxFault))
