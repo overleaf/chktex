@@ -334,7 +334,15 @@ int main(int argc, char **argv)
 #endif
 
     OutputFile = stdout;
+#ifdef KPATHSEA
+    kpse_set_program_name(argv[0], "chktex");
+    PrgName = kpse_program_name;
+#ifdef WIN32
+    setmode(fileno(stdout), _O_BINARY);
+#endif
+#else
     PrgName = argv[0];
+#endif
 
 #undef KEY
 #undef LCASE
@@ -512,7 +520,11 @@ static int OpenOut(void)
 
         if (Success)
         {
+#ifdef KPATHSEA
+            if (!(OutputFile = fopen(OutputName, "wb")))
+#else
             if (!(OutputFile = fopen(OutputName, "w")))
+#endif
             {
                 PrintPrgErr(pmOutOpen);
                 Success = FALSE;
