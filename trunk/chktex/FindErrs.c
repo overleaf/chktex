@@ -1019,11 +1019,11 @@ static void CheckDash(void)
  *
  */
 
-static void HandleBracket(int Char)
+static void HandleBracket(char Char)
 {
     unsigned long BrOffset;     /* Offset into BrOrder array */
     struct ErrInfo *ei;
-    int TmpC, Match;
+    char TmpC, Match;
     char ABuf[2], BBuf[2];
     char *TmpPtr;
 
@@ -1227,7 +1227,7 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
     char *TmpPtr;               /* Temporary pointer */
     char *ErrPtr;               /* Ptr to where an error started */
 
-    int TmpC,                   /* Just a temp var used throughout the proc. */
+    char TmpC,                  /* Just a temp var used throughout the proc. */
       MatchC, Char;             /* Char. currently processed */
     unsigned long CmdLen;       /* Length of misc. things */
     int MixingQuotes;
@@ -1500,11 +1500,7 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                 HERE(1, emUseQuoteLiga);
                 break;
 
-                /* One of these are unnecessary, but what the heck... */
-            case 180:          /* ´. NOTE: '\xb4' gets converted to - something */
-            case ~(0xff & (~180)):     /* This yields 0xff...fb4 in */
-                /* arbitrary precision. */
-
+            case '\264':             /* ´ (in Latin-1) */
                 HERE(1, emUseOtherQuote);
                 break;
 
