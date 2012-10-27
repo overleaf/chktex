@@ -37,6 +37,10 @@
 #include "OpSys.h"
 #include "Utility.h"
 
+#ifdef KPATHSEA
+#include <kpathsea/variable.h>
+#endif
+
 #ifdef HAVE_SYS_STAT_H
 #  include <sys/stat.h>
 #endif
@@ -104,6 +108,8 @@ static char term_buffer[2048];
 #define RCBASENAME              "chktexrc"
 
 #ifdef __MSDOS__
+#  define LOCALRCFILE             RCBASENAME
+#elif defined(WIN32)
 #  define LOCALRCFILE             RCBASENAME
 #else
 #  define LOCALRCFILE             "." RCBASENAME
@@ -173,6 +179,8 @@ int SetupVars(void)
 #ifdef __MSDOS__
 
             if ((Env = getenv("CHKTEXRC")) || (Env = getenv("CHKTEX_HOME")))
+#elif defined(TEX_LIVE)
+            if ((Env = kpse_var_value("CHKTEXRC")))
 #else
 
             if ((Env = getenv("CHKTEXRC")))
@@ -181,6 +189,9 @@ int SetupVars(void)
             {
                 strcpy(ConfigFile, Env);
                 tackon(ConfigFile, LOCALRCFILE);
+#ifdef TEX_LIVE
+                free(Env);
+#endif
             }
             else
 #ifdef __MSDOS__
@@ -217,24 +228,20 @@ int SetupVars(void)
             break;
         case liSysDir:         /* System dir for resource files */
 #ifdef TEX_LIVE
-            if ((Env = getenv("CHKTEX_CONFIG")))
+            if ((Env = kpse_var_value("CHKTEX_CONFIG")))
             {
                 strcpy(ConfigFile, Env);
+                free(Env);
+            }
+            else if ((Env = kpse_var_value("TEXMFMAIN")))
+            {
+                strcpy(ConfigFile, Env);
+                tackon(ConfigFile, "chktex");
+                tackon(ConfigFile, RCBASENAME);
+                free(Env);
             }
             else
-            {
-                FILE *f;
                 *ConfigFile = 0;
-                if ((f = popen("kpsewhich -expand-var='$TEXMFMAIN'", "r")))
-                {
-                    if (1 == fscanf(f, "%1024s", ConfigFile))
-                    {
-                        tackon(ConfigFile, "chktex");
-                        tackon(ConfigFile, RCBASENAME);
-                    }
-                    (void)pclose(f);
-                }
-            }
 #else /* TEX_LIVE */
 #if defined(__unix__) || defined(__MSDOS__)
             strcpy(ConfigFile, SYSCONFDIR);
@@ -333,7 +340,7 @@ void tackon(char *Dir, const char *File)
 
 /*
  * This function should add the appendix App to the filename Name.
- * If the resulting filename gets too long due to this, it may 
+ * If the resulting filename gets too long due to this, it may
  * overwrite the old appendix.
  *
  * Name may be assumed to be a legal filename under your OS.
