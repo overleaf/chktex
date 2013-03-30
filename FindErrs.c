@@ -918,7 +918,8 @@ static void CheckRest(void)
                         /* Default -- show the match */
                         PSERR2(offset + MATCH.rm_so, MATCH.rm_eo - MATCH.rm_so,
                                emUserWarnRegex,
-                               MATCH.rm_eo - MATCH.rm_so,
+                               /* The format specifier expects an int */
+                               (int)(MATCH.rm_eo - MATCH.rm_so),
                                TmpBuffer + offset + MATCH.rm_so);
                     }
                     offset += MATCH.rm_eo;
