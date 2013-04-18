@@ -40,10 +40,10 @@
 #include <string.h>
 
 #undef MSG
-#define MSG(num, type, inuse, ctxt, text) {num, type, inuse, ctxt, text},
+#define MSG(num, type, inuse, ctxt, text) {(enum ErrNum)num, type, inuse, ctxt, text},
 
 struct ErrMsg PrgMsgs[pmMaxFault + 1] = {
-    PRGMSGS {pmMaxFault, etErr, TRUE, 0, INTERNFAULT}
+    PRGMSGS {(enum ErrNum)pmMaxFault, etErr, TRUE, 0, INTERNFAULT}
 };
 
 struct Stack CharStack = {
