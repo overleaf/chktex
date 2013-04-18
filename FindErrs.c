@@ -1449,10 +1449,10 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                 MixingQuotes = FALSE;
 
                 if ((*TmpPtr == MatchC) || (*TmpPtr == '\"') ||
-                    (*TmpPtr == '´'))
+                    (*TmpPtr == '\xB4')) /* xB4 = latin1 acute accent */
                     MixingQuotes = TRUE;
 
-                SKIP_AHEAD(TmpPtr, TmpC, strchr("`\'\"´", TmpC));
+                SKIP_AHEAD(TmpPtr, TmpC, strchr("`\'\"\xB4", TmpC)); /* xB4 = latin1 acute accent */
 
                 if (MixingQuotes)
                     HERE(TmpPtr - BufPtr + 1, emQuoteMix);
