@@ -199,15 +199,9 @@ Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
 Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
 1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
                                                                          ^
-Message 11 in Test.tex: You should use \ldots to achieve an ellipsis.
-1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
-                                                                                ^^
 Message 12 in Test.tex: Interword spacing (`\ ') should perhaps be used.
 1st. Foo Inc. Ab.cd. foo ab.cd. Foo. bar baz., billy.; bob.: joe.! frank.? james.. george  
                                                                                  ^
-Message 11 in Test.tex: You should use \ldots to achieve an ellipsis.
-1st.\ foo Inc.\ ab.cd.\ foo ab.cd.\ Foo.\ bar baz., billy.; bob.:\ joe.!\ frank.?\ james..\ george  
-                                                                                        ^^
 Message 22 in Test.tex: Comment displayed.
 % Warning 13  
 ^
