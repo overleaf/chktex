@@ -1371,15 +1371,12 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                 break;
 
             case '.':
-                /* .. or ... should be ellipses */
-                if ((Char == *BufPtr) && (Char != PrePtr[0]))
+                if ((Char == *BufPtr) && (Char == BufPtr[1]))
                 {
                     const char *cTmpPtr;
-                    const int NumDots = (Char == BufPtr[1]) ? 3 : 2;
-                    dotlev = CheckDots(&PrePtr[1],
-                                       &BufPtr[NumDots-1]);
+                    dotlev = CheckDots(&PrePtr[1], &BufPtr[2]);
                     cTmpPtr = Dot2Str(dotlev);
-                    HEREA(NumDots, emEllipsis, cTmpPtr);
+                    HEREA(3, emEllipsis, cTmpPtr);
                 }
 
                 /* Regexp: "([^A-Z@.])\.[.!?:]*\s+[a-z]" */
