@@ -1701,6 +1701,11 @@ void PrintStatus(unsigned long Lines)
         Transit(stderr, WarnPrint, "warning%s printed; ");
         Transit(stderr, UserSupp, "user suppressed warning%s; ");
         Transit(stderr, LineSupp, "line suppressed warning%s.\n");
+
+        /* Print how to suppress warnings. */
+        if ( ErrPrint + WarnPrint > 0 ) {
+            fprintf(stderr, "See the manual for how to suppress some or all of these warnings/errors.\n" );
+        }
     }
 }
 
