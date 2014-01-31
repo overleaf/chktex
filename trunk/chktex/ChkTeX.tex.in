@@ -719,7 +719,7 @@ can use \LaTeX{} comments to suppress a certain message on a single
 line.  This can be done by adding a (case-insensitive) comment at the
 end of the line of the form
 \begin{center}
-  \verb+% checktex ##+
+  \verb+% chktex ##+
 \end{center}
 where \verb+##+ is the number of the message to be suppressed.
 For example the line
@@ -755,7 +755,7 @@ In addition to line-specific suppressions, you can create a suppression which wi
 This can be used, for example, to turn off warning 18 (about \verb+"+) in a file which uses a package (like \Cmd{babel}) where \verb+"+ is an active character.
 The syntax is nearly the same, namely
 \begin{center}
-  \verb+% checktex-file ##+
+  \verb+% chktex-file ##+
 \end{center}
 
 \subsubsection{Hints}
@@ -767,7 +767,7 @@ favourite hint, feel free to send it to me!
   which use \verb+"+ as an active character; it may be wise to put \Cmd{-n18} in
   the \Cmd{CmdLine} entry in the \rsrc\ file. This will probably reduce
   the amount of false warnings significantly. Alternately, you can put
-  \verb+% checktex-file 18+ in your files which use one of these packages so
+  \verb+% chktex-file 18+ in your files which use one of these packages so
   that other files will still have these checks performed.
 \item Put \Cmd{-v} in the \Cmd{CmdLine} entry of the \rsrc\ file; this
   makes the fancy printing the default.
