@@ -37,7 +37,6 @@ INSTALL=@INSTALL@
 INSTALL_PROGRAM=@INSTALL_PROGRAM@
 INSTALL_DATA=@INSTALL_DATA@
 MKDIR_P=@MKDIR_P@
-ELISPDIR=@ELISPDIR@
 CLEAN=@CLEAN@
 
 CC=@CC@
@@ -67,7 +66,7 @@ VPATH=$(srcdir)
 
 EXTRA_DIST=configure.in Makefile.in stamp-h.in config.h.in rmeheader.in \
 	MakeHTML.pl ChkTeX.tex.in aclocal.m4 NEWS \
-	chktex.el chkweb deweb.in COPYING chktex.1 chkweb.1 deweb.1 \
+	chkweb deweb.in COPYING chktex.1 chkweb.1 deweb.1 \
 	input.tex Test.tex Test.pcre.out Test.posix-ere.out Test.nore.out configure \
 	install-sh lacheck chktexrc \
 	$(wildcard m4/*.m4)
@@ -174,9 +173,6 @@ install: chktex ChkTeX.dvi
 		$(MKDIR_P) $(DESTDIR)$(mandir)/man1; \
                 cp $(srcdir)/deweb.1 $(DESTDIR)$(mandir)/man1; \
 	fi
-	if (eval echo "$(ELISPDIR)") | egrep "/" >/dev/null 2>&1; then \
-		$(INSTALL_DATA) $(srcdir)/chktex.el $(DESTDIR)$(ELISPDIR); \
-	fi
 
 
 
@@ -185,9 +181,6 @@ uninstall:
 		rm -f $(DESTDIR)$(bindir)/$$program; \
 	done
 	rm -f $(DESTDIR)$(sysconfdir)/chktexrc  $(DESTDIR)$(mandir)/man1/deweb.1
-	if (eval echo "$(ELISPDIR)") | egrep "/" >/dev/null 2>&1; then \
-		rm -f $(DESTDIR)$(ELISPDIR)/chktex.el ; \
-	fi
 
 test:
 	chktex -v2 -mall $(srcdir)/Test.tex | less -r
