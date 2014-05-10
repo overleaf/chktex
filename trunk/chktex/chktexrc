@@ -440,6 +440,24 @@ WordDash
 
 #####################################################################
 #
+# Here are exceptions to the dash rules above.  For example, an
+# n-dash -- between words is usually wrong, but in some cases it is
+# correct, such as when naming a theorem.  The Birch--Swinnerton-Dyer
+# conjecture is one example where the difference matters.  You can
+# tell that Birch is one person and Swinnerton-Dyer is another.
+#
+# Adding line suppressions for these is possible, but can quickly
+# become tedious if a certain theorem is referenced often.  For this
+# reason exceptions can be specified here.  They are case-sensitive.
+#
+
+DashExcpt
+{
+    Birch--Swinnerton-Dyer
+}
+
+#####################################################################
+#
 # This  keyword  indicates commands  whose argument isn't LaTeX code,
 # and thus should be ignored.
 #
