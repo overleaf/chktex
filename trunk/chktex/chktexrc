@@ -391,7 +391,9 @@ Silent
 # designed for  the case where you  have many custom macros  sharing a
 # common prefix, but can of course be used for other things.
 
-# \\my.*
+# Support ConTeXt to at least some extent
+\\start.* \\stop.*
+
 ]
 
 #####################################################################
