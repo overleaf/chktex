@@ -875,10 +875,11 @@ keyword in the \rsrc\ file which controls the discussed warning.
   You can also specify regular expressions to match commands which can
   safely be terminated with a space.  They are specified in the
   \rsrc\ file in \texttt{[]}, which in some other cases is used to
-  indicate case-insensitive matching.
+  indicate case-insensitive matching.  This is used for example to
+  support the \verb+\startXXX+ macros of Con\TeX t.
 
   \begin{errexam}
-    \verb@\LaTeX@\underline{\tt }\verb@is a typesetter.@ \\*
+    \verb@\LaTeX@\underline{\tt\ }\verb@is a typesetter.@ \\*
     \LaTeX is a typesetter. \\*
     \smallskip
     \verb@\LaTeX\ is a typesetter.@ \\*
