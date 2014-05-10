@@ -976,7 +976,7 @@ keyword in the \rsrc\ file which controls the discussed warning.
   \end{errexam}
 \end{errdesc}
 
-\Keyword{HyphDash\\NumDash\\WordDash}
+\Keyword{HyphDash\\NumDash\\WordDash\\DashExcpt}
 \begin{errdesc}{Wrong length of dash may have been used.}
   This warning suggests that a wrong number of dashes may have been
   used.  It does this by classifying the dash according to the the
@@ -999,9 +999,14 @@ keyword in the \rsrc\ file which controls the discussed warning.
   required.  This is the case for theorems named after two people
   e.g.\ Jordan--H\"older.  A hyphen would indicate that it was one
   person with a hyphenated name e.g.\ Gregorio Ricci-Curbastro.
-  In my experience this is rare enough to be dealt with via line
-  based suppressions.  There is still the problem that no warning
-  will be raised for Jordan-H\"older, so care must still be taken.
+  If this is rare enough, it can be dealt with via line based suppressions.
+  However, exceptions can also be handled by adding them to the
+  \texttt{DashExcpt} list.  The ``words'' in this list are
+  considered to be correct regardless of any other settings.
+  Adding \verb+Jordan--H\"older+ to this list will cause no warning
+  to be issued.  There is still the problem that no warning will be
+  raised for Jordan-H\"older (unless added explicitly via regular
+  expression), so care must still be taken.
 
   Some manuals---particularly American manuals---also suggest
   \emph{not} adding space around an m-dash (triple dash).
