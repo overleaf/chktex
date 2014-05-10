@@ -13,6 +13,9 @@ Message 22 in Test.tex: Comment displayed.
 Message 1 in Test.tex: Command terminated with space.
 \foo This is an error.  
     ^
+Message 1 in Test.tex: Command terminated with space.
+\stoptext  
+         ^
 Message 22 in Test.tex: Comment displayed.
 % Warning 2  
 ^
