@@ -104,6 +104,15 @@ Message 22 in Test.tex: Comment displayed.
 % "How TeX Breaks Paragraphs into Lines", fourth paragraph:  
 ^
 Message 22 in Test.tex: Comment displayed.
+% Using DashExcpt  
+^
+Message 8 in Test.tex: Wrong length of dash may have been used.
+The Birch--Swinnerton--Dyer conjecture is not correct.  
+         ^^
+Message 8 in Test.tex: Wrong length of dash may have been used.
+The Birch--Swinnerton--Dyer conjecture is not correct.  
+                     ^^
+Message 22 in Test.tex: Comment displayed.
 % Warning 9-10  
 ^
 Message 22 in Test.tex: Comment displayed.
