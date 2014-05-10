@@ -1009,6 +1009,42 @@ static void CheckDash(void)
                     break;
                 }
             }
+
+            if (Errored)
+            {
+                struct WordList *el = &DashExcpt;
+
+                FORWL(i, *el)
+                {
+                    char *exception = el->Stack.Data[i];
+
+                    char *e = exception;
+                    while ( *e )
+                    {
+                        if ( *e == '-' && 0 == strncmp( BufPtr, e, strlen(e) ) )
+                        {
+                            TmpPtr = BufPtr;
+                            char *f = e;
+                            while ( f >= exception && *(--f) == *(--TmpPtr) )
+                            {
+                                /* Nothing */
+                            }
+
+                            if ( f < exception )
+                            {
+                                Errored = FALSE;
+                                break;
+                            }
+                        }
+
+                        ++e;
+                    }
+
+                    if ( !Errored )
+                        break;
+                }
+            }
+
             if (Errored)
                 HERE(TmpCount, emWrongDash);
         }
