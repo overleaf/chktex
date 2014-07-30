@@ -538,8 +538,13 @@ int InsertWord(const char *Word, struct WordList *WL)
 
 void ClearWord(struct WordList *WL)
 {
+    char *Word;
     if (WL)
     {
+        while ( (Word = StkPop( &WL->Stack )) )
+        {
+            free(Word);
+        }
         WL->Stack.Used = 0;
         WL->MaxLen = 0;
         ClearHash(&WL->Hash);
