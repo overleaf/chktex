@@ -1025,12 +1025,12 @@ static void CheckDash(void)
                         {
                             TmpPtr = BufPtr;
                             char *f = e;
-                            while ( f >= exception && *(--f) == *(--TmpPtr) )
+                            while ( f > exception && *(--f) == *(--TmpPtr) )
                             {
                                 /* Nothing */
                             }
 
-                            if ( f < exception )
+                            if ( f <= exception && *f == *TmpPtr )
                             {
                                 Errored = FALSE;
                                 break;
