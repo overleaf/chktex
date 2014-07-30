@@ -148,7 +148,7 @@ static uint64_t UserLineSuppressions;
 static unsigned long Line;
 
 static const char *RealBuf;
-static char *LineCpy;
+static char *LineCpy = NULL;
 static char *BufPtr;
 
 static int ItFlag = efNone;
@@ -1273,8 +1273,6 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
 
     enum DotLevel dotlev;
 
-    LineCpy = NULL;
-
     if (_RealBuf)
     {
         RealBuf = _RealBuf;
@@ -1664,6 +1662,12 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
 
     }
 
+    /* Free and reset LineCpy if it was used */
+    if ( LineCpy != NULL )
+    {
+        free(LineCpy);
+        LineCpy = NULL;
+    }
     return (TRUE);
 }
 
