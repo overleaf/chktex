@@ -468,8 +468,24 @@ char *HasHash(const char *a, const struct Hash *h)
 
 void ClearHash(struct Hash *h)
 {
+    int i;
+    struct HashEntry *he, *next;
     if (h && h->Index)
+    {
+        /* Free all the memory */
+        for ( i = 0; i < HASH_SIZE; ++i )
+        {
+            he = h->Index[i];
+            while ( he )
+            {
+                next = he->Next;
+                free( he );
+                he = next;
+            }
+        }
+        /* Reset the hash table */
         memset(h->Index, '\0', HASH_SIZE * sizeof(struct HashEntry *));
+    }
 }
 
 /*
