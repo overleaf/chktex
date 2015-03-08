@@ -480,7 +480,7 @@ DashExcpt
 WipeArg
 {
     \label:{} \ref:{} \eqref:{} \vref:{} \pageref:{} \index:[]{}
-    \cite:[]{} \nocite:{}
+    \cite:[][]{} \nocite:{}
     \input:{} \verbatiminput:[]{} \listinginput:[]{}{}
     \verbatimtabinput:[]{} \include:{} \includeonly:{}
     \bibitem:[]{}
