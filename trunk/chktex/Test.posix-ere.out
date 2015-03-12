@@ -427,9 +427,6 @@ This one triggers warning 22 $\left\{x\right\}$.
 Message 22 in Test.tex: Comment displayed.
 % Warning 44 -- user regex -- default message  
 ^
-Message 44 in Test.tex: User Regex:  intro..
-You should always write a good intro.  
-                              ^^^^^^^
 Message 22 in Test.tex: Comment displayed.
 % Warning 44 -- user regex -- user message  
 ^
