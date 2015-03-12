@@ -657,6 +657,7 @@ static void PerformBigCmd(char *CmdPtr)
         }
     }
 
+    /* LaTeX environment tracking */
     if (!strcmp(CmdBuffer, "\\begin") || !strcmp(CmdBuffer, "\\end"))
     {
         if (ArgEndPtr)
@@ -693,6 +694,41 @@ static void PerformBigCmd(char *CmdPtr)
         }
         else
             PSERR(CmdPtr - Buf, CmdLen, emNoArgFound);
+    }
+
+    /* ConTeXt \start \stop tracking */
+    if (!strncmp(CmdBuffer, "\\start", 6) || !strncmp(CmdBuffer, "\\stop", 5))
+    {
+        if (CmdBuffer[3] == 'a') /* start */
+        {
+            TmpPtr = CmdBuffer + 6;
+            if (!(PushErr(TmpPtr, Line, CmdPtr - Buf + 6,
+                          CmdLen - 6, MakeCpy(), &EnvStack)))
+                PrintPrgErr(pmNoStackMem);
+        }
+        else
+        {
+            TmpPtr = CmdBuffer + 5;
+            if ((ei = PopErr(&EnvStack)))
+            {
+                if (strcmp(ei->Data, TmpPtr))
+                    PrintError(CurStkName(&InputStack), RealBuf,
+                               CmdPtr - Buf + 5,
+                               (long) strlen(TmpPtr),
+                               Line, emExpectC, ei->Data, TmpPtr);
+
+                FreeErrInfo(ei);
+            }
+            else
+            {
+                PrintError(CurStkName(&InputStack), RealBuf,
+                           CmdPtr - Buf,
+                           (long) strlen(CmdBuffer),
+                           Line, emSoloC, TmpPtr);
+            }
+        }
+        /* TODO: Do I need to call PerformEnv? */
+        /* It handles math and verbatim environments */
     }
 
     CheckItal(CmdBuffer);
