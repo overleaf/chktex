@@ -248,8 +248,8 @@ UserWarnRegex
   (?!#1:Capitalize! before! references)POSIX:([^[:alnum:]]|^)(chapter|(sub)?section|theorem|lemma|proposition|corollary|appendix)~\\ref
 
   # spell it out.
-  PCRE:(?i)\bintro\b(?!#Spell! it! out.! This! comment! is! not! used.)
-  POSIX:([^[:alnum:]]|^)intro([^[:alnum:]]|$)
+  # PCRE:(?i)\bintro\b(?!#Spell! it! out.! This! comment! is! not! used.)
+  # POSIX:([^[:alnum:]]|^)intro([^[:alnum:]]|$)
 
   # Pretty tables--see http://texdoc.net/texmf-dist/doc/latex/booktabs/booktabs.pdf
   (?!#-2:Use! \toprule,! midrule,! or! \bottomrule! from! booktabs)\\hline
