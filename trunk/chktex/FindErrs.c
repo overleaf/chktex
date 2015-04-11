@@ -342,7 +342,7 @@ static char *PreProcess(void)
                 EscapePtr = ++TmpPtr; /* move past NUL terminator */
                 while ( *EscapePtr )
                 {
-                    *EscapePtr = tolower(*EscapePtr);
+                    *EscapePtr = tolower((unsigned char)*EscapePtr);
                     ++EscapePtr;
                 }
 
@@ -1243,7 +1243,7 @@ int CheckSilentRegex(void)
             tmp = stpcpy(tmp, SilentCase.Stack.Data[i]);
             *tmp++ = '|';
         }
-        tmp = stpcpy(--tmp, ")");
+        tmp = stpcpy(tmp - 1, ")");
 
         SilentRegex = malloc( sizeof(regex_t) );
         rc = regcomp(SilentRegex, pattern, REGEX_FLAGS);
