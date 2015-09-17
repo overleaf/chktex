@@ -337,7 +337,7 @@ static void ExpandTabs(char *From, char *To, long TSize, long MaxDiff)
 
 int main(int argc, char **argv)
 {
-    int retval = EXIT_FAILURE, CurArg;
+    int retval = EXIT_FAILURE, ret, CurArg;
     unsigned long Count;
     int StdInUse = FALSE;
     long Tab = 8;
@@ -380,6 +380,7 @@ int main(int argc, char **argv)
 
     if ((CurArg = ParseArgs((unsigned long) argc, argv)))
     {
+        retval = EXIT_SUCCESS;
         if (CmdLine.Stack.Used)
         {
             ParseArgs(CmdLine.Stack.Used, (char **) CmdLine.Stack.Data);
@@ -491,11 +492,13 @@ int main(int argc, char **argv)
                             strcpy(ReadBuffer, TmpBuffer);
 
                             strcat(ReadBuffer, " ");
-                            FindErr(ReadBuffer, CurStkLine(&InputStack));
+                            ret = FindErr(ReadBuffer, CurStkLine(&InputStack));
+                            if ( ret != EXIT_SUCCESS ) {
+                                retval = ret;
+                            }
                         }
 
                         PrintStatus(CurStkLine(&InputStack));
-                        retval = EXIT_SUCCESS;
                     }
                 }
             }
