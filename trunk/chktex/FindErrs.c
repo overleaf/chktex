@@ -49,6 +49,8 @@ regex_t* RegexArray = NULL;
 regex_t* SilentRegex = NULL;
 int NumRegexes = 0;
 
+int FoundErr = EXIT_SUCCESS;
+
 #endif
 
 /***************************** ERROR MESSAGES ***************************/
@@ -1309,6 +1311,8 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
 
     enum DotLevel dotlev;
 
+    FoundErr = EXIT_SUCCESS;
+
     if (_RealBuf)
     {
         RealBuf = _RealBuf;
@@ -1704,7 +1708,7 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
         free(LineCpy);
         LineCpy = NULL;
     }
-    return (TRUE);
+    return FoundErr;
 }
 
 /*
@@ -1834,6 +1838,7 @@ PrintError(const char *File, const char *String,
             }
             else
             {
+                FoundErr = EXIT_FAILURE;
                 Context = LaTeXMsgs[Error].Context;
 
                 if (!HeadErrOut)
