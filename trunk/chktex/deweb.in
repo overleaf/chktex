@@ -33,91 +33,88 @@ my @FILES = @ARGV;
 FILE:
 while( my $file = shift @FILES ) {
 
-    my $success = open my $fh, '<', $file;
+    my $success = open my $fh, '<', "$file";
     if ( ! $success ) {
-        print STDERR "Couldn't open file $file\n";
+        print STDERR "Couldn't open file '$file'\n";
         next FILE;
     }
 
-    while (<$fh>) {
+    $texmode = 1;
+    $_ = <$fh>;
 
-        $texmode = 1;
-        $_ = <>;
+    while (/\@/) {
+        &out($`);
+        $_ = $';
 
-        while (/\@/) {
-            &out($`);
+        if (/^@/) {
             $_ = $';
-
-            if (/^@/) {
-                $_ = $';
-                &out('@');
-                next;
-            }
-
-            if (/^([\s\n])/) {
-                $_ = $';
-                print "\n" if $1 eq "\n";
-                $texmode = 1;
-                next;
-            }
-
-            if (/^[cpd]/i) {
-                $_ = $';
-                $texmode = 0;
-                next;
-            }
-
-            if (/^\,/i) {
-                $_ = $';
-                print '\,';
-                next;
-            }
-
-            if (m!^/!) {
-                $_ = $';
-                print '\\\\';
-                next;
-            }
-
-            if (/^[h\&\|\;\#\+]/i || /^i.*/i) {
-                $_ = $';
-                next;
-            }
-
-            if (/^\*[0-9\*]?((.|\n)*?\.)/) {
-                $_ = $';
-                print $1;
-                $texmode = 1;
-                next;
-            }
-
-            if (/^[<(^.t!]((.|\n)*?)\@\>/i) {
-                $_ = $';
-                print '{'.$1.'}';
-                $texmode = 0;
-                next;
-            }
-
-            if (/^[=]((.|\n)*?)\@\>/) {
-                $_ = $';
-                print &printnl($1);
-                next;
-            }
-
-            if (/^[fsl](\s+\S+\s+\S+)|^\'(.|\n)*?\'|^\[((.|\n)*?)\@\]/i) {
-                $_ = $';
-                print &printnl($+);
-                next;
-            }
-
-            @line = split(/\n/, $_, 2);
-            print STDERR "Unknown opcode, ignored. Buffer:\n$line[0]\n";
-
+            &out('@');
+            next;
         }
 
-        print $_;
+        if (/^([\s\n])/) {
+            $_ = $';
+            print "\n" if $1 eq "\n";
+            $texmode = 1;
+            next;
+        }
+
+        if (/^[cpd]/i) {
+            $_ = $';
+            $texmode = 0;
+            next;
+        }
+
+        if (/^\,/i) {
+            $_ = $';
+            print '\,';
+            next;
+        }
+
+        if (m!^/!) {
+            $_ = $';
+            print '\\\\';
+            next;
+        }
+
+        if (/^[h\&\|\;\#\+]/i || /^i.*/i) {
+            $_ = $';
+            next;
+        }
+
+        if (/^\*[0-9\*]?((.|\n)*?\.)/) {
+            $_ = $';
+            print $1;
+            $texmode = 1;
+            next;
+        }
+
+        if (/^[<(^.t!]((.|\n)*?)\@\>/i) {
+            $_ = $';
+            print '{'.$1.'}';
+            $texmode = 0;
+            next;
+        }
+
+        if (/^[=]((.|\n)*?)\@\>/) {
+            $_ = $';
+            print &printnl($1);
+            next;
+        }
+
+        if (/^[fsl](\s+\S+\s+\S+)|^\'(.|\n)*?\'|^\[((.|\n)*?)\@\]/i) {
+            $_ = $';
+            print &printnl($+);
+            next;
+        }
+
+        @line = split(/\n/, $_, 2);
+        print STDERR "Unknown opcode, ignored. Buffer:\n$line[0]\n";
 
     }
+
+    print $_;
+
 }
 
 sub printnl {
