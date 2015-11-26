@@ -484,6 +484,18 @@ Message 31 in Test.tex: This text may be ignored.
 Message 22 in Test.tex: Comment displayed.
 % Warning 16,15  
 ^
+Message 22 in Test.tex: Comment displayed.
+% Local Variables:  
+^
+Message 22 in Test.tex: Comment displayed.
+% require-final-newline: nil  
+^
+Message 22 in Test.tex: Comment displayed.
+% End:  
+^
+Message 22 in Test.tex: Comment displayed.
+% There should be no newline at the end of this file to test bug #46539 
+^
 Message 16 in Test.tex: Mathmode still on at end of LaTeX file.
 
 
