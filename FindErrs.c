@@ -49,9 +49,9 @@ regex_t* RegexArray = NULL;
 regex_t* SilentRegex = NULL;
 int NumRegexes = 0;
 
-int FoundErr = EXIT_SUCCESS;
-
 #endif
+
+int FoundErr = EXIT_SUCCESS;
 
 /***************************** ERROR MESSAGES ***************************/
 
