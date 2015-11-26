@@ -727,6 +727,7 @@ char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack)
     static short HasSeenLong = 0;
     struct FileNode *fn;
     char *Retval = NULL;
+    size_t Retlen = 0;
 
     if ((fn = StkTop(stack)))
     {
@@ -734,12 +735,14 @@ char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack)
         {
             Retval = fgets(Dest, (int)len, fn->fh);
             if (Retval) {
-                if (Retval[strlen(Retval)-1] == '\n')
+                Retlen = strlen(Retval);
+
+                if (Retval[Retlen-1] == '\n' || Retlen < len-1)
                     fn->Line++;
                 /* We only want the long lines warning once per file */
                 else if (!HasSeenLong)
                 {
-                    PrintPrgErr(pmLongLines, BUFSIZ);
+                    PrintPrgErr(pmLongLines, len-2);
                     HasSeenLong = 1;
                 }
                 break;
