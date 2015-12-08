@@ -13,6 +13,9 @@ Message 22 in Test.tex: Comment displayed.
 Message 1 in Test.tex: Command terminated with space.
 \foo This is an error.  
     ^
+Message 1 in Test.tex: Command terminated with space.
+So is this \foo  
+               ^
 Message 9 in Test.tex: `section' expected, found `text'.
 \stoptext  
      ^^^^
@@ -271,6 +274,15 @@ Message 22 in Test.tex: Comment displayed.
 Message 24 in Test.tex: Delete this space to maintain correct pagereferences.
 Indexing text \index{text} is fun!  
              ^
+Message 22 in Test.tex: Comment displayed.
+Indexing text%  
+             ^
+Message 30 in Test.tex: Multiple spaces detected in input.
+     \index{text} is fun!  
+ ^^^^
+Message 24 in Test.tex: Delete this space to maintain correct pagereferences.
+     \index{text} is fun!  
+    ^
 Message 22 in Test.tex: Comment displayed.
 % Warning 25  
 ^
