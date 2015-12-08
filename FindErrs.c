@@ -52,6 +52,8 @@ int NumRegexes = 0;
 #endif
 
 int FoundErr = EXIT_SUCCESS;
+int LastWasComment = FALSE;
+int SeenSpace = FALSE;
 
 /***************************** ERROR MESSAGES ***************************/
 
@@ -319,6 +321,7 @@ static char *PreProcess(void)
 
     TmpPtr = Buf;
 
+    LastWasComment = FALSE;
     while ((TmpPtr = strchr(TmpPtr, '%')))
     {
         char *EscapePtr = TmpPtr;
@@ -332,6 +335,7 @@ static char *PreProcess(void)
         /* If there is an even number of backslashes, then it's a comment. */
         if ((NumBackSlashes % 2) == 0)
         {
+            LastWasComment = TRUE;
             PSERR(TmpPtr - Buf, 1, emComment);
             *TmpPtr = 0;
             /* Check for line suppressions */
@@ -1318,9 +1322,25 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
         RealBuf = _RealBuf;
         Line = _Line;
 
+        if (!LastWasComment)
+        {
+            SeenSpace = TRUE;
+        }
         BufPtr = PreProcess();
 
         BufPtr = SkipVerb();
+
+        /* Skip past leading whitespace which is insignificant in TeX to avoid
+         * spurious warnings (Delete this space to maintain correct
+         * pagereferences).  If we have seen a space we don't _need_ to skip
+         * past, and doing so misses Message 30 (Multiple spaces detected).  We
+         * can miss some of Message 30 in the "not SeenSpace" case too, but I
+         * think it's less important, since Message 30 is for newbies.
+         */
+        if (!SeenSpace && BufPtr)
+        {
+            SKIP_AHEAD(BufPtr, TmpC, LATEX_SPACE(TmpC));
+        }
 
         while (BufPtr && *BufPtr)
         {
@@ -1627,12 +1647,18 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
             case '\\':         /* Command encountered  */
                 BufPtr = GetLTXToken(--BufPtr, CmdBuffer);
 
-                if (LATEX_SPACE(*PrePtr))
+                if (SeenSpace)
                 {
+                    /* We must be careful to not point to the "previous space"
+                     * when it was actually on the previous line.  This could
+                     * cause us to write into someone else's memory (inside of
+                     * PrintError). */
                     if (HasWord(CmdBuffer, &Linker))
-                        PSERR(PrePtr - Buf, 1, emNBSpace);
+                        PSERR( (PrePtr > Buf) ? (PrePtr - Buf) : 0,
+                               1, emNBSpace);
                     if (HasWord(CmdBuffer, &PostLink))
-                        PSERR(PrePtr - Buf, 1, emFalsePage);
+                        PSERR( (PrePtr > Buf) ? (PrePtr - Buf) : 0,
+                               1, emFalsePage);
                 }
 
                 if (LATEX_SPACE(*BufPtr) && !MathMode &&
@@ -1693,6 +1719,8 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
 
                 break;
             }
+
+            SeenSpace = LATEX_SPACE(Char);
         }
 
         if (!VerbMode)
