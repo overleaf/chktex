@@ -1547,6 +1547,21 @@ keyword in the \rsrc\ file which controls the discussed warning.
   \end{errexam}
 \end{errdesc}
 
+\begin{errdesc}{Use \textbackslash[ ... \textbackslash] instead of \$\$ ... \$\$.}
+
+  In \LaTeX\ documents, using \verb+\[...\]+ is strongly preferred over \verb+$$...$$+.
+  This is because using \verb+$$+ will change the vertical spacing in the
+  equations making them inconsistent.
+
+\end{errdesc}
+
+\begin{errdesc*}{Use \textbackslash( ... \textbackslash) instead of \$ ... \$.}
+
+  In \LaTeX\ documents using \verb+\(...\)+ is slightly preferred over \verb+$...$+.
+  Some error messages might be clearer with \verb+\(...\)+.
+
+\end{errdesc*}
+
 \section{Future plans}
 
 In a somewhat prioritized sequence, this is what I'd like to put into the
