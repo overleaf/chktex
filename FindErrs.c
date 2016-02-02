@@ -967,7 +967,17 @@ static void CheckRest(void)
                                (int)(MATCH.rm_eo - MATCH.rm_so),
                                TmpBuffer + offset + MATCH.rm_so);
                     }
-                    offset += MATCH.rm_eo;
+                    if ( MATCH.rm_eo == 0 )
+                    {
+                        /* Break out of loop if the match was empty.
+                         * This avoids an infinite loop when the match
+                         * is empty, e.g $ */
+                        offset = len;
+                    }
+                    else
+                    {
+                        offset += MATCH.rm_eo;
+                    }
 #undef MATCH
                 }
             }
