@@ -857,12 +857,15 @@ static void CheckRest(void)
                     {
                         CommentEnd = strchr(pattern, ')');
                         /* TODO: check for PCRE/POSIX only regexes */
-                        *CommentEnd = '\0';
-                        /* We're leaking a little here, but this was never freed until exit anyway... */
-                        UserWarnRegex.Stack.Data[NumRegexes] = pattern+3;
+                        if ( CommentEnd != NULL )
+                        {
+                            *CommentEnd = '\0';
+                            /* We're leaking a little here, but this was never freed until exit anyway... */
+                            UserWarnRegex.Stack.Data[NumRegexes] = pattern+3;
 
-                        /* Compile past the end of the comment so that it works with POSIX too. */
-                        pattern = CommentEnd + 1;
+                            /* Compile past the end of the comment so that it works with POSIX too. */
+                            pattern = CommentEnd + 1;
+                        }
                     }
 
                     /* Ignore PCRE and POSIX specific regexes.
