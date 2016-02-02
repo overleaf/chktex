@@ -1713,7 +1713,18 @@ int FindErr(const char *_RealBuf, const unsigned long _Line)
                 if (*PrePtr != '\\')
                 {
                     if (*BufPtr == '$')
+                    {
                         BufPtr++;
+                        TmpPtr = BufPtr;
+                        SKIP_AHEAD(TmpPtr, TmpC, (TmpC != '$' && TmpC != '\0'));
+                        PSERR(BufPtr - Buf - 2, TmpPtr-BufPtr+4, emDisplayMath);
+                    }
+                    else
+                    {
+                        TmpPtr = BufPtr;
+                        SKIP_AHEAD(TmpPtr, TmpC, (TmpC != '$' && TmpC != '\0'));
+                        PSERR(BufPtr - Buf - 1, TmpPtr-BufPtr+2, emInlineMath);
+                    }
                     MathMode ^= TRUE;
                 }
 
