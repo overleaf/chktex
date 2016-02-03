@@ -1145,7 +1145,7 @@ keyword in the \rsrc\ file which controls the discussed warning.
   \end{errexam}
 \end{errdesc}
 
-\begin{errdesc}{You should use "'" (ASCII 39)  instead  of
+\begin{errdesc*}{You should use "'" (ASCII 39)  instead  of
     "'" (ASCII 180).} On some keyboards you might get the wrong quote.
   This quote looks, IMHO, \emph{ugly} compared to the standard
   quotes, it doesn't even come out as a quote!  Just see in the
@@ -1160,7 +1160,7 @@ keyword in the \rsrc\ file which controls the discussed warning.
     \verb@``There's quotes and there's quotes''@ \\*
     ``There's quotes and there's quotes'' \\*
   \end{errexam}
-\end{errdesc}
+\end{errdesc*}
 
 \Keyword{UserWarn}
 \begin{errdesc}{User-specified pattern found: \%s.}
