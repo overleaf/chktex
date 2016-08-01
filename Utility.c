@@ -840,7 +840,7 @@ struct ErrInfo *PushErr(const char *Data, const unsigned long Line,
             ci->Line = Line;
             ci->ErrLen = ErrLen;
             ci->Column = Column;
-            ci->LineBuf = LineCpy;
+            ci->LineBuf = strdup(LineCpy);
             ci->Flags = efNone;
 
             if (StkPush(ci, Stk))
@@ -907,6 +907,9 @@ void FreeErrInfo(struct ErrInfo *ei)
 {
     if (ei)
     {
+        if (ei->LineBuf)
+            free((void *)ei->LineBuf);
+
         if (ei->Data)
             free(ei->Data);
 
