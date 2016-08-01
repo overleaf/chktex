@@ -274,6 +274,9 @@ ChkTeX.ps: ChkTeX.dvi
 ChkTeX.pdf: ChkTeX.ps
 	$(PS2PDF) $< $@
 
+memcheck: chktex
+	valgrind ./chktex -mall -r -g0 -lchktexrc -v5  Test.tex TestMem.tex
+
 cover:
 	-./chktex -h
 	-./chktex Test.tex
