@@ -750,8 +750,8 @@ char *FGetsStk(char *Dest, unsigned long len, struct Stack *stack)
 
             fn = StkPop(stack);
             fclose(fn->fh);
-            if ( fn->Name != NULL )
-                free(fn->Name);
+            /* Don't free the fn->Name field because it can be referenced in an
+               error message */
             free(fn);
             HasSeenLong = 0;
         }
@@ -774,9 +774,9 @@ const char *CurStkName(struct Stack *stack)
         {
             if ( stack->Used == 1 && strlen(LastName) == 0 && fn->Name )
             {
-                LastName = strdup(fn->Name);
+                LastName = fn->Name;
             }
-            return (fn->Name);
+            return fn->Name;
         }
         else
             return (LastName);
