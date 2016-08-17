@@ -1160,10 +1160,10 @@ static void HandleBracket(char Char)
                 ABuf[1] = BBuf[1] = 0;
                 if (Match)
                     PrintError(CurStkName(&InputStack), RealBuf,
-                               BufPtr - Buf - 1, 1, Line, emExpectC,
+                               BufPtr - Buf - 1, 1, Line, emExpectCB,
                                ABuf, BBuf);
                 else
-                    HEREA(1, emSoloC, BBuf);
+                    HEREA(1, emSoloCB, BBuf);
             }
 
         }
@@ -1782,7 +1782,7 @@ void PrintStatus(unsigned long Lines)
     while ((ei = PopErr(&CharStack)))
     {
         PrintError(ei->File, ei->LineBuf, ei->Column,
-                   ei->ErrLen, ei->Line, emNoMatchC, (char *) ei->Data);
+                   ei->ErrLen, ei->Line, emNoMatchCB, (char *) ei->Data);
         FreeErrInfo(ei);
     }
 

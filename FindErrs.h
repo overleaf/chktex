@@ -128,7 +128,13 @@
  MSG(emDisplayMath, etWarn, iuOK, ctOutMath,\
      "Use \\[ ... \\] instead of $$ ... $$.")\
  MSG(emInlineMath, etWarn, iuNotSys, ctOutMath,\
-     "Use \\( ... \\) instead of $ ... $.")
+     "Use \\( ... \\) instead of $ ... $.")\
+ MSG(emExpectCB, etWarn, iuOK, ctNone,\
+     "`%s' closing bracket expected, found `%s'.")\
+ MSG(emSoloCB, etWarn, iuOK, ctNone,\
+     "Solo bracket `%s' found.")\
+ MSG(emNoMatchCB, etWarn, iuOK, ctOutMath,\
+     "No match found for bracket `%s'.")
 
 #undef MSG
 #define MSG(num, type, inuse, ctxt, text) num,
