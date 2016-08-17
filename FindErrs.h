@@ -54,9 +54,9 @@
  MSG(emWrongDash, etWarn, iuOK, ctOutMath,\
      "Wrong length of dash may have been used.")\
  MSG(emExpectC, etWarn, iuOK, ctNone,\
-     "`%s' expected, found `%s'.")\
+     "`\\end{%s}' expected but found `\\end{%s}'.")\
  MSG(emSoloC, etWarn, iuOK, ctNone,\
-     "Solo `%s' found.")\
+     "Found `\\end{%s}' without corresponding \\begin.")\
  MSG(emEllipsis, etWarn, iuOK, ctNone,\
      "You should use %s to achieve an ellipsis.")\
  MSG(emInterWord, etWarn, iuOK, ctOutMath,\
@@ -66,7 +66,7 @@
  MSG(emNoArgFound, etErr, iuOK, ctNone,\
      "Could not find argument for command.")\
  MSG(emNoMatchC, etWarn, iuOK, ctOutMath,\
-     "No match found for `%s'.")\
+     "No matching \\end found for `\\begin{%s}'.")\
  MSG(emMathStillOn, etWarn, iuOK, ctNone,\
      "Mathmode still on at end of LaTeX file.")\
  MSG(emNoMatchCC, etWarn, iuOK, ctNone,\
