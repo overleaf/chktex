@@ -689,6 +689,7 @@ static void PerformBigCmd(char *CmdPtr)
             PSERR(CmdPtr - Buf, CmdLen, emNoArgFound);
     }
 
+#if USE_CONTEXT
     /* ConTeXt \start \stop tracking */
     if (!strncmp(CmdBuffer, "\\start", 6) || !strncmp(CmdBuffer, "\\stop", 5))
     {
@@ -723,6 +724,7 @@ static void PerformBigCmd(char *CmdPtr)
         /* TODO: Do I need to call PerformEnv? */
         /* It handles math and verbatim environments */
     }
+#endif
 
     CheckItal(CmdBuffer);
 
